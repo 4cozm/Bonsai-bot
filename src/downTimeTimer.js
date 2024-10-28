@@ -11,7 +11,8 @@ const message = {
 };
 const downTimeTracker = () => {
   console.log('DT 타이머 등록완료');
-  cron.schedule('0 11 * * *', async () => {
+  cron.schedule('* 11 * * *', async () => {
+    console.log('DT 타이머 실행');
     try {
       const interval = setInterval(async () => {
         const response = await fetch('https://esi.evetech.net/latest/status/?datasource=tranquility');
