@@ -4,11 +4,8 @@ import cron from 'node-cron';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
-const message = {
-  //서버 오픈 메세지
-  content: '서버 ON',
-};
+let version;
+let message;
 const downTimeTracker = () => {
   console.log('DT 타이머 등록완료');
   cron.schedule('0 11 * * *', async () => {
@@ -30,6 +27,26 @@ const downTimeTracker = () => {
 
         if (currentDate === startTimeDate) {
           //서버 열린상태 확인됬을때 코드
+
+          //업데이트 확인
+          if (!serverStatus.server_version) {
+            //서버 버전이 없는 경우
+            console.log(
+              `서버 버전을 확인 할 수 없습니다.${serverStatus.server_version}버전을 최신 버전으로 설정 했습니다.`
+            );
+            version = serverStatus.server_version;
+          } else if (version < serverStatus.server_version) {
+            message = {
+              //서버 버전이 다른 경우
+              content: '서버 ON, 버전이 업데이트 되었습니다. 미꾸라지 유저는 주의해주세요',
+            };
+            version = serverStatus.server_version;
+          } else {
+            message = {
+              //별다른 이슈가 없을때,서버 오픈 메세지
+              content: '서버 ON',
+            };
+          }
           fetch(process.env.DISCORD_WEBHOOK_URL, {
             method: 'POST',
             headers: {
