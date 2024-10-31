@@ -29,7 +29,7 @@ const downTimeTracker = () => {
           //서버 열린상태 확인됬을때 코드
 
           //업데이트 확인
-          if (!serverStatus.server_version) {
+          if (!version) {
             //서버 버전이 없는 경우
             console.log(
               `서버 버전을 확인 할 수 없습니다.${serverStatus.server_version}버전을 최신 버전으로 설정 했습니다.`
