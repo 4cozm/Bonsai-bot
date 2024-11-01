@@ -31,9 +31,10 @@ const downTimeTracker = () => {
           //업데이트 확인
           if (!version) {
             //서버 버전이 없는 경우
-            console.log(
-              `서버 버전을 확인 할 수 없습니다.${serverStatus.server_version}버전을 최신 버전으로 설정 했습니다.`
-            );
+            message = {
+              //서버 버전이 다른 경우
+              content: `서버 ON , 서버 버전을 확인 할 수 없습니다.${serverStatus.server_version}버전을 최신 버전으로 설정 했습니다.`,
+            };
             version = serverStatus.server_version;
           } else if (version < serverStatus.server_version) {
             message = {
