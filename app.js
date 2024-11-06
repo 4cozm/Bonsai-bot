@@ -2,19 +2,22 @@ import dotenv from 'dotenv';
 import discord from 'discord.js';
 import { GatewayIntentBits } from 'discord.js';
 import downTimeTracker from './src/downTimeTimer.js';
-
 import express from 'express';
+import session from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
+import esiRouter from './src/routers/ESI.router.js';
+import { sessionConfig  } from './src/middlewares/session.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-
+app.use(session(sessionConfig));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+
+app.use('/esi', esiRouter);
 
 app.listen(process.env.WEB_PORT, () => {
   console.log('웹 서버 구동 중');
