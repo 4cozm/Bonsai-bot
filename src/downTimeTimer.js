@@ -4,7 +4,6 @@ import cron from 'node-cron';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import readline from 'readline';
-import { error } from 'console';
 
 dotenv.config();
 
