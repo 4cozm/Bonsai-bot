@@ -69,3 +69,6 @@ coverage/
 *.swo
 *.bak
 *.tmp
+
+#버전 저장 txt파일
+/downTime.txt
