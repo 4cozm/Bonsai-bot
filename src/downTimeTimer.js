@@ -2,10 +2,13 @@
 
 import cron from 'node-cron';
 import dotenv from 'dotenv';
+import fs from 'fs';
 
 dotenv.config();
+
 let version;
 let message;
+
 const downTimeTracker = () => {
   console.log('DT 타이머 등록완료');
   cron.schedule('0 11 * * *', async () => {
@@ -32,7 +35,6 @@ const downTimeTracker = () => {
           if (!version) {
             //서버 버전이 없는 경우
             message = {
-              //서버 버전이 다른 경우
               content: `서버 ON , 서버 버전을 확인 할 수 없습니다.${serverStatus.server_version}버전을 최신 버전으로 설정 했습니다.`,
             };
             version = serverStatus.server_version;
@@ -48,6 +50,13 @@ const downTimeTracker = () => {
               content: '서버 ON',
             };
           }
+          //서버 버전 정보 txt 파일로 저장
+          fs.appendFile('downTimeReport.txt', `${startTime} : ${version}`, e => {
+            if(e){
+              console.error(e);
+            }
+            console.log(`${startTime} : ${version} 이 데이터에 추가되었습니다.`);
+          });
           fetch(process.env.DISCORD_WEBHOOK_URL, {
             method: 'POST',
             headers: {
