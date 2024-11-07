@@ -12,6 +12,7 @@ let version;
 let message;
 const versionPath = 'downTime.txt';
 
+//버전파일 존재여부 체크
 function versionFileCheck(){
   fs.access(versionPath, fs.constants.F_OK, e => {
     if(e){
@@ -29,6 +30,7 @@ function versionFileCheck(){
   })
 }
 
+//서버 버전체크 함수
 function versionCheck(){
   let lastline;
   const stream = fs.createReadStream(versionPath, 'utf8')
@@ -99,7 +101,7 @@ const downTimeTracker = () => {
 
         if (currentDate === startTimeDate) {
           //서버 열린상태 확인됬을때 코드
-          versionCheck();
+          versionCheck(); // 서버 버전 체크
           fetch(process.env.DISCORD_WEBHOOK_URL, {
             method: 'POST',
             headers: {
