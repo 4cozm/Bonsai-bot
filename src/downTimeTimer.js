@@ -2,23 +2,19 @@
 
 import cron from 'node-cron';
 import dotenv from 'dotenv';
+import getServerStatus from './utils/getServerStatus';
 
 dotenv.config();
 let version;
 let message;
+
 const downTimeTracker = () => {
   console.log('DT 타이머 등록완료');
   cron.schedule('0 11 * * *', async () => {
     console.log('DT 타이머 실행');
     try {
       const interval = setInterval(async () => {
-        const response = await fetch('https://esi.evetech.net/latest/status/?datasource=tranquility');
-
-        if (!response.ok) {
-          console.log('ESI가 응답하지 않습니다', response.status);
-        }
-        const serverStatus = await response.json();
-
+        let serverStatus = getServerStatus();
         const startTime = new Date(serverStatus.start_time); //이브에서 받아온 ISO 방식의 문자열을 Date 객체로 변환
         const currentTime = new Date(Date.now()); //현재 시간 (밀리초)를 날짜 객체로 변환
 

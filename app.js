@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import discord from 'discord.js';
 import { GatewayIntentBits } from 'discord.js';
+import getServerStatus from './src/utils/getServerStatus.js';
 import downTimeTracker from './src/downTimeTimer.js';
 import express from 'express';
 import session from 'express-session';
@@ -29,8 +30,13 @@ const client = new discord.Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 });
 
+let version;
+
 client.on('ready', () => {
   console.log(`서버 온라인 ${client.user.tag}!`);
+  let serverStatus = getServerStatus();
+  version = serverStatus.server_version;
+  console.log(`version을 ${version}으로 설정했습니다.`);
   downTimeTracker();
 });
 
