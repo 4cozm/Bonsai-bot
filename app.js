@@ -10,6 +10,7 @@ import { fileURLToPath, pathToFileURL } from 'url';
 import fs from 'fs';
 import esiRouter from './src/routers/ESI.router.js';
 import { sessionConfig  } from './src/middlewares/session.js';
+import guildCheck from './src/utils/guildCheck.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -69,6 +70,7 @@ client.on('interactionCreate', async interaction => {
 	}
 
 	try {
+    await guildCheck();
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
