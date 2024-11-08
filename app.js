@@ -58,16 +58,6 @@ client.on('ready', () => {
   downTimeTracker();
 });
 
-client.on('messageCreate', async msg => {
-  try {
-    if (msg.author.bot) return;
-    console.log(`메세지: ${msg.content}`);
-    //여기 아래에 필터링 할 단어나 조건을 작성하면 됩니다
-  } catch (error) {
-    console.error({ 에러: error.message });
-  }
-});
-
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
