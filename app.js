@@ -1,11 +1,13 @@
 import dotenv from 'dotenv';
 import discord from 'discord.js';
 import { GatewayIntentBits } from 'discord.js';
+import { Collection } from 'discord.js';
 import downTimeTracker from './src/downTimeTimer.js';
 import express from 'express';
 import session from 'express-session';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
+import fs from 'fs';
 import esiRouter from './src/routers/ESI.router.js';
 import { sessionConfig  } from './src/middlewares/session.js';
 const __filename = fileURLToPath(import.meta.url);
@@ -28,6 +30,28 @@ dotenv.config();
 const client = new discord.Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 });
+
+client.commands = new Collection();
+
+const commandFoldersPath = path.join(__dirname, 'commands');
+const commandFolders = fs.readdirSync(commandFoldersPath);
+
+for (const folder of commandFolders) {
+	const commandsPath = path.join(commandFoldersPath, folder);
+  const commandsURL = pathToFileURL(commandsPath); 
+	const commandFiles = fs.readdirSync(commandsURL).filter(file => file.endsWith('.js'));
+	for (const file of commandFiles) {
+		const filePath = path.join(commandsPath, file);
+    const fileURL = pathToFileURL(filePath);
+		const command = await import(fileURL);
+		// Set a new item in the Collection with the key as the command name and the value as the exported module
+		if ('data' in command && 'execute' in command) {
+			client.commands.set(command.data.name, command);
+		} else {
+			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		}
+	}
+}
 
 client.on('ready', () => {
   console.log(`서버 온라인 ${client.user.tag}!`);
