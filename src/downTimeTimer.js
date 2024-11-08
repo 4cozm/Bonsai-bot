@@ -2,7 +2,7 @@
 
 import cron from 'node-cron';
 import dotenv from 'dotenv';
-import getServerStatus from './utils/getServerStatus';
+import getServerStatus from './utils/getServerStatus.js';
 
 dotenv.config();
 let version;

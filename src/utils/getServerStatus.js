@@ -1,4 +1,3 @@
-
 const getServerStatus = async() => {
     const response = await fetch('https://esi.evetech.net/latest/status/?datasource=tranquility');
           if (!response.ok) {
@@ -10,4 +9,4 @@ const getServerStatus = async() => {
           return serverStat;
   }
 
-  export default getServerStatus;
+export default getServerStatus;

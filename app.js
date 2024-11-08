@@ -34,9 +34,12 @@ let version;
 
 client.on('ready', () => {
   console.log(`서버 온라인 ${client.user.tag}!`);
-  let serverStatus = getServerStatus();
-  version = serverStatus.server_version;
-  console.log(`version을 ${version}으로 설정했습니다.`);
+  getServerStatus()
+  .then((serverStatus) => {
+    version = serverStatus.server_version
+    console.log(`version을 ${version}으로 설정했습니다.`);
+  }
+  );
   downTimeTracker();
 });
 
