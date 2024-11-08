@@ -10,12 +10,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const commands = [];
-// Grab all the command folders from the commands directory you created earlier
+// commands 디렉토리에서 모든 폴더 긁어오기
 const foldersPath = path.join(__dirname, 'src', 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
-	// Grab all the command files from the commands directory you created earlier
+	// commands 디렉토리의 모든 폴더에 있는 파일 긁어오기
 	const commandsPath = path.join(foldersPath, folder);
     const commandsURL = pathToFileURL(commandsPath);
 	const commandFiles = fs.readdirSync(commandsURL).filter(file => file.endsWith('.js'));
@@ -32,10 +32,10 @@ for (const folder of commandFolders) {
 	}
 }
 
-// Construct and prepare an instance of the REST module
+// REST 모듈의 인스턴스 생성
 const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN);
 
-// and deploy your commands!
+// command deploy 함수
 (async () => {
 	try {
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);

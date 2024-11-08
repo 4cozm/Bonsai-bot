@@ -44,7 +44,7 @@ for (const folder of commandFolders) {
 		const filePath = path.join(commandsPath, file);
     const fileURL = pathToFileURL(filePath);
 		const command = await import(fileURL);
-		// Set a new item in the Collection with the key as the command name and the value as the exported module
+		// Collection 객체에 커맨드 추가
 		if ('data' in command && 'execute' in command) {
 			client.commands.set(command.data.name, command);
 		} else {
