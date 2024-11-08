@@ -33,7 +33,7 @@ const client = new discord.Client({
 
 client.commands = new Collection();
 
-const commandFoldersPath = path.join(__dirname, 'commands');
+const commandFoldersPath = path.join(__dirname, 'src', 'commands');
 const commandFolders = fs.readdirSync(commandFoldersPath);
 
 for (const folder of commandFolders) {
