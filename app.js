@@ -7,11 +7,11 @@ import getServerStatus from './src/utils/getServerStatus.js';
 import express from 'express';
 import session from 'express-session';
 import path from 'path';
-import { fileURLToPath, pathToFileURL } from 'url';
-import fs from 'fs';
+import { fileURLToPath } from 'url';
 import esiRouter from './src/routers/ESI.router.js';
 import { sessionConfig  } from './src/middlewares/session.js';
 import guildCheck from './src/utils/guildCheck.js';
+import createCommands from './src/utils/createCommands.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -35,25 +35,7 @@ const client = new discord.Client({
 
 client.commands = new Collection();
 
-const commandFoldersPath = path.join(__dirname, 'src', 'commands');
-const commandFolders = fs.readdirSync(commandFoldersPath);
-
-for (const folder of commandFolders) {
-	const commandsPath = path.join(commandFoldersPath, folder);
-  const commandsURL = pathToFileURL(commandsPath); 
-	const commandFiles = fs.readdirSync(commandsURL).filter(file => file.endsWith('.js'));
-	for (const file of commandFiles) {
-		const filePath = path.join(commandsPath, file);
-    const fileURL = pathToFileURL(filePath);
-		const command = await import(fileURL);
-		// Collection 객체에 커맨드 추가
-		if ('data' in command && 'execute' in command) {
-			client.commands.set(command.data.name, command);
-		} else {
-			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
-		}
-	}
-}
+createCommands(client.commands, __dirname);
 
 let version;
 
@@ -77,7 +59,12 @@ client.on('interactionCreate', async interaction => {
 	}
 
 	try {
-    await guildCheck(interaction.guild); // DM으로 명령어를 쓰게 될 경우 수정이 필요함.
+    	// DM으로 명령어를 쓰게 될 경우 수정이 필요함.
+		const guildError = await guildCheck(interaction.guild);
+		if(guildError){
+			console.error (guildError);
+			return;
+		}
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
