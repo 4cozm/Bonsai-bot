@@ -54,8 +54,14 @@ for (const folder of commandFolders) {
 	}
 }
 
-client.on('ready', () => {
+let version;
+
+client.on('ready', async () => {
   console.log(`서버 온라인 ${client.user.tag}!`);
+  await getServerStatus().then(serverStatus => {
+    version = serverStatus.server_version;
+    console.log(`version을 ${version}으로 설정했습니다.`);
+  });
   downTimeTracker();
 });
 
