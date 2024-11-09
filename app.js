@@ -3,6 +3,7 @@ import discord from 'discord.js';
 import { GatewayIntentBits } from 'discord.js';
 import { Collection } from 'discord.js';
 import downTimeTracker from './src/downTimeTimer.js';
+import getServerStatus from './src/utils/getServerStatus.js';
 import express from 'express';
 import session from 'express-session';
 import path from 'path';
