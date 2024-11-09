@@ -70,7 +70,7 @@ client.on('interactionCreate', async interaction => {
 	}
 
 	try {
-    await guildCheck();
+    await guildCheck(interaction.guild); // DM으로 명령어를 쓰게 될 경우 수정이 필요함.
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
