@@ -3,7 +3,7 @@ import path from 'path';
 
 import { pathToFileURL } from 'url';
 
-const createCommands = async (commandCollection, __dirname) => {
+const commandHandler = async (commandCollection, __dirname) => {
     const commandFoldersPath = path.join(__dirname, 'src', 'commands');
     const commandFolders = fs.readdirSync(commandFoldersPath);
     for (const folder of commandFolders) {
@@ -24,4 +24,4 @@ const createCommands = async (commandCollection, __dirname) => {
     }
 };
 
-export default createCommands;
+export default commandHandler;

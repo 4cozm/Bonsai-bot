@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 import esiRouter from './src/routers/ESI.router.js';
 import { sessionConfig  } from './src/middlewares/session.js';
 import guildCheck from './src/utils/guildCheck.js';
-import createCommands from './src/utils/createCommands.js';
+import commandHandler from './src/utils/commandHandler.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -35,7 +35,7 @@ const client = new discord.Client({
 
 client.commands = new Collection();
 
-createCommands(client.commands, __dirname);
+commandHandler(client.commands, __dirname);
 
 let version;
 
