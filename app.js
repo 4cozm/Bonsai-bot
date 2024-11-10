@@ -2,7 +2,8 @@
 import dotenv from 'dotenv';
 
 // 디스코드 관련
-import { Client, GatewayIntentBits, Collection } from 'discord.js';
+import discord from 'discord.js';
+import {GatewayIntentBits, Collection } from 'discord.js';
 
 // 서버 관련
 import express from 'express';
