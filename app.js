@@ -12,6 +12,8 @@ import esiRouter from './src/routers/esi.router.js';
 import { sessionConfig } from './src/middlewares/session.js';
 import guildCheck from './src/utils/guildCheck.js';
 import commandHandler from './src/utils/commandHandler.js';
+
+import gitRouter from './src/routers/git.router.js';
 import { connectToDatabase } from './src/db/connection.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,12 +26,21 @@ const client = new discord.Client({
 });
 client.commands = new Collection();
 
+//미들웨어
+app.use(express.json());
 app.use(session(sessionConfig));
+//--------
+
+//정적 파일 호스팅
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+//----------
 
+//라우터 관련
 app.use('/esi', esiRouter);
+app.use('/git', gitRouter);
+//--------
 
 app.listen(process.env.WEB_PORT, () => {
   console.log('웹 서버 구동 중');
