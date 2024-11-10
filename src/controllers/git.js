@@ -4,15 +4,17 @@ dotenv.config();
 const githubHook = async (req, res) => {
   try {
     if (!req.body || !req.body.pull_request) {
-      return res.status(400).send('잘못된 요청입니다. pull_request가 없습니다.');
-    } else if (pr.base.ref != 'dev') {
-      return res.status(200).send('이벤트가 발생했지만 dev 브랜치 메세지가 아닙니다');
+      return res.status(200).send('pr이나 merge가 없기에 무시합니다.');
     }
     const pr = req.body.pull_request;
     const action = req.body.action;
     const merged = pr.merged;
 
-    let message = null;
+    if (pr.base.ref != 'dev') {
+      return res.status(200).send('이벤트가 발생했지만 dev 브랜치 메세지가 아닙니다');
+    }
+
+    let message = {};
 
     if (action === 'opened' || action === 'synchronize' || action === 'reopened') {
       message = {
@@ -33,7 +35,7 @@ const githubHook = async (req, res) => {
     console.log('git 메세지 전송 완료');
   } catch (error) {
     console.error('DISCORD로 PR 메세지 전송 실패', error);
-    res.status(500).send('서버 오류', error);
+    res.status(500).send(`서버 오류: ${error.message}`);
   }
 };
 
