@@ -8,7 +8,7 @@ import express from 'express';
 import session from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import esiRouter from './src/routers/ESI.router.js';
+import esiRouter from './src/routers/esi.router.js';
 import { sessionConfig } from './src/middlewares/session.js';
 import guildCheck from './src/utils/guildCheck.js';
 import commandHandler from './src/utils/commandHandler.js';
