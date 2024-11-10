@@ -25,10 +25,16 @@ const client = new discord.Client({
 });
 client.commands = new Collection();
 
+//미들웨어
+app.use(express.json());
 app.use(session(sessionConfig));
+//--------
+
+//정적 파일 호스팅
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+//----------
 
 //라우터 관련
 app.use('/esi', esiRouter);
