@@ -4,7 +4,7 @@ const getServerStatus = async () => {
     console.log('ESI가 응답하지 않습니다', response.status);
   }
   const serverStat = await response.json();
-  return serverStat.server_version;
+  return serverStat;
 };
 
 export default getServerStatus;
