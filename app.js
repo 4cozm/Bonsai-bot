@@ -1,20 +1,33 @@
+// 환경 변수 설정
 import dotenv from 'dotenv';
-import discord from 'discord.js';
-import { GatewayIntentBits } from 'discord.js';
-import { Collection } from 'discord.js';
-import downTimeTracker from './src/downTimeTimer.js';
-import getServerStatus from './src/utils/getServerStatus.js';
+
+// 디스코드 관련
+import { Client, GatewayIntentBits, Collection } from 'discord.js';
+
+// 서버 관련
 import express from 'express';
 import session from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+// DB 연결
+import { connectToDatabase } from './src/db/connection.js';
+
+// 라우터
 import esiRouter from './src/routers/esi.router.js';
+import gitRouter from './src/routers/git.router.js';
+
+// 미들웨어
 import { sessionConfig } from './src/middlewares/session.js';
+
+// 유틸리티 함수들
+import downTimeTracker from './src/downTimeTimer.js';
+import getServerStatus from './src/utils/getServerStatus.js';
 import guildCheck from './src/utils/guildCheck.js';
 import commandHandler from './src/utils/commandHandler.js';
 
-import gitRouter from './src/routers/git.router.js';
-import { connectToDatabase } from './src/db/connection.js';
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
