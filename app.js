@@ -16,13 +16,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
 
-
 let version;
 const app = express();
 const client = new discord.Client({
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
-  });
-  client.commands = new Collection();
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+});
+client.commands = new Collection();
 
 app.use(session(sessionConfig));
 app.get('/', (req, res) => {
