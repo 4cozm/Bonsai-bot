@@ -12,6 +12,7 @@ import esiRouter from './src/routers/esi.router.js';
 import { sessionConfig } from './src/middlewares/session.js';
 import guildCheck from './src/utils/guildCheck.js';
 import commandHandler from './src/utils/commandHandler.js';
+import { connectToDatabase } from './src/db/connection.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
@@ -36,11 +37,11 @@ app.listen(process.env.WEB_PORT, () => {
 
 await commandHandler(client.commands, __dirname);
 
-
 client.on('ready', async () => {
   console.log(`서버 온라인 ${client.user.tag}!`);
   version = await getServerStatus();
   console.log(`version을 ${version}으로 설정했습니다.`);
+  await connectToDatabase();
   downTimeTracker();
 });
 
