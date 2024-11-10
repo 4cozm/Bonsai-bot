@@ -4,6 +4,7 @@ dotenv.config();
 const githubHook = async (req, res) => {
   try {
     if (!req.body || !req.body.pull_request) {
+      console.log('pr이나 merge가 없기에 무시합니다.');
       return res.status(200).send('pr이나 merge가 없기에 무시합니다.');
     }
     const pr = req.body.pull_request;
@@ -11,6 +12,7 @@ const githubHook = async (req, res) => {
     const merged = pr.merged;
 
     if (pr.base.ref != 'dev') {
+      console.log('이벤트가 발생했지만 dev 브랜치 메세지가 아닙니다.');
       return res.status(200).send('이벤트가 발생했지만 dev 브랜치 메세지가 아닙니다');
     }
 
