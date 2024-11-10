@@ -9,7 +9,7 @@ import session from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import esiRouter from './src/routers/ESI.router.js';
-import { sessionConfig  } from './src/middlewares/session.js';
+import { sessionConfig } from './src/middlewares/session.js';
 import guildCheck from './src/utils/guildCheck.js';
 import commandHandler from './src/utils/commandHandler.js';
 const __filename = fileURLToPath(import.meta.url);
@@ -49,31 +49,31 @@ client.on('ready', async () => {
 });
 
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isChatInputCommand()) return;
+  if (!interaction.isChatInputCommand()) return;
 
-	const command = interaction.client.commands.get(interaction.commandName);
+  const command = interaction.client.commands.get(interaction.commandName);
 
-	if (!command) {
-		console.error(`No command matching ${interaction.commandName} was found.`);
-		return;
-	}
+  if (!command) {
+    console.error(`No command matching ${interaction.commandName} was found.`);
+    return;
+  }
 
-	try {
-    	// DM으로 명령어를 쓰게 될 경우 수정이 필요함.
-		const guildError = await guildCheck(interaction.guild);
-		if(guildError){
-			console.error (guildError);
-			return;
-		}
-		await command.execute(interaction);
-	} catch (error) {
-		console.error(error);
-		if (interaction.replied || interaction.deferred) {
-			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
-		} else {
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-		}
-	}
+  try {
+    // DM으로 명령어를 쓰게 될 경우 수정이 필요함.
+    const guildError = await guildCheck(interaction.guild);
+    if (guildError) {
+      console.error(guildError);
+      return;
+    }
+    await command.execute(interaction);
+  } catch (error) {
+    console.error(error);
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+    } else {
+      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    }
+  }
 });
 
 client.login(process.env.DISCORD_BOT_TOKEN);
