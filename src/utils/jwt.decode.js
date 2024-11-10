@@ -6,5 +6,5 @@ import jwt from 'jsonwebtoken';
 
 export const decodeJwtToken = token => {
   const decoded = jwt.decode(token);
-  return decoded.name;
+  return { name: decoded.name, characterId: decoded.sub.split(':')[2] };
 };

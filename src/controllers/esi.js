@@ -27,11 +27,11 @@ export const callback = async (req, res) => {
   if (state !== req.session.state) {
     return res.status(400).send('state 파라미터 오류');
   }
-  // 추후 로깅이나 DB저장 해야함 단 이 시점에서 이 code가 누구 소유인지 모름;;
   res.send(`Authorization code: ${code}`);
-  const userData = await getAccessToken(code);
-  const userName = decodeJwtToken(userData.access_token);
-  console.log('가입한 유저 이름', userName);
+  const userToken = await getAccessToken(code);
+  const userData = decodeJwtToken(userToken.access_token);
+  //DB에 넣는 작업 name,characterId,token,refreshToken,expire,signDate
+  //1.디스코드 닉네임중 name과 일치하는 정보가 있는지 확인.
 };
 
 const getAccessToken = async code => {
@@ -61,7 +61,7 @@ const getAccessToken = async code => {
 
     const responseData = await response.json();
     const { access_token, refresh_token, expires_in } = responseData;
-    return { access_token, refresh_token };
+    return { access_token, refresh_token, expires_in };
   } catch (error) {
     console.error('AccessToken 함수에서 에러 발생', error);
   }

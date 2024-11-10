@@ -24,7 +24,7 @@ const githubHook = async (req, res) => {
       };
     } else if (action === 'closed' && merged) {
       message = {
-        content: `주인님 Merge가 완료 되었어요 이제 전 자유에요!: [${pr.title}](${pr.html_url})\nPR 요청자: ${pr.user.login}\n상태: PR이 머지되었습니다.`,
+        content: `주인님 Merge가 완료 되었어요 이제 전 자유에요!: [${pr.title}](${pr.html_url})\nPR 요청자: ${pr.user.login}\n상태: ${action}`,
       };
     }
     await fetch(process.env.DISCORD_404_WEBHOOK_URL, {
