@@ -3,14 +3,14 @@ import dotenv from 'dotenv';
 
 // 디스코드 관련
 import discord from 'discord.js';
-import {GatewayIntentBits, Collection } from 'discord.js';
+import { GatewayIntentBits, Collection } from 'discord.js';
+import { updateGuildUsers } from './src/utils/getGuildUser.js';
 
 // 서버 관련
 import express from 'express';
 import session from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
 
 // DB 연결
 import { connectToDatabase } from './src/db/connection.js';
@@ -28,8 +28,6 @@ import getServerStatus from './src/utils/getServerStatus.js';
 import guildCheck from './src/utils/guildCheck.js';
 import commandHandler from './src/utils/commandHandler.js';
 
-
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
@@ -37,7 +35,12 @@ dotenv.config();
 let version;
 const app = express();
 const client = new discord.Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent,GatewayIntentBits.GuildMembers],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers,
+  ],
 });
 client.commands = new Collection();
 
@@ -69,6 +72,7 @@ client.on('ready', async () => {
   version = serverStatus.server_version;
   console.log(`version을 ${version}으로 설정했습니다.`);
   await connectToDatabase();
+  await updateGuildUsers(client);
   downTimeTracker();
 });
 
