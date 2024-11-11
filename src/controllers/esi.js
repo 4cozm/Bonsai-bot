@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import scopes from '../scope.js';
 import crypto from 'crypto';
 import { decodeJwtToken } from '../utils/jwt.decode.js';
+import addUserToDatabase from '../db/addUserToDatabase.js';
+
 dotenv.config();
 
 const clientId = process.env.ESI_CLIENT_ID;
@@ -30,8 +32,7 @@ export const callback = async (req, res) => {
   res.send(`Authorization code: ${code}`);
   const userToken = await getAccessToken(code);
   const userData = decodeJwtToken(userToken.access_token);
-  //DB에 넣는 작업 name,characterId,token,refreshToken,expire,signDate
-  //1.디스코드 닉네임중 name과 일치하는 정보가 있는지 확인.
+  addUserToDatabase(userToken,userData);
 };
 
 const getAccessToken = async code => {
