@@ -8,7 +8,7 @@ dotenv.config();
 
 let message;
 
-const downTimeTracker = () => {
+const downTimeTracker = version => {
   console.log('DT 타이머 등록완료');
   cron.schedule('0 11 * * *', async () => {
     console.log('DT 타이머 실행');

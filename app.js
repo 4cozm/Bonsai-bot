@@ -75,7 +75,7 @@ client.on('ready', async () => {
   await connectToDatabase();
   setClientInstance(client); //클라이언트 객체를 다른 곳에서 쓸 수 있도록 별도로 저장해둠
   await updateGuildUsers();
-  downTimeTracker();
+  downTimeTracker(version);
 });
 
 client.on('interactionCreate', async interaction => {
