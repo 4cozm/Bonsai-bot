@@ -73,9 +73,9 @@ client.on('ready', async () => {
   version = serverStatus.server_version;
   console.log(`version을 ${version}으로 설정했습니다.`);
   await connectToDatabase();
-  await updateGuildUsers(client);
+  setClientInstance(client); //클라이언트 객체를 다른 곳에서 쓸 수 있도록 별도로 저장해둠
+  await updateGuildUsers();
   downTimeTracker();
-  setClientInstance(client);//클라이언트 객체를 다른 곳에서 쓸 수 있도록 별도로 저장해둠
 });
 
 client.on('interactionCreate', async interaction => {

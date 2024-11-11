@@ -1,0 +1,26 @@
+CREATE DATABASE ESI
+
+USE ESI
+
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  discord INT,
+  name VARCHAR(255) NOT NULL,
+  characterId VARCHAR(255) NOT NULL,
+  refreshToken TEXT NOT NULL,
+  expire INT NOT NULL,
+  addDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (characterId),
+  INDEX idx_discord (discord)
+);
+
+/*
+id 내부 인덱싱용
+discord 디스코드 ID - 알트의 경우 등록 전까지 null로 처리
+name은 eve online 캐릭터의 이름 (소문자 변환으로 저장 됨)
+characterId 는 eve online 캐릭터의 고유 ID
+refreshToken은 엑세스 토큰을 발급 받기 위한 키
+expire은 엑세스 토큰이 만료되는 시간
+addDate 는 해당 튠이 캣포유 ESI에 등록된 시간
+INDEX는 내부 인덱싱용
+*/

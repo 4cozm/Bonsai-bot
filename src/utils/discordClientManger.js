@@ -10,7 +10,7 @@ export const setClientInstance = discordInstance => {
 };
 
 export const getClientInstance = () => {
-  if (client) {
+  if (!client) {
     console.error('discord객체를 저장하지 않은 상태에서 사용하려고 했습니다');
     return;
   }
