@@ -12,7 +12,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 
-//ㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㅇㅁ
 // DB 연결
 import { connectToDatabase } from './src/db/connection.js';
 
@@ -38,7 +37,7 @@ dotenv.config();
 let version;
 const app = express();
 const client = new discord.Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent,GatewayIntentBits.GuildMembers],
 });
 client.commands = new Collection();
 
