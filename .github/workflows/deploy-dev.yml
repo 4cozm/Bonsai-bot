@@ -13,7 +13,7 @@ jobs:
       - name: Send Discord Notification
         run: |
           curl -X POST -H "Content-Type: application/json" \
-            -d '{"content": "서버 업데이트가 감지되었습니다 서버를 재시작 합니다! \
+            -d '{"content": "서버 업데이트가 감지되었습니다 서버를 재시작 합니다!"}' \
             ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Deploy to AWS Server
