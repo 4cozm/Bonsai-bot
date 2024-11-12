@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Send Discord Notification
+      - name: Send Discord Notification (Start)
         run: |
           curl -X POST -H "Content-Type: application/json" \
-            -d '{"content": "서버 업데이트가 감지되었습니다 서버를 재시작 합니다!"}' \
+            -d '{"content": "서버 업데이트가 감지되었습니다. 서버를 재시작 합니다!"}' \
             ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Deploy to AWS Server
@@ -26,7 +26,14 @@ jobs:
           chmod 600 ssh_key
           ssh -i ssh_key -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
             cd /home/ubuntu/Cat4U  # 프로젝트 위치로 이동
-            git pull origin dev       # dev 브랜치에서 최신 코드 가져오기
-            npm install               # 필요한 패키지 설치
-            pm2 restart all      # PM2로 앱 재시작
+            git pull origin dev     # dev 브랜치에서 최신 코드 가져오기
+            npm install             # 필요한 패키지 설치
+            pm2 restart all         # PM2로 앱 재시작
           EOF
+
+      - name: Notify Discord on failure
+        if: failure()
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{"content": "CI/CD작업 재시작 오류 발생 ${GITHUB_REF}.\nError: ${GITHUB_JOB}"}' \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
