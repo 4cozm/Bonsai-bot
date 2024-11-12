@@ -28,12 +28,14 @@ import getServerStatus from './src/utils/getServerStatus.js';
 import guildCheck from './src/utils/guildCheck.js';
 import commandHandler from './src/utils/commandHandler.js';
 import { setClientInstance } from './src/utils/discordClientManger.js';
+import serverStartNotification from './src/utils/serverStartNotification.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
 
 let version;
+const startTime = Date.now();
 const app = express();
 const client = new discord.Client({
   intents: [
@@ -76,6 +78,7 @@ client.on('ready', async () => {
   setClientInstance(client); //클라이언트 객체를 다른 곳에서 쓸 수 있도록 별도로 저장해둠
   await updateGuildUsers();
   downTimeTracker(version);
+  await serverStartNotification(startTime);
 });
 
 client.on('interactionCreate', async interaction => {
