@@ -154,7 +154,7 @@ export async function execute(interaction) {
             case '독트린':
               await internalConfirmation.update({
                 content:
-                  '-외부에 유출 금지 \n [독트린 문서](<https://docs.google.com/document/d/16EsbIMnfbMctuKaQvEo6LyoIy4RdOO0zwGQaZFfj5Ag/edit?usp=sharing>)',
+                  "-외부에 유출 금지 \n [독트린 문서](<https://www.figma.com/design/9CHqYeUKoUhszzmSNJjri0/남쇠루's-team-library?node-id=3311-5&t=B02CCgzInmYOYGfu-4>)",
                 components: [],
               });
               break;
