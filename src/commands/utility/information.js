@@ -154,7 +154,7 @@ export async function execute(interaction) {
             case '독트린':
               await internalConfirmation.update({
                 content:
-                  '-외부에 유출 금지 \n <https://docs.google.com/document/d/16EsbIMnfbMctuKaQvEo6LyoIy4RdOO0zwGQaZFfj5Ag/edit?usp=sharing>',
+                  '-외부에 유출 금지 \n [독트린 문서](<https://docs.google.com/document/d/16EsbIMnfbMctuKaQvEo6LyoIy4RdOO0zwGQaZFfj5Ag/edit?usp=sharing>)',
                 components: [],
               });
               break;
@@ -162,14 +162,14 @@ export async function execute(interaction) {
             case '기동 공략':
               await internalConfirmation.update({
                 content:
-                  '<https://gall.dcinside.com/board/view/?id=eveonline&no=341033>\n(1) <https://youtu.be/sP0hYYK3Tc8?si=2r1cmPoBcg6JKmyg&t=37>\n(2) <https://www.youtube.com/watch?v=bpGu4jThQ7A>\n(3) <https://www.youtube.com/watch?v=mv1kwD0U0IM>\n',
+                  '[태클 교육자료](<https://gall.dcinside.com/board/view/?id=eveonline&no=341033>)\n[수동기동(1)] (<https://youtu.be/sP0hYYK3Tc8?si=2r1cmPoBcg6JKmyg&t=37>)\n[수동기동(2)](<https://www.youtube.com/watch?v=bpGu4jThQ7A>)\n[수동기동(3)] (<https://www.youtube.com/watch?v=mv1kwD0U0IM>)\n',
                 components: [],
               });
               break;
 
             case '플릿전 가이드':
               await internalConfirmation.update({
-                content: `(1) <https://www.youtube.com/watch?v=zcxBdbCsOyk>\n(2) <https://www.youtube.com/watch?v=tOcQF-ewMjk>\n(3) <https://www.youtube.com/watch?v=tOcQF-ewMjk> \n`,
+                content: `[(1) 세이브 기초영상](<https://www.youtube.com/watch?v=zcxBdbCsOyk>)\n[(2) 에레스트리안 영상1](<https://www.youtube.com/watch?v=tOcQF-ewMjk>)\n[(3) 에레스트리안 영상2](<https://www.youtube.com/watch?v=uq1XVS8aDPY>) \n`,
                 components: [],
               });
               break;
@@ -474,7 +474,7 @@ export async function execute(interaction) {
             case '패스파인더':
               await internalConfirmation.update({
                 content:
-                  '<https://path.catalyst-for-you.com/map/Mw%3D%3D> \n <https://pathfinder.lost-in-w.space/> 대피소 \n <https://docs.google.com/document/d/1c4m6fGy264yptdWH09dYzPhdeH_fysueLQ3HSpNBy04/edit?usp=sharing>',
+                  '[코퍼레이션 맵](<https://path.catalyst-for-you.com/map/Mw%3D%3D>) \n [대피소](<https://pathfinder.lost-in-w.space/>) \n [패파 가이드](<https://docs.google.com/document/d/1c4m6fGy264yptdWH09dYzPhdeH_fysueLQ3HSpNBy04/edit?usp=sharing>)',
                 components: [],
               });
               break;
@@ -519,7 +519,7 @@ export async function execute(interaction) {
 
             case 'pyfa':
               await internalConfirmation.update({
-                content: `pyfa 사용법\n <https://docs.google.com/document/d/15RuYqdmeZK9Q6Ze23wroOzwZdcz9Tjn5g-44CxPCX8A/edit#heading=h.pz2bgedg93fz> \n 현재 최신 업데이트 \n <https://github.com/pyfa-org/Pyfa/releases>`,
+                content: `[pyfa 사용법](<https://docs.google.com/document/d/15RuYqdmeZK9Q6Ze23wroOzwZdcz9Tjn5g-44CxPCX8A/edit#heading=h.pz2bgedg93fz>) \n [현재 최신 업데이트] (<https://github.com/pyfa-org/Pyfa/releases>)`,
                 components: [],
               });
               break;
