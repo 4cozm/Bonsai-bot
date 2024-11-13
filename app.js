@@ -69,7 +69,7 @@ app.listen(process.env.WEB_PORT, () => {
 
 await commandHandler(client.commands, __dirname);
 
-client.on('ready', async () => {
+client.once('ready', async () => {
   console.log(`서버 온라인 ${client.user.tag}!`);
   const serverStatus = await getServerStatus();
   version = serverStatus.server_version;
