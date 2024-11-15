@@ -21,11 +21,20 @@ export const connectToDatabase = async () => {
   }
 };
 
-export const getConnection = () => {
+/**
+ *
+ * @returns 연결 객체를 반환,연결이 유효하지 않다면 재연결 후 반환함
+ */
+export const getConnection = async () => {
   if (!connection) {
-    console.error('DB가 연결되지 않은 상태에서 호출 했습니다');
-    //404 채널로 에러메세지 전송 - DB연결이 끊어져 있습니다
-    return;
+    return await connectToDB();
   }
+
+  try {
+    await connection.ping();
+  } catch (error) {
+    connection = await connectToDB();
+  }
+
   return connection;
 };
