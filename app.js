@@ -45,6 +45,7 @@ const client = new discord.Client({
     GatewayIntentBits.GuildMembers,
   ],
 });
+//커맨드를 담을 컬렉션
 client.commands = new Collection();
 
 //미들웨어
@@ -82,24 +83,24 @@ client.once('ready', async () => {
 });
 
 client.on('interactionCreate', async interaction => {
-  if (!interaction.isChatInputCommand()) return;
+  if (interaction.isChatInputCommand()) {
+    const command = interaction.client.commands.get(interaction.commandName);
 
-  const command = interaction.client.commands.get(interaction.commandName);
-
-  if (!command) {
-    console.error(`No command matching ${interaction.commandName} was found.`);
-    return;
-  }
-  try {
-    // DM으로 명령어를 쓰게 될 경우 수정이 필요함.
-    await guildCheck(interaction.guild);
-    await command.execute(interaction);
-  } catch (error) {
-    console.error('명령어 실행 중 에러 발생:', error);
-    if (interaction.replied || interaction.deferred) {
-      await interaction.followUp({ content: '명령어 실행중 오류가 발생했습니다', ephemeral: true });
-    } else {
-      await interaction.reply({ content: '명령어 실행중 오류가 발생했습니다', ephemeral: true });
+    if (!command) {
+      console.error(`No command matching ${interaction.commandName} was found.`);
+      return;
+    }
+    try {
+      // DM으로 명령어를 쓰게 될 경우 수정이 필요함.
+      await guildCheck(interaction.guild);
+      await command.execute(interaction);
+    } catch (error) {
+      console.error('명령어 실행 중 에러 발생:', error);
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp({ content: '명령어 실행중 오류가 발생했습니다', ephemeral: true });
+      } else {
+        await interaction.reply({ content: '명령어 실행중 오류가 발생했습니다', ephemeral: true });
+      }
     }
   }
 });
