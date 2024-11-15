@@ -5,7 +5,7 @@
 
 import { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js';
 // 커맨드 기본 데이터, 옵션 설정
-export const data = new SlashCommandBuilder().setName('버튼테스트').setDescription('영구적으로 버튼에 응답');
+export const data = new SlashCommandBuilder().setName('버튼테스트').setDescription('버튼 기능 테스트');
 
 export async function execute(interaction) {
   const button1 = new ButtonBuilder().setCustomId('button1').setLabel('button1').setStyle(ButtonStyle.Success);
@@ -22,7 +22,7 @@ export async function execute(interaction) {
     //명령어를 실행한 사람과 버튼을 누른 사람이 동일할때
     if (response.userid === interaction.userid) {
       const confirmation = await response.awaitMessageComponent({});
-      await confirmation.update({ content: `${confirmation.customId}` });
+      await confirmation.update({ content: `${confirmation.customId}`, components: [] });
       //명령어를 실행한 사람과 버튼을 누른 사람이 다를때
     } else {
       await interaction.editReply({ content: '명령어를 실행한 사람이 아닙니다.' });
