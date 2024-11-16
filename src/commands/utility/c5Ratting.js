@@ -89,5 +89,7 @@ export async function execute(interaction) {
         console.log(`걸린 시간: ${duration}`);
         break;
     }
+  } else if(interaction.getSubcommand === '통계'){
+    
   }
 }
