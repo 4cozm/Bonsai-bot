@@ -17,17 +17,16 @@ export async function execute(interaction) {
   const row1 = new ActionRowBuilder().addComponents([button1, button2, button3, button4, button5]);
 
   const response = await interaction.reply({ content: '버튼을 나열합니다.', components: [row1] });
-
   try {
+    const confirmation = await response.awaitMessageComponent({});
     //명령어를 실행한 사람과 버튼을 누른 사람이 동일할때
-    if (response.userid === interaction.userid) {
-      const confirmation = await response.awaitMessageComponent({});
+    if (confirmation.user.id === interaction.user.id) {
       await confirmation.update({ content: `${confirmation.customId}`, components: [] });
       //명령어를 실행한 사람과 버튼을 누른 사람이 다를때
     } else {
-      await interaction.editReply({ content: '명령어를 실행한 사람이 아닙니다.' });
+      await interaction.followUp({ content: '명령어를 실행한 사람이 아닙니다.' });
     }
   } catch (e) {
-    await interaction.editReply({ content: '에러 발생' });
+    await interaction.editReply({ content: '에러 발생', components: [] });
   }
 }

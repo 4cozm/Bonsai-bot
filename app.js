@@ -29,6 +29,7 @@ import guildCheck from './src/utils/guildCheck.js';
 import commandHandler from './src/utils/commandHandler.js';
 import { setClientInstance } from './src/utils/discordClientManger.js';
 import serverStartNotification from './src/utils/serverStartNotification.js';
+import handleModalSubmit from './src/utils/handleModalSubmit.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -102,6 +103,10 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ content: '명령어 실행중 오류가 발생했습니다', ephemeral: true });
       }
     }
+  }
+  if (interaction.isModalSubmit()) {
+    console.log('모달 제출 발생', interaction.customId);
+    await handleModalSubmit(interaction);
   }
 });
 
