@@ -1,24 +1,33 @@
 /***
  * 디스코드 Modal이 제출되었을 때에 대한 이벤트 핸들러 입니다.
  */
+
+import { rattingData } from '../commands/utility/c5Ratting.js';
 async function handleModalSubmit(interaction) {
   if (interaction.customId === '5클조업결과') {
     // 특정 모달 ID에 대해 처리
     try {
-      const blueLootValue = interaction.fields.getTextInputValue('블루룻 est');
-      const salvageValue = interaction.fields.getTextInputValue('샐비징 est');
-      const peopleValue = interaction.fields.getTextInputValue('조업 클라수');
-      const compositionValue = interaction.fields.getTextInputValue('조업 컴포');
+      const blueLootValue = parseFloat(interaction.fields.getTextInputValue('블루룻 est'));
+      const salvageValue = parseFloat(interaction.fields.getTextInputValue('샐비징 est'));
+      const peopleValue = parseInt(interaction.fields.getTextInputValue('조업 클라수'));
+      const compositionValue = parseInt(interaction.fields.getTextInputValue('조업 컴포'));
+      const duration = rattingData[interaction.user.id];
+
+      if (!duration) {
+        await interaction.reply({ content: '먼저 c5Ratting을 실행해주세요.', ephemeral: true });
+        return;
+      }
+      const hourLoot = blueLootValue / (duration / 60);
+      const hourSalvage = salvageValue / (duration / 60);
+      const blueLootTax = blueLootValue * 0.08;
+      const salvageTax = salvageValue;
 
       // 처리 결과를 사용자에게 응답
       await interaction.update({
-        content: `입력된 정보:\n- 블루룻: ${blueLootValue}\n- 샐비징: ${salvageValue}\n- 클라수: ${peopleValue}\n- 컴포: ${compositionValue}`,
+        content: `총 블루룻 : ${blueLootValue}, 총 샐비징 : ${salvageValue} \n 시간당 블루룻 : ${hourLoot.toLocaleString()}m, 시간당 샐비징 ${hourSalvage.toLocaleString()}m \n 블루룻 세금: ${blueLootTax.toLocaleString()}m, 샐비징 세금: ${salvageTax.toLocaleString()}m`,
         ephemeral: false,
         components: [],
       });
-      console.log(
-        `입력된 정보:\n- 블루룻: ${blueLootValue}\n- 샐비징: ${salvageValue}\n- 클라수: ${peopleValue}\n- 컴포: ${compositionValue}`
-      );
     } catch (error) {
       console.error('모달 처리 중 오류 발생:', error);
       await interaction.reply({

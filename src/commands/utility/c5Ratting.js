@@ -14,6 +14,8 @@ import {
   ModalSubmitInteraction,
 } from 'discord.js';
 
+const rattingData = {};
+
 export const data = new SlashCommandBuilder()
   .setName('5클조업')
   .setDescription('5클조업 관련한 유용한 기능을 제공합니다.')
@@ -26,7 +28,7 @@ export async function execute(interaction) {
     const button1 = new ButtonBuilder().setCustomId('c5취소').setLabel('취소').setStyle(ButtonStyle.Danger);
     const button2 = new ButtonBuilder().setCustomId('c5종료').setLabel('종료').setStyle(ButtonStyle.Secondary);
     const row = new ActionRowBuilder().addComponents(button1, button2);
-    const response = await interaction.reply({ content: '5클조업 인터페이스', components: [row] });
+    const response = await interaction.reply({ content: '5클조업 인터페이스', components: [row], ephemeral: true });
     const buttonAction = await response.awaitMessageComponent({});
     switch (buttonAction.customId) {
       case 'c5취소':
@@ -80,6 +82,7 @@ export async function execute(interaction) {
         await buttonAction.showModal(modal);
         const endTime = Date.now();
         const duration = (endTime - currentTime) / 1000 / 60;
+        rattingData[interaction.user.id] = duration;
         // await modal.interaction.message.update({
         //   content: `5클랫질을 종료합니다. 걸린 시간 ${duration}분`,
         //   components: [],
@@ -89,7 +92,7 @@ export async function execute(interaction) {
         console.log(`걸린 시간: ${duration}`);
         break;
     }
-  } else if(interaction.getSubcommand === '통계'){
-    
+  } else if (interaction.getSubcommand === '통계') {
   }
 }
+export { rattingData };
