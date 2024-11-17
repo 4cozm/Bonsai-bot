@@ -3,6 +3,7 @@
  * 5클조업 시간 측정, 분배, 세금 측정 및 기록.
  */
 
+// 필요한 모듈 로드
 import {
   SlashCommandBuilder,
   ButtonBuilder,
@@ -14,6 +15,7 @@ import {
   ModalSubmitInteraction,
 } from 'discord.js';
 
+// modal로 제출된 데이터를 담을 object.
 const rattingData = {};
 
 export const data = new SlashCommandBuilder()
@@ -38,14 +40,16 @@ export async function execute(interaction) {
         const modal = new ModalBuilder().setCustomId('5클조업결과').setTitle('5클조업 정산');
         // Add components to modal
 
-        // Create the text input components
+        // modal에 text input 창 추가
         const blueLoot = new TextInputBuilder()
           .setCustomId('블루룻 est')
-          // The label is the prompt the user sees for this input
+          // 라벨 이름 추가
           .setLabel('총 블루룻 est')
-          // Short means only a single line of text
+          // 1줄만 쓸 수 있게 허용 
           .setStyle(TextInputStyle.Short)
+          // 회색 글씨로 가이드라인 제공
           .setPlaceholder('(밀단위로 **숫자만** 적어주세요 ex. 1.2b =1200)')
+          // 필수로 지정
           .setRequired(true);
 
         const salvage = new TextInputBuilder()
@@ -70,23 +74,18 @@ export async function execute(interaction) {
           .setPlaceholder('머라 or 샥네스터로 적어주심 됩니다')
           .setRequired(true);
 
-        // An action row only holds one text input,
-        // so you need one action row per text input.
+        // action row 하나에 text input 하나씩 지정 
         const firstActionRow = new ActionRowBuilder().addComponents(blueLoot);
         const secondActionRow = new ActionRowBuilder().addComponents(people);
         const thirdActionRow = new ActionRowBuilder().addComponents(salvage);
         const fourthActionRow = new ActionRowBuilder().addComponents(composition);
 
-        // Add inputs to the modal
+        // modal에 input들 추가
         modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow);
         await buttonAction.showModal(modal);
         const endTime = Date.now();
         const duration = (endTime - currentTime) / 1000 / 60;
         rattingData[interaction.user.id] = duration;
-        // await modal.interaction.message.update({
-        //   content: `5클랫질을 종료합니다. 걸린 시간 ${duration}분`,
-        //   components: [],
-        // });
         console.log(`시작 시간: ${currentTime}`);
         console.log(`종료 시간: ${endTime}`);
         console.log(`걸린 시간: ${duration}`);

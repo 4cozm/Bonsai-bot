@@ -83,6 +83,8 @@ client.once('ready', async () => {
   await serverStartNotification(startTime);
 });
 
+// 이벤트 핸들러가 길어져서, 이벤트 핸들러를 따로 뺄 필요가 있어보임.
+
 client.on('interactionCreate', async interaction => {
   if (interaction.isChatInputCommand()) {
     const command = interaction.client.commands.get(interaction.commandName);
@@ -104,8 +106,10 @@ client.on('interactionCreate', async interaction => {
       }
     }
   }
+  // modal이 제출되었을때에 대한 이벤트 핸들러.
   if (interaction.isModalSubmit()) {
     console.log('모달 제출 발생', interaction.customId);
+    // modal이 여러개면 조건문으로 modal에 대한 반응을 다르게 해줄 필요가 있음.
     await handleModalSubmit(interaction);
   }
 });
