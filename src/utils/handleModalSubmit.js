@@ -4,12 +4,12 @@
 
 import { rattingData } from '../commands/utility/c5Ratting.js';
 async function handleModalSubmit(interaction) {
+  // 5클조업 관련 모달에 대한 처리
   if (interaction.customId === '5클조업결과') {
-    // 특정 모달 ID에 대해 처리
     try {
-      const blueLootValue = parseFloat(interaction.fields.getTextInputValue('블루룻 est'));
-      const salvageValue = parseFloat(interaction.fields.getTextInputValue('샐비징 est'));
-      const peopleValue = parseInt(interaction.fields.getTextInputValue('조업 클라수'));
+      const blueLootValue = parseFloat(interaction.fields.getTextInputValue('블루룻 est').replace(/\D/g, ''));
+      const salvageValue = parseFloat(interaction.fields.getTextInputValue('샐비징 est').replace(/\D/g, ''));
+      const peopleValue = parseInt(interaction.fields.getTextInputValue('조업 클라수').replace(/\D/g, ''));
       const compositionValue = parseInt(interaction.fields.getTextInputValue('조업 컴포'));
       const duration = rattingData[interaction.user.id];
 
@@ -24,7 +24,7 @@ async function handleModalSubmit(interaction) {
 
       // 처리 결과를 사용자에게 응답
       await interaction.update({
-        content: `총 블루룻 : ${blueLootValue}, 총 샐비징 : ${salvageValue} \n 시간당 블루룻 : ${hourLoot.toLocaleString()}m, 시간당 샐비징 ${hourSalvage.toLocaleString()}m \n 블루룻 세금: ${blueLootTax.toLocaleString()}m, 샐비징 세금: ${salvageTax.toLocaleString()}m`,
+        content: `분배: 클라당 ${blueLootValue / peopleValue}m ISK \n 총 블루룻 : ${blueLootValue}, 총 샐비징 : ${salvageValue} \n 시간당 블루룻 : ${hourLoot.toLocaleString()}m, 시간당 샐비징 ${hourSalvage.toLocaleString()}m \n 블루룻 세금: ${blueLootTax.toLocaleString()}m, 샐비징 세금: ${salvageTax.toLocaleString()}m \n 조업 시간: ${duration}분`,
         ephemeral: false,
         components: [],
       });

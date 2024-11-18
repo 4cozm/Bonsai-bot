@@ -12,7 +12,6 @@ import {
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
-  ModalSubmitInteraction,
 } from 'discord.js';
 
 // modal로 제출된 데이터를 담을 object.
@@ -26,7 +25,9 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
   if (interaction.options.getSubcommand() === '시작') {
+    //조업 시작 시간 기록
     const currentTime = Date.now();
+    // 버튼 생성
     const button1 = new ButtonBuilder().setCustomId('c5취소').setLabel('취소').setStyle(ButtonStyle.Danger);
     const button2 = new ButtonBuilder().setCustomId('c5종료').setLabel('종료').setStyle(ButtonStyle.Secondary);
     const row = new ActionRowBuilder().addComponents(button1, button2);
@@ -45,10 +46,10 @@ export async function execute(interaction) {
           .setCustomId('블루룻 est')
           // 라벨 이름 추가
           .setLabel('총 블루룻 est')
-          // 1줄만 쓸 수 있게 허용 
+          // 1줄만 쓸 수 있게 허용
           .setStyle(TextInputStyle.Short)
           // 회색 글씨로 가이드라인 제공
-          .setPlaceholder('(밀단위로 **숫자만** 적어주세요 ex. 1.2b =1200)')
+          .setPlaceholder('밀단위로 **숫자만** 적어주세요 ex. 1.2b =1200')
           // 필수로 지정
           .setRequired(true);
 
@@ -74,7 +75,7 @@ export async function execute(interaction) {
           .setPlaceholder('머라 or 샥네스터로 적어주심 됩니다')
           .setRequired(true);
 
-        // action row 하나에 text input 하나씩 지정 
+        // action row 하나에 text input 하나씩 지정
         const firstActionRow = new ActionRowBuilder().addComponents(blueLoot);
         const secondActionRow = new ActionRowBuilder().addComponents(people);
         const thirdActionRow = new ActionRowBuilder().addComponents(salvage);

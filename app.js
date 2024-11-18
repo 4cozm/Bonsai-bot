@@ -105,12 +105,13 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ content: '명령어 실행중 오류가 발생했습니다', ephemeral: true });
       }
     }
-  }
-  // modal이 제출되었을때에 대한 이벤트 핸들러.
-  if (interaction.isModalSubmit()) {
+    // modal이 제출되었을때에 대한 이벤트 핸들러.
+  } else if (interaction.isModalSubmit()) {
     console.log('모달 제출 발생', interaction.customId);
-    // modal이 여러개면 조건문으로 modal에 대한 반응을 다르게 해줄 필요가 있음.
+    // 이벤트 처리 함수
     await handleModalSubmit(interaction);
+  } else if (interaction.isButton()) {
+    // 버튼이 클릭되었을 때 이벤트 핸들러
   }
 });
 
