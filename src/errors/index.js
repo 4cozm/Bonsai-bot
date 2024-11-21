@@ -30,6 +30,10 @@ const loadModules = async () => {
   );
 };
 
+/**
+ * const {가져올 에러 모듈} = await getCustomError()
+ * @returns 에러 리스트 모음
+ */
 const getCustomError = async () => {
   if (!Object.keys(exports).length) {
     await loadModules();
