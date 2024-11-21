@@ -9,12 +9,13 @@ const authString = btoa(`${process.env.ESI_CLIENT_ID}:${process.env.ESI_SECRET_K
  * access 토큰을 재발급 받는 함수
 
  * 동시에 DB에 접근해 해당 유저의 expireTime을 업데이트 함
+ * @param {Number} discordId - 요청자의 디스코드 ID
  * @param {string} name - 인게임 이름
  * @returns {Promise/string} 엑세스 토큰
  */
-const reissueAccessToken = async inGameName => {
+const reissueAccessToken = async (discordId, inGameName) => {
   try {
-    const refreshToken = await getRefreshToken(inGameName);
+    const refreshToken = await getRefreshToken(discordId, inGameName);
     const response = await fetch('https://login.eveonline.com/v2/oauth/token', {
       method: 'POST',
       headers: {
@@ -26,8 +27,7 @@ const reissueAccessToken = async inGameName => {
 
     const data = await response.json();
 
-
-    addAccessTokenList(inGameName, data); // 인메모리에 정보 저장
+    addAccessTokenList(inGameName, discordId, data); // 인메모리에 정보 저장
 
     return data.access_token; // 엑세스 토큰 반환
   } catch (error) {

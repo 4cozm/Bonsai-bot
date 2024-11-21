@@ -8,10 +8,11 @@ export const getAccessTokenList = () => {
   return accessTokenList;
 };
 
-export const addAccessTokenList = (inGameId, data) => {
+export const addAccessTokenList = (inGameId, discordId, data) => {
   const { access_token } = data;
   accessTokenList[inGameId] = {
     accessToken: access_token,
+    discordId: discordId,
     expireIn: Date.now() + 20 * 60 * 1000, // 만료 시간은 20분
   };
 };

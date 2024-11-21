@@ -13,4 +13,6 @@
 export const saveUserData =
   'INSERT INTO users (discord, name, characterId, refreshToken, expire) VALUES (?, ?, ?, ?, ?)';
 
-export const getRefreshToken = 'SELECT refreshToken FROM users WHERE name = ?';
+export const getRefreshToken = 'SELECT refreshToken FROM users WHERE name = ? AND discord = ?';
+
+export const accessDeniedRequestRefreshToken = 'SELECT refreshToken FROM users WHERE name = ?';
