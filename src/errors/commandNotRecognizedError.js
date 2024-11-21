@@ -1,8 +1,10 @@
-class CommandNotRecognizedError extends CustomError {
+import customError from './customError.js';
+
+class commandNotRecognizedError extends customError {
   constructor(command, message = '알 수 없는 명령어') {
     super(message);
     this.command = command;
   }
 }
 
-export default CommandNotRecognizedError;
+export default commandNotRecognizedError;

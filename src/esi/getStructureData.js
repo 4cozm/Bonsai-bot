@@ -1,0 +1,20 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
+const accessToken =
+  'eyJhbGciOiJSUzI1NiIsImtpZCI6IkpXVC1TaWduYXR1cmUtS2V5IiwidHlwIjoiSldUIn0.eyJzY3AiOlsicHVibGljRGF0YSIsImVzaS1jYWxlbmRhci5yZWFkX2NhbGVuZGFyX2V2ZW50cy52MSIsImVzaS1zZWFyY2guc2VhcmNoX3N0cnVjdHVyZXMudjEiLCJlc2ktcGxhbmV0cy5tYW5hZ2VfcGxhbmV0cy52MSIsImVzaS1jb3Jwb3JhdGlvbnMucmVhZF9zdHJ1Y3R1cmVzLnYxIiwiZXNpLWNoYXJhY3RlcnMucmVhZF9jaGF0X2NoYW5uZWxzLnYxIiwiZXNpLWNoYXJhY3RlcnMucmVhZF9hZ2VudHNfcmVzZWFyY2gudjEiLCJlc2ktaW5kdXN0cnkucmVhZF9jaGFyYWN0ZXJfam9icy52MSIsImVzaS1jaGFyYWN0ZXJzLnJlYWRfYmx1ZXByaW50cy52MSIsImVzaS1sb2NhdGlvbi5yZWFkX29ubGluZS52MSIsImVzaS1jb250cmFjdHMucmVhZF9jaGFyYWN0ZXJfY29udHJhY3RzLnYxIiwiZXNpLWNvcnBvcmF0aW9ucy5yZWFkX3N0YXJiYXNlcy52MSJdLCJqdGkiOiIyZWM5ZTIzMC01YjY0LTQ1YTAtYjhiOS0xOTYxYzQ4MWU3ODEiLCJraWQiOiJKV1QtU2lnbmF0dXJlLUtleSIsInN1YiI6IkNIQVJBQ1RFUjpFVkU6MjExNjY2MDA2MyIsImF6cCI6IjA2NGE2ODEwNDAzMzQzMTU4MzMzYWNmZWIyNWQwOTA2IiwidGVuYW50IjoidHJhbnF1aWxpdHkiLCJ0aWVyIjoibGl2ZSIsInJlZ2lvbiI6IndvcmxkIiwiYXVkIjpbIjA2NGE2ODEwNDAzMzQzMTU4MzMzYWNmZWIyNWQwOTA2IiwiRVZFIE9ubGluZSJdLCJuYW1lIjoiZmUgSW4iLCJvd25lciI6InA1MGxrVUpQNklldnVoQVJST0Fyc2xDMkp1RT0iLCJleHAiOjE3MzE1OTAzMTAsImlhdCI6MTczMTU4OTExMCwiaXNzIjoiaHR0cHM6Ly9sb2dpbi5ldmVvbmxpbmUuY29tIn0.hg2WxIu1a7MoVN7LWzwKikSh2qsJA-aX9PjkDKvMezcAzWapHxdorhmBkf9hv38zjubwBt0YOPOCV7P35BdHyHYGvJhEg-J1uKmQJFfan8jC9ea0CKyOJO1VvlExb8hYOWdcV32t0NnzM67idypmIsqJn0ct1w-rFj9yLsYkiEx2jSTGthcTbUWUVNEFL2tvyG_A1QLXlmoH5NRPsndCD2fWhBUXWnflC2LhXEMqTwx6GmajaOtuqzJCy0lFByQbH_Vq5spvtfiMAgCPRTsc160H4Ovr65rOGiBxvFuIlUdf5-4wuvdCOIftapPJsB4JZiNuUSh_Syaud4r8BE1vtg';
+const corporationId = process.env.CATALIST_TOWER_CORP_ID;
+
+fetch(`https://esi.evetech.net/latest/corporations/${corporationId}/structures/`, {
+  method: 'GET',
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+  },
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data); // 건물 리스트 데이터
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
