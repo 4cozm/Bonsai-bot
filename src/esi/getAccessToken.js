@@ -2,7 +2,7 @@ import reissueAccessToken from './reissueAccessToken.js';
 import { getAccessTokenList } from './tokenManager.js';
 import getCustomError from '../errors/index.js';
 
-const { validationError } = await getCustomError();
+const { unAuthorizedError } = await getCustomError();
 /**
  * 인게임 값으로 엑세스 토큰을 가져옴.
  * 토큰이 없거나 만료된 경우 자동으로 새로운 토큰을 발급받은 뒤 반환함
@@ -15,7 +15,7 @@ const getAccessToken = async (discordId, name) => {
     if (name in tokenList) {
       const data = tokenList[name];
       if (data.discordId != discordId) {
-        throw new validationError(null, `본인 계정이 아님에도 접근함 discord ID:${discordId},character:${name}`);
+        throw new unAuthorizedError(null, `본인 계정이 아님에도 접근함 discord ID:${discordId},character:${name}`);
       }
       if (Date.now() - data.expireIn > 0) {
         //토큰의 만료 기한이 지났으므로 재발급 절차 진행

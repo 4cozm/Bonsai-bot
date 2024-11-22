@@ -2,7 +2,7 @@ import { getConnection } from '../db/connection.js';
 import { getRefreshToken as refreshTokenSQL, accessDeniedRequestRefreshToken } from '../db/sql/sql.js';
 import getCustomError from '../errors/index.js';
 
-const { validationError } = await getCustomError();
+const { unAuthorizedError } = await getCustomError();
 
 /**
  * 인게임 이름을 전달하면 refreshToken을 반환하는 함수
@@ -17,7 +17,7 @@ const getRefreshToken = async (discordId, inGameName) => {
     const [rows] = await pool.execute(accessDeniedRequestRefreshToken, [inGameName]);
     if (rows.length > 0) {
       //본인에게 등록된 계정이 아님에도,요청을 보낸경우
-      throw new validationError(
+      throw new unAuthorizedError(
         rows[0],
         `본인 계정이 아님에도 접근함 discord ID:${discordId},character:${inGameName} `
       );
