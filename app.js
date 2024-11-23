@@ -110,8 +110,16 @@ client.on('interactionCreate', async interaction => {
     console.log('모달 제출 발생', interaction.customId);
     // 이벤트 처리 함수
     await handleModalSubmit(interaction);
+    return;
   } else if (interaction.isButton()) {
-    // 버튼이 클릭되었을 때 이벤트 핸들러
+    // 취소/확인 버튼이 클릭되었을 때 이벤트 핸들러
+    if (interaction.customId === '취소') {
+      interaction.update({ content: '취소했어요!', components: [], ephemeral: true });
+      return;
+    }
+    if (interaction.customId === '확인') {
+      return;
+    }
   }
 });
 

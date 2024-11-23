@@ -14,6 +14,9 @@ import {
   TextInputStyle,
 } from 'discord.js';
 
+// 취소, 확인 버튼 세트 로드
+import confirmRow from '../../buttons/confirmRow.js';
+
 // modal로 제출된 데이터를 담을 object.
 const rattingData = {};
 
@@ -35,9 +38,15 @@ export async function execute(interaction) {
     const buttonAction = await response.awaitMessageComponent({});
     switch (buttonAction.customId) {
       case 'c5취소':
-        await buttonAction.update({ content: '5클랫질을 취소합니다.', components: [] });
+        await buttonAction.deferUpdate();
+        await buttonAction.followUp({ content: `5클조업을 멈추시겠어요?`, components: [confirmRow] });
         break;
       case 'c5종료':
+        // await buttonAction.deferUpdate();
+        // const secondinteraction = await interaction.followUp({
+        //   contents: `정말로 5클조업을 종료하실건가요?`,
+        //   components: [confirmRow],
+        // });
         const modal = new ModalBuilder().setCustomId('5클조업결과').setTitle('5클조업 정산');
         // Add components to modal
 

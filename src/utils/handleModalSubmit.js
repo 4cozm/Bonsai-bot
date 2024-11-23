@@ -22,11 +22,13 @@ async function handleModalSubmit(interaction) {
       const blueLootTax = blueLootValue * 0.08;
       const salvageTax = salvageValue;
 
-      // 처리 결과를 사용자에게 응답
-      await interaction.update({
-        content: `분배: 클라당 ${blueLootValue / peopleValue}m ISK \n 총 블루룻 : ${blueLootValue}, 총 샐비징 : ${salvageValue} \n 시간당 블루룻 : ${hourLoot.toLocaleString()}m, 시간당 샐비징 ${hourSalvage.toLocaleString()}m \n 블루룻 세금: ${blueLootTax.toLocaleString()}m, 샐비징 세금: ${salvageTax.toLocaleString()}m \n 조업 시간: ${duration}분`,
-        ephemeral: false,
+      // 기존 버튼 지우기
+      await interaction.update({ content: '5클조업 완료', components: [] });
+      // 조업 결과 남들도 보이게 응답.
+      await interaction.followUp({
+        content: `분배: 클라당 ${(blueLootValue * 0.9) / peopleValue}m ISK \n 총 블루룻 : ${blueLootValue}, 총 샐비징 : ${salvageValue} \n 시간당 블루룻 : ${hourLoot.toLocaleString()}m, 시간당 샐비징 ${hourSalvage.toLocaleString()}m \n 블루룻 세금: ${blueLootTax.toLocaleString()}m, 샐비징 세금: ${salvageTax.toLocaleString()}m \n 조업 시간: ${duration}분`,
         components: [],
+        ephemeral: false,
       });
     } catch (error) {
       console.error('모달 처리 중 오류 발생:', error);
