@@ -112,13 +112,9 @@ client.on('interactionCreate', async interaction => {
     await handleModalSubmit(interaction);
     return;
   } else if (interaction.isButton()) {
-    // 취소/확인 버튼이 클릭되었을 때 이벤트 핸들러
-    if (interaction.customId === '취소') {
-      interaction.update({ content: '취소했어요!', components: [], ephemeral: true });
-      return;
-    }
-    if (interaction.customId === '확인') {
-      return;
+    switch (interaction.customId) {
+      case '취소':
+        break;
     }
   }
 });

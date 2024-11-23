@@ -5,7 +5,7 @@
 
 import { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js';
 // 커맨드 기본 데이터, 옵션 설정
-export const data = new SlashCommandBuilder().setName('정보').setDescription('요청하는 내용에 대한 정보 제공');
+export const data = new SlashCommandBuilder().setName('정보').setDescription('요청하는 정보에 대한 링크 제공');
 
 //커맨드 호출될때 실행 될 함수
 export async function execute(interaction) {
