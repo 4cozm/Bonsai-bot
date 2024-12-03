@@ -30,6 +30,7 @@ import commandHandler from './src/utils/commandHandler.js';
 import { setClientInstance } from './src/utils/discordClientManger.js';
 import serverStartNotification from './src/utils/serverStartNotification.js';
 import handleModalSubmit from './src/utils/handleModalSubmit.js';
+import { handleC5Ratting } from './src/utils/handleC5Ratting.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -112,10 +113,7 @@ client.on('interactionCreate', async interaction => {
     await handleModalSubmit(interaction);
     return;
   } else if (interaction.isButton()) {
-    switch (interaction.customId) {
-      case '취소':
-        break;
-    }
+    await handleC5Ratting(interaction);
   }
 });
 

@@ -4,8 +4,8 @@
 
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 
-const cancelButton = new ButtonBuilder().setCustomId('취소').setLabel('취소').setStyle(ButtonStyle.Danger);
-const confirmButton = new ButtonBuilder().setCustomId('확인').setLabel('확인').setStyle(ButtonStyle.Secondary);
+const cancelButton = new ButtonBuilder().setCustomId('N').setLabel('N').setStyle(ButtonStyle.Danger);
+const confirmButton = new ButtonBuilder().setCustomId('Y').setLabel('Y').setStyle(ButtonStyle.Secondary);
 // 취소, 확인 버튼이 있는 ActionRow 만드는 코드.
 const confirmRow = new ActionRowBuilder().addComponents([cancelButton, confirmButton]);
 
