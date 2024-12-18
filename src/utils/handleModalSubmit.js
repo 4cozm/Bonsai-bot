@@ -18,14 +18,16 @@ async function handleModalSubmit(interaction) {
       }
       const hourLoot = (blueLootValue / (duration / 60)).toFixed(2);
       const hourSalvage = (salvageValue / (duration / 60)).toFixed(2);
+      const hourLootPerPerson = (hourLoot / peopleValue).toFixed(2);
       const blueLootTax = (blueLootValue * 0.08).toFixed(2);
       const salvageTax = salvageValue;
+      const totalTax = (parseFloat(blueLootTax) + salvageTax).toFixed(2);
 
       // 기존 버튼 지우기
       await interaction.update({ content: '5클조업 완료', components: [] });
       // 조업 결과 남들도 보이게 응답.
       await interaction.followUp({
-        content: `분배: 클라당 ${(blueLootValue * 0.9) / peopleValue}m ISK \n 총 블루룻 : ${blueLootValue}m, 총 샐비징 : ${salvageValue}m \n 시간당 블루룻 : ${(hourLoot / peopleValue).toFixed(2)}m, 시간당 샐비징 ${hourSalvage}m \n 블루룻 세금: ${blueLootTax}m, 샐비징 세금: ${salvageTax}m \n 조업 시간: ${duration}분`,
+        content: `분배: 클라당 ${(blueLootValue * 0.9).toFixed(2) / peopleValue}m ISK \n 총 블루룻 : ${blueLootValue}m, 총 샐비징 : ${salvageValue}m \n 시간당 블루룻 : ${hourLootPerPerson}m, 시간당 샐비징 ${hourSalvage}m \n 블루룻 세금: ${blueLootTax}m, 샐비징 세금: ${salvageTax}m \n 총 세금 : ${totalTax}m \n 조업 시간: ${duration}분 \n 컴포: ${compositionValue}`,
         components: [],
         ephemeral: false,
       });

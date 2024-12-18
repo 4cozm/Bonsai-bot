@@ -86,6 +86,12 @@ export async function execute(interaction) {
         break;
     }
   } else if (interaction.getSubcommand === '통계') {
+    /**
+     * 통계에 띄울 내용
+     * 블루룻 세금 샐비징 세금 비율 (총합해서 비율 내기)
+     * 평균 시간당 수익 (컴포별로 따로 보기)
+     * 시간당 수익 4분위값.
+     */
   }
 }
 export { rattingStartTime };

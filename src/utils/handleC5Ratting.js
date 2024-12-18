@@ -31,6 +31,7 @@ export async function handleC5Ratting(interaction) {
       }
       isCommandRunning = true;
       buttonMarker = 'c5종료';
+      buttonInteraction = interaction;
       console.log(`c5종료 버튼 클릭. 현재시각 : ${Date.now()}`);
       await interaction.deferUpdate();
       await interaction.followUp({
@@ -59,13 +60,18 @@ export async function handleC5Ratting(interaction) {
           const startTime = rattingStartTime;
           const endTime = Date.now();
           rattingDuration = (endTime - startTime) / 1000 / 60;
+          await buttonInteraction.editReply({ content: '5클조업 종료창을 띄울게요!', ephemeral: true, components: [] });
           await interaction.showModal(modal);
+          buttonMarker = null;
           await interaction.followUp({
             content: '이 결과를 통계에 저장할까요?',
-            components: confirmRow,
+            components: [confirmRow],
             ephemeral: true,
           });
+          buttonMarker = '통계';
           isCommandRunning = false;
+          break;
+        case '통계':
           break;
       }
   }
