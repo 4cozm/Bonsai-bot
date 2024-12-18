@@ -1,7 +1,9 @@
 import confirmRow from '../buttons/confirmRow.js';
 import { modal } from '../commands/utility/c5Ratting.js';
 import { rattingStartTime } from '../commands/utility/c5Ratting.js';
-
+import mysql from 'mysql2/promise';
+import dotenv from 'dotenv';
+import { rattingData } from './handleModalSubmit.js';
 // 취소,확인 버튼 누르기 이전에 어떤 버튼을 눌렀는지 체크.
 let buttonMarker;
 // 버튼에 관한 interaction 임시저장하는 변수
@@ -10,6 +12,7 @@ let buttonInteraction;
 export let rattingDuration;
 // 취소와 종료 버튼에 대한 confirm 버튼이 동시에 뜨지 않게 하기 위한 변수.
 let isCommandRunning = false;
+dotenv.config();
 
 export async function handleC5Ratting(interaction) {
   switch (interaction.customId) {
@@ -68,10 +71,41 @@ export async function handleC5Ratting(interaction) {
             components: [confirmRow],
             ephemeral: true,
           });
-          buttonMarker = '통계';
+          buttonMarker = '통계저장';
           isCommandRunning = false;
           break;
-        case '통계':
+        case '통계저장':
+          // 일단 임시로 여기서 db 연결, db 저장 전부 다 하는걸로 해둠.
+          let database;
+          buttonMarker = null;
+          try {
+            database = await mysql.createConnection({
+              host: process.env.DB_HOST,
+              user: process.env.DB_USER,
+              password: process.env.DB_PASSWORD,
+              port: process.env.DB_PORT,
+              database: 'c5Ratting',
+            });
+          } catch (e) {
+            console.log(e);
+          }
+          try {
+            await database.execute(
+              'INSERT INTO stats (totalBlueLoot, blueLootPerHour, totalSalvage, blueLootTax, SalvageTax, duration, composition) VALUES (?, ?, ?, ?, ?, ?, ?)',
+              [
+                rattingData.blueLootValue,
+                rattingData.hourLootPerPerson,
+                rattingData.salvageValue,
+                rattingData.blueLootTax,
+                rattingData.salvageTax,
+                rattingData.duration,
+                rattingData.compositionValue,
+              ]
+            );
+            await interaction.update({ content: '통계에 저장했어요!', ephemeral: true, components: [] });
+          } catch (e) {
+            console.log(e);
+          }
           break;
       }
   }
