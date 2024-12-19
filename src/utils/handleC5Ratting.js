@@ -1,9 +1,9 @@
 import confirmRow from '../buttons/confirmRow.js';
 import { modal } from '../commands/utility/c5Ratting.js';
 import { rattingStartTime } from '../commands/utility/c5Ratting.js';
-import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import { rattingData } from './handleModalSubmit.js';
+import connectC5ratting from '../db/connectC5ratting.js';
 // 취소,확인 버튼 누르기 이전에 어떤 버튼을 눌렀는지 체크.
 let buttonMarker;
 // 버튼에 관한 interaction 임시저장하는 변수
@@ -75,23 +75,11 @@ export async function handleC5Ratting(interaction) {
           isCommandRunning = false;
           break;
         case '통계저장':
-          // 일단 임시로 여기서 db 연결, db 저장 전부 다 하는걸로 해둠.
-          let database;
           buttonMarker = null;
-          try {
-            database = await mysql.createConnection({
-              host: process.env.DB_HOST,
-              user: process.env.DB_USER,
-              password: process.env.DB_PASSWORD,
-              port: process.env.DB_PORT,
-              database: 'c5Ratting',
-            });
-          } catch (e) {
-            console.log(e);
-          }
+          let database = await connectC5ratting();
           try {
             await database.execute(
-              'INSERT INTO stats (totalBlueLoot, blueLootPerHour, totalSalvage, blueLootTax, SalvageTax, duration, composition) VALUES (?, ?, ?, ?, ?, ?, ?)',
+              'INSERT INTO stats (totalBlueLoot, blueLootPerHour, totalSalvage, blueLootTax, salvageTax, duration, composition) VALUES (?, ?, ?, ?, ?, ?, ?)',
               [
                 rattingData.blueLootValue,
                 rattingData.hourLootPerPerson,
@@ -102,6 +90,7 @@ export async function handleC5Ratting(interaction) {
                 rattingData.compositionValue,
               ]
             );
+            await database.end();
             await interaction.update({ content: '통계에 저장했어요!', ephemeral: true, components: [] });
           } catch (e) {
             console.log(e);

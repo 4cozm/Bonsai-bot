@@ -14,6 +14,8 @@ import {
   TextInputStyle,
 } from 'discord.js';
 
+import mysql from 'mysql2/promise';
+import connectC5ratting from '../../db/connectC5ratting.js';
 // 랫질 시작 시간 기록
 let rattingStartTime = 0;
 
@@ -64,7 +66,22 @@ export const data = new SlashCommandBuilder()
   .setName('5클조업')
   .setDescription('5클조업 관련한 유용한 기능을 제공합니다.')
   .addSubcommand(subcommand => subcommand.setName('시작').setDescription('5클조업 시작 시각을 기록합니다.'))
-  .addSubcommand(subcommand => subcommand.setName('통계').setDescription('5클조업 통계를 보여줍니다.'));
+  .addSubcommand(subcommand =>
+    subcommand
+      .setName('통계')
+      .setDescription('5클조업 통계를 보여줍니다.')
+      .addStringOption(option =>
+        option
+          .setName('옵션')
+          .setDescription('확인하고 싶은 통계 정보')
+          .setRequired(true)
+          .addChoices(
+            { name: '블루룻 샐비징 세금 비율', value: '세금 비율' },
+            { name: '평균 시간당 수익', value: '평균 시간당 수익' },
+            { name: '시간당 수익 4분위값', value: '4분위값' }
+          )
+      )
+  );
 
 export async function execute(interaction) {
   if (interaction.options.getSubcommand() === '시작') {
@@ -85,12 +102,33 @@ export async function execute(interaction) {
         // 이부분도 이벤트 핸들러로 넘김.
         break;
     }
-  } else if (interaction.getSubcommand === '통계') {
+  } else if (interaction.options.getSubcommand() === '통계') {
+    await interaction.deferReply();
+    let database = await connectC5ratting();
+    const [rows, fields] = await database.execute('SELECT * FROM stats');
+    const statMarker = interaction.options.getString('옵션');
+    await database.end();
+    switch (statMarker) {
+      case '세금 비율':
+        const totalBlueLootTax = rows.reduce((a, b) => a + b.blueLootTax, 0);
+        const totalSalvageTax = rows.reduce((a, b) => a + b.salvageTax, 0);
+        console.log(totalBlueLootTax, totalSalvageTax);
+        await interaction.editReply({ content: `블루룻/샐비징 = ${totalBlueLootTax / totalSalvageTax}` });
+        break;
+      case '평균 시간당 수익':
+        // 머라, 샥네스터 컴포 구분 필요.
+        break;
+      case '4분위값':
+        // 머라, 샥네스터 컴포 구분 필요.
+        break;
+    }
     /**
      * 통계에 띄울 내용
      * 블루룻 세금 샐비징 세금 비율 (총합해서 비율 내기)
      * 평균 시간당 수익 (컴포별로 따로 보기)
      * 시간당 수익 4분위값.
+     * 추후에는 최근 몇개만 골라서 선택하는 기능 만들어도 좋을듯
+     * 최근 몇일간 5클랫질 세금 통계 결과 보여주는 기능 만들어도 좋을듯
      */
   }
 }
