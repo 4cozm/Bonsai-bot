@@ -16,7 +16,7 @@ export async function execute(interaction) {
   }
   const state = createState(interaction.user.id, interaction.id);
   await interaction.reply({
-    content: `고유 번호가 포함되어 있습니다. 다른 사람에게 링크를 공유하지 말아주세요!\n\n[ESI 등록 링크](http://3.37.49.37:3000/esi/signUp?state=${state})`,
+    content: `고유 번호가 포함되어 있습니다. 다른 사람에게 링크를 공유하지 말아주세요!\n\n[>>ESI 등록 링크<<](http://3.37.49.37:3000/esi/signUp?state=${state})\n`,
     ephemeral: true,
   });
 }
