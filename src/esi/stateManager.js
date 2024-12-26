@@ -1,4 +1,6 @@
 import crypto from 'crypto';
+import getCustomError from '../errors/index.js';
+const { dataNotFoundError } = await getCustomError();
 //ESI 인증에 사용되는 개인 별 일련번호 state 를 관리해줌
 //state는 ESI 등록 링크에 포함되어 있으며,중복되지 않는 고유의 값임
 //서버에서는 ESI인증코드를 요청한 사람의 DISCORD ID를 state와 연결해서 저장함
@@ -7,9 +9,9 @@ import crypto from 'crypto';
 const state = {};
 const expireTime = 300000; // 5분
 
-export const createState = discordId => {
-  const stateNumber = crypto.randomBytes(16).toString('hex');
-  state[stateNumber] = { discordId: discordId, expire: Date.now() + expireTime }; //discord ID 키가 중복이면 자동으로 덮어씀
+export const createState = (discordId, messageId) => {
+  const stateNumber = crypto.randomBytes(16).toString('hex'); //일련번호 생성
+  state[stateNumber] = { discordId: discordId, messageId: messageId, expire: Date.now() + expireTime }; //discord ID 키가 중복이면 자동으로 덮어씀
   return stateNumber;
 };
 
@@ -19,10 +21,22 @@ export const deleteState = stateNumber => {
   }
 };
 
-export const checkStateTime = stateNumber => {
+export const checkState = stateNumber => {
+  if (!state[stateNumber]) {
+    throw new dataNotFoundError('존재하지 않는 일련번호 값입니다:', stateNumber);
+    //없는 일련번호가 조회 될 경우 에러
+  }
   if (state[stateNumber].expire < Date.now()) {
     //일련번호가 만료됨
     return false;
   }
   return true;
+};
+
+export const getMessageId = stateNumber => {
+  if (!state[stateNumber]) {
+    throw new dataNotFoundError('존재하지 않는 일련번호 값입니다:', stateNumber);
+    //없는 일련번호가 조회 될 경우 에러
+  }
+  return state[stateNumber].messageId;
 };
