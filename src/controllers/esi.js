@@ -1,38 +1,33 @@
 //회원가입
-import express from 'express';
 import dotenv from 'dotenv';
 import scopes from '../scope.js';
-import crypto from 'crypto';
 import { decodeJwtToken } from '../utils/jwt.decode.js';
 import addUserToDatabase from '../db/addUserToDatabase.js';
-
+import { checkState, getMessageId } from '../esi/stateManager.js';
 dotenv.config();
 
 const clientId = process.env.ESI_CLIENT_ID;
 const redirectUrl = encodeURIComponent(process.env.ESI_CALLBACK_URL);
 const clientSecret = process.env.ESI_SECRET_KEY;
 
-const generateState = () => {
-  return crypto.randomBytes(16).toString('hex');
-};
-
 export const signUp = async (req, res) => {
-  const state = generateState();
-  req.session.state = state;
+  const state = req.query.state;
   const authUrl = `https://login.eveonline.com/v2/oauth/authorize/?response_type=code&redirect_uri=${redirectUrl}&client_id=${clientId}&scope=${scopes}&state=${state}`;
-
   res.redirect(authUrl);
 };
 
 export const callback = async (req, res) => {
   const { code, state } = req.query;
-  if (state !== req.session.state) {
-    return res.status(400).send('state 파라미터 오류');
+  const stateVerify = checkState(state);
+  if (!stateVerify) {
+    res.send('만료된 인증 번호 입니다.명령어를 다시 실행한 뒤 접근해주세요');
+    return;
   }
-  res.send(`Authorization code: ${code}`);
+  const messageId = getMessageId(state);
+  res.send(`discord://discord.com/channels/968306218852565052/968306219234238529/${messageId}`);
   const userToken = await getAccessToken(code);
   const userData = decodeJwtToken(userToken.access_token);
-  addUserToDatabase(userToken,userData);
+  addUserToDatabase(userToken, userData);
 };
 
 const getAccessToken = async code => {
