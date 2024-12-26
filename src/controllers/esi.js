@@ -12,6 +12,10 @@ const clientSecret = process.env.ESI_SECRET_KEY;
 
 export const signUp = async (req, res) => {
   const state = req.query.state;
+  if (!state) {
+    res.send('discord에서 실행해 주세요');
+    return;
+  }
   const authUrl = `https://login.eveonline.com/v2/oauth/authorize/?response_type=code&redirect_uri=${redirectUrl}&client_id=${clientId}&scope=${scopes}&state=${state}`;
   res.redirect(authUrl);
 };
