@@ -2,9 +2,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import scopes from '../scope.js';
-import crypto from 'crypto';
 import { decodeJwtToken } from '../utils/jwt.decode.js';
 import addUserToDatabase from '../db/addUserToDatabase.js';
+import { createState } from '../esi/stateManager.js';
 
 dotenv.config();
 
@@ -12,9 +12,7 @@ const clientId = process.env.ESI_CLIENT_ID;
 const redirectUrl = encodeURIComponent(process.env.ESI_CALLBACK_URL);
 const clientSecret = process.env.ESI_SECRET_KEY;
 
-const generateState = () => {
-  return crypto.randomBytes(16).toString('hex');
-};
+const state = createState() // 임시 저장
 
 export const signUp = async (req, res) => {
   const state = generateState();
