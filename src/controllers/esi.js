@@ -28,7 +28,7 @@ export const callback = async (req, res) => {
     return;
   }
   const messageId = getMessageId(state);
-  res.send(`discord://discord.com/channels/968306218852565052/968306219234238529/${messageId}`);
+  res.redirect(`discord://discord.com/channels/968306218852565052/968306219234238529/${messageId}`);
   const userToken = await getAccessToken(code);
   const userData = decodeJwtToken(userToken.access_token);
   addUserToDatabase(userToken, userData);
