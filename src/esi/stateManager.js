@@ -9,9 +9,14 @@ const { dataNotFoundError } = await getCustomError();
 const state = {};
 const expireTime = 300000; // 5분
 
-export const createState = (discordId, messageId) => {
+export const createState = (discordId, channelId, messageId) => {
   const stateNumber = crypto.randomBytes(16).toString('hex'); //일련번호 생성
-  state[stateNumber] = { discordId: discordId, messageId: messageId, expire: Date.now() + expireTime }; //discord ID 키가 중복이면 자동으로 덮어씀
+  state[stateNumber] = {
+    discordId: discordId,
+    channelId: channelId,
+    messageId: messageId,
+    expire: Date.now() + expireTime,
+  }; //discord ID 키가 중복이면 자동으로 덮어씀
   return stateNumber;
 };
 
@@ -38,5 +43,5 @@ export const getMessageId = stateNumber => {
     throw new dataNotFoundError('존재하지 않는 일련번호 값입니다:', stateNumber);
     //없는 일련번호가 조회 될 경우 에러
   }
-  return state[stateNumber].messageId;
+  return { messageId: state[stateNumber].messageId, channelId: state[stateNumber].channelId };
 };
