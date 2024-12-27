@@ -30,10 +30,10 @@ export const updateRegistrationMessage = async (state, message) => {
   try {
     const client = getClientInstance();
     const { messageId, channelId } = getMessageId(state);
+    console.log('채널ID', channelId);
     const channel = await client.channels.fetch(channelId);
-    console.log('채널 정보:', channel);
     const msg = await channel.messages.fetch(messageId);
-    console.log('메세지 정보', msg);
+    console.log('메세지 객체', msg);
     await msg.edit({ content: message });
     deleteState(state);
   } catch (error) {
