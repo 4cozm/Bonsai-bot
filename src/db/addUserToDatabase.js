@@ -2,8 +2,10 @@
 import { getGuildUserByName } from '../utils/getGuildUser.js';
 import { getConnection } from './connection.js';
 import { saveUserData } from './sql/sql.js';
+import { updateRegistrationMessage } from '../commands/utility/esiRegister.js';
 
-const addUserToDatabase = async (userToken, userData) => {
+//DB에 유저를 저장하며 디스코드 명령어를 사용했던 채팅을 수정하여 결과를 알려줌
+const addUserToDatabase = async (userToken, userData, state) => {
   try {
     const { name, characterId, expire } = userData;
     const { access_token, refresh_token, expires_in } = userToken;
@@ -23,12 +25,14 @@ const addUserToDatabase = async (userToken, userData) => {
       //discordId로 메세지 전송하는 기능으로 캐릭터 등록에 대한 정보를 보내줘야 할듯
     }
     if (result[0].affectedRows === 1) {
-      console.log(name, '캐릭터 등록이 완료 되었습니다.');
+      await updateRegistrationMessage(state, result[0]);
     }
   } catch (error) {
     if (error.code === 'ER_DUP_ENTRY') {
+      updateRegistrationMessage(state, '❌ 이미 등록된 캐릭터입니다');
       console.error(`이미 DB에 존재하는 캐릭터 정보입니다 `, error.message);
     } else {
+      updateRegistrationMessage(state, '캐릭터 등록중 오류 발생- 관리자에게 문의 해주세요');
       console.error('addUserToDatabase 함수에서 캐릭터 등록 중 오류 발생:', error.message);
     }
   }

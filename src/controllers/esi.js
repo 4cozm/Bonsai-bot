@@ -27,11 +27,11 @@ export const callback = async (req, res) => {
     res.send('만료된 인증 번호 입니다.명령어를 다시 실행한 뒤 접근해주세요');
     return;
   }
-  const messageId = getMessageId(state);
-  res.redirect(`discord://discord.com/channels/968306218852565052/968306219234238529/${messageId}`);
+  const { messageId, channelId } = getMessageId(state);
+  res.redirect(`discord://discord.com/channels/968306218852565052/${channelId}/${messageId}`);
   const userToken = await getAccessToken(code);
   const userData = decodeJwtToken(userToken.access_token);
-  addUserToDatabase(userToken, userData);
+  addUserToDatabase(userToken, userData, state);
 };
 
 const getAccessToken = async code => {
