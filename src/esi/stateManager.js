@@ -23,7 +23,7 @@ export const createState = (discordId, channelId) => {
 export const addReplyMessage = (state, replyMessage) => {
   // replyMessage에서 messageId를 추출하여 상태에 업데이트
   if (state[state]) {
-    state[state].messageId = replyMessage.id;
+    state[state].messageId = replyMessage;
   }
 };
 
