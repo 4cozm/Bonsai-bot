@@ -33,7 +33,6 @@ export const updateRegistrationMessage = async (state, message) => {
     console.log('채널ID', channelId);
     const channel = await client.channels.fetch(channelId);
     const msg = await channel.messages.fetch(messageId);
-    console.log('메세지 객체', msg);
     await msg.edit({ content: message });
     deleteState(state);
   } catch (error) {
