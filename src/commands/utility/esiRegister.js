@@ -5,7 +5,7 @@ import { getClientInstance } from '../../utils/discordClientManger.js';
 import { getMessageId, deleteState } from '../../esi/stateManager.js';
 const { dataNotFoundError } = await getCustomError();
 
-const client = getClientInstance();
+
 /**
  * 메세지를 보낸 사람의 discord ID를 esi.js에 전달함
  * esi.js에서는 discord ID{state:~~~.expire:102120}식으로 데이터를 저장 한뒤 esi 가입 링크를 return 함
@@ -30,6 +30,7 @@ export async function execute(interaction) {
 
 export const updateRegistrationMessage = async (state, message) => {
   try {
+    const client = getClientInstance();
     const { messageId, channelId } = getMessageId(state);
     const channel = await client.channels.fetch(channelId);
     const msg = await channel.messages.fetch(messageId);
