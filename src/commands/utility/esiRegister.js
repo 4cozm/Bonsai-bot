@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
-import { createState } from '../../esi/stateManager.js';
+import { addReplyMessage, createState } from '../../esi/stateManager.js';
 import getCustomError from '../../errors/index.js';
 import { getClientInstance } from '../../utils/discordClientManger.js';
 import { getMessageId, deleteState } from '../../esi/stateManager.js';
@@ -18,16 +18,13 @@ export async function execute(interaction) {
   if (!interaction.id) {
     throw new dataNotFoundError('discord 메세지의 ID값을 추출하지 못했습니다. 전달 받은 값:', interaction.id);
   }
-
+  const state = createState(interaction.user.id, interaction.channelId);
   const replyMessage = await interaction.reply({
     content: `고유 번호가 포함되어 있습니다. 다른 사람에게 링크를 공유하지 말아주세요!\n\n[>>ESI 등록 링크<<](http://cat4u.store:3000/esi/signUp?state=${state})\n`,
     ephemeral: true,
   });
-  const state = createState(interaction.user.id, interaction.channelId, replyMessage.id);
+  addReplyMessage(state, replyMessage); //메세지 객체를 추가로 저장함 -> 나중에 댓글로 성공 여부를 알려주기 위함임
 }
-//인증은 1회성,유효기간은 명령어 사용후 5분 이내 까지만 가능
-//callback 페이지에 다른 사람에게 링크를 받아 가입 한 경우 즉시 관리자에게 알려달라는 메세지를 넣어야함
-//등록 결과를 대기하고 완료 되면 메세지를 수정해야할듯!
 
 export const updateRegistrationMessage = async (state, message) => {
   try {
