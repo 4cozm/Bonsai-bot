@@ -3,15 +3,13 @@ import { createState } from '../../esi/stateManager.js';
 import getCustomError from '../../errors/index.js';
 import { getClientInstance } from '../../utils/discordClientManger.js';
 import { getMessageId, deleteState } from '../../esi/stateManager.js';
-import dotenv from 'dotenv';
-dotenv.config();
+
 const { dataNotFoundError } = await getCustomError();
 
 /**
  * 메세지를 보낸 사람의 discord ID를 esi.js에 전달함
  * esi.js에서는 discord ID{state:~~~.expire:102120}식으로 데이터를 저장 한뒤 esi 가입 링크를 return 함
  */
-const esiUrl = encodeURIComponent(process.env.ESI_URL);
 export const data = new SlashCommandBuilder().setName('esi등록').setDescription('캣포유 ESI와 연동합니다.');
 export async function execute(interaction) {
   if (!interaction.user.id) {
@@ -22,7 +20,7 @@ export async function execute(interaction) {
   }
   const state = createState(interaction.user.id, interaction.channelId, interaction.id);
   await interaction.reply({
-    content: `고유 번호가 포함되어 있습니다. 다른 사람에게 링크를 공유하지 말아주세요!\n\n[>>ESI 등록 링크<<](http://${esiUrl}/esi/signUp?state=${state})\n`,
+    content: `고유 번호가 포함되어 있습니다. 다른 사람에게 링크를 공유하지 말아주세요!\n\n[>>ESI 등록 링크<<](http://cat4u.store:3000/esi/signUp?state=${state})\n`,
     ephemeral: true,
   });
 }
