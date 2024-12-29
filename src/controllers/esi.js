@@ -30,7 +30,21 @@ export const callback = async (req, res) => {
   const messageInstance = getMessageInstanceByState(state);
   const channelId = getMessageChannelByState(state);
 
-  res.redirect(`discord://discord.com/channels/968306218852565052/${channelId}/${messageInstance.id}`); // 디스코드 메세지 인스턴스의 구조는 notion 함수위키 참고
+  res.send(`
+    <html>
+      <head>
+        <meta http-equiv="refresh" content="0;url=discord://discord.com/channels/968306218852565052/${channelId}/${messageInstance.id}">
+        <script type="text/javascript">
+          // 페이지를 자동으로 닫기 (브라우저가 허용하는 경우)
+          window.close();
+        </script>
+      </head>
+      <body>
+        <p>리디렉션 중입니다...취소를 누르셨다면 그냥 디스코드로 돌아가시면 됩니다 20000</p>
+      </body>
+    </html>
+  `);
+
   const userToken = await getAccessToken(code);
   const userData = decodeJwtToken(userToken.access_token);
   addUserToDatabase(userToken, userData, state);
