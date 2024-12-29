@@ -12,7 +12,6 @@ const expireTime = 300000; // 5분
 
 export const createState = (discordId, channelId) => {
   const stateNumber = crypto.randomBytes(16).toString('hex'); //일련번호 생성
-  console.log('스테이트 넘버 생성', stateNumber);
   state[stateNumber] = {
     discordId: discordId,
     messageInstance: null,
