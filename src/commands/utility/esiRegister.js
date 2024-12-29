@@ -28,7 +28,13 @@ export async function execute(interaction) {
 export const updateRegistrationMessage = async (state, message) => {
   try {
     const messageId = getMessageInstanceByState(state);
-    await messageId.edit({ content: message, ephemeral: false });
+
+    // 기존 메시지 삭제
+    await messageId.delete();
+    const channelId = getMessageChannelByState(state);
+    const channel = await client.channels.fetch(channelId);
+
+    await channel.send({ content: message });
     deleteState(state);
   } catch (error) {
     console.error('updateRegistrationMessage에서 오류 발생', error);
