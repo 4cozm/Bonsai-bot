@@ -14,7 +14,7 @@ const addUserToDatabase = async (userToken, userData, state) => {
       console.error('유저를 DB에 저장하기 위한 필수 데이터가 누락되었습니다');
       return;
     }
-    const connection = getConnection(); //DB의 연결 객체
+    const connection = await getConnection(); //DB의 연결 객체
     let result; //결과 처리를 반환받기 위한 변수
 
     const discordId = await getGuildUserByName(name);
