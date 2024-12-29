@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import getCustomError from '../errors/index.js';
+import { updateRegistrationMessage } from '../commands/utility/esiRegister.js';
 const { dataNotFoundError } = await getCustomError();
 //ESI 인증에 사용되는 개인 별 일련번호 state 를 관리해줌
 //state는 ESI 등록 링크에 포함되어 있으며,중복되지 않는 고유의 값임
@@ -14,7 +15,7 @@ export const createState = discordId => {
   console.log('스테이트 넘버 생성', stateNumber);
   state[stateNumber] = {
     discordId: discordId,
-    messageId: null,
+    messageInstance: null,
     expire: Date.now() + expireTime,
   }; //discord ID 키가 중복이면 자동으로 덮어씀
   return stateNumber;
@@ -23,7 +24,7 @@ export const createState = discordId => {
 export const addReplyMessage = (stateNum, replyMessage) => {
   // replyMessage에서 messageId를 추출하여 상태에 업데이트
   if (state[stateNum]) {
-    state[stateNum].messageId = replyMessage;
+    state[stateNum].messageInstance = replyMessage;
   } else {
     throw new dataNotFoundError('존재하지 않는 일련번호 값입니다:', stateNumber);
   }
@@ -35,9 +36,10 @@ export const deleteState = stateNumber => {
   }
 };
 
-export const checkState = stateNumber => {
+export const checkState = async stateNumber => {
   if (!state[stateNumber]) {
-    throw new dataNotFoundError('존재하지 않는 일련번호 값입니다:', stateNumber);
+    await updateRegistrationMessage(stateNumber, '캐릭터 등록중 오류 발생- 관리자에게 문의 해주세요');
+    throw new dataNotFoundError('ESI 가입중 존재하지 않는 일련번호 값을 사용했습니다 :', stateNumber);
     //없는 일련번호가 조회 될 경우 에러
   }
   if (state[stateNumber].expire < Date.now()) {
@@ -46,13 +48,17 @@ export const checkState = stateNumber => {
   }
   return true;
 };
-
-export const getMessageIdByState = stateNumber => {
+/**
+ * 디스코드 메세지 객체를 반환 받는 함수
+ * @param {*} stateNumber
+ * @returns
+ */
+export const getMessageInstanceByState = stateNumber => {
   if (!state[stateNumber]) {
     throw new dataNotFoundError('존재하지 않는 일련번호 값입니다:', stateNumber);
     //없는 일련번호가 조회 될 경우 에러
   }
-  return state[stateNumber].messageId;
+  return state[stateNumber].messageInstance;
 };
 
 export const getUserIdByState = stateNumber => {
