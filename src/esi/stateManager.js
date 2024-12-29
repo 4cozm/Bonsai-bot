@@ -46,10 +46,18 @@ export const checkState = stateNumber => {
   return true;
 };
 
-export const getMessageId = stateNumber => {
+export const getMessageIdByState = stateNumber => {
   if (!state[stateNumber]) {
     throw new dataNotFoundError('존재하지 않는 일련번호 값입니다:', stateNumber);
     //없는 일련번호가 조회 될 경우 에러
   }
-  return { messageId: state[stateNumber].messageId, channelId: state[stateNumber].channelId };
+  return state[stateNumber].messageId;
+};
+
+export const getUserIdByState = stateNumber => {
+  if (!state[stateNumber]) {
+    throw new dataNotFoundError('존재하지 않는 일련번호 값입니다:', stateNumber);
+    //없는 일련번호가 조회 될 경우 에러
+  }
+  return state[stateNumber].user.id;
 };

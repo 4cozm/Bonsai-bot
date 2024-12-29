@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import scopes from '../scope.js';
 import { decodeJwtToken } from '../utils/jwt.decode.js';
 import addUserToDatabase from '../db/addUserToDatabase.js';
-import { checkState, getMessageId } from '../esi/stateManager.js';
+import { checkState, getMessageIdByState } from '../esi/stateManager.js';
 dotenv.config();
 
 const clientId = process.env.ESI_CLIENT_ID;
@@ -27,8 +27,8 @@ export const callback = async (req, res) => {
     res.send('만료된 인증 번호 입니다.명령어를 다시 실행한 뒤 접근해주세요');
     return;
   }
-  const { messageId, channelId } = getMessageId(state);
-  res.redirect(`discord://discord.com/channels/968306218852565052/${channelId}/${messageId}`);
+  const { messageId, channelId } = getMessageIdByState(state);
+  res.redirect(`discord://discord.com/channels/968306218852565052/${channelId}/${messageId.id}`); //messageId는 메세지의 인스턴스가 저장되어 있음
   const userToken = await getAccessToken(code);
   const userData = decodeJwtToken(userToken.access_token);
   addUserToDatabase(userToken, userData, state);
