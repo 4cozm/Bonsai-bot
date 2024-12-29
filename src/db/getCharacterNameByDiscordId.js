@@ -2,8 +2,6 @@
 
 import { searchCharacters } from './sql/sql.js';
 import { getConnection } from './connection.js';
-import getCustomError from '../errors/index.js';
-const { dataNotFoundError } = getCustomError();
 const DbConnection = await getConnection();
 
 /**

@@ -26,7 +26,9 @@ const addUserToDatabase = async (userToken, userData, state) => {
       result = await connection.execute(saveUserData, [discordId, name, characterId, refresh_token, expires_in]);
     }
     if (result[0].affectedRows === 1) {
+      console.log('저장완료', discordId);
       const names = await getCharacterNameByDiscordId(discordId); //디스코드 아이디를 기반으로 DB조회해서 어떤 계정들이 가입되어 있는지 확인
+      console.log('저장된 계정들', names);
       await updateRegistrationMessage(
         state,
         `${name}이 성공적으로 등록되었습니다.\n현재 등록된 계정:\n${names.join('\n')}`
