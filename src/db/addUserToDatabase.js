@@ -18,25 +18,24 @@ const addUserToDatabase = async (userToken, userData, state) => {
     const connection = await getConnection(); //DB의 연결 객체
     let result; //결과 처리를 반환받기 위한 변수
 
-    const discordId = await getGuildUserByName(name);
+    let discordId = await getGuildUserByName(name);
     if (discordId === 'alt') {
-      const messageBasedId = getUserIdByState(state);
-      result = await connection.execute(saveUserData, [messageBasedId, name, characterId, refresh_token, expires_in]);
+      discordId = getUserIdByState(state);
+      result = await connection.execute(saveUserData, [discordId, name, characterId, refresh_token, expires_in]);
     } else {
       result = await connection.execute(saveUserData, [discordId, name, characterId, refresh_token, expires_in]);
     }
     if (result[0].affectedRows === 1) {
-      console.log('저장완료', discordId);
       const names = await getCharacterNameByDiscordId(discordId); //디스코드 아이디를 기반으로 DB조회해서 어떤 계정들이 가입되어 있는지 확인
-      console.log('저장된 계정들', names);
       await updateRegistrationMessage(
         state,
-        `${name}이 성공적으로 등록되었습니다.\n현재 등록된 계정:\n${names.join('\n')}`
+        `${name}이 성공적으로 등록되었습니다.<a:heartcatscream:1073841131407814676>\n\n현재 등록된 계정:\n${names.join('\n')}`
       );
     }
   } catch (error) {
     if (error.code === 'ER_DUP_ENTRY') {
-      updateRegistrationMessage(state, '❌ 이미 등록된 캐릭터입니다');
+      const names = await getCharacterNameByDiscordId(discordId);
+      updateRegistrationMessage(state, `❌ 이미 등록된 캐릭터입니다 \n현재 등록된 계정:\n${names.join('\n')}`);
     } else {
       updateRegistrationMessage(state, '캐릭터 등록중 오류 발생- 관리자에게 문의 해주세요');
       console.error('addUserToDatabase 함수에서 캐릭터 등록 중 오류 발생:', error.message);
