@@ -4,6 +4,7 @@ import { getConnection } from './connection.js';
 import { saveUserData } from './sql/sql.js';
 import { updateRegistrationMessage } from '../commands/utility/esiRegister.js';
 import { getUserIdByState } from '../esi/stateManager.js';
+import { getCharacterNameByDiscordId } from './getCharacterNameByDiscordId.js';
 
 //DB에 유저를 저장하며 디스코드 명령어를 사용했던 채팅을 수정하여 결과를 알려줌
 const addUserToDatabase = async (userToken, userData, state) => {
@@ -25,7 +26,11 @@ const addUserToDatabase = async (userToken, userData, state) => {
       result = await connection.execute(saveUserData, [discordId, name, characterId, refresh_token, expires_in]);
     }
     if (result[0].affectedRows === 1) {
-      await updateRegistrationMessage(state, result[0]);
+      const names = await getCharacterNameByDiscordId(discordId); //디스코드 아이디를 기반으로 DB조회해서 어떤 계정들이 가입되어 있는지 확인
+      await updateRegistrationMessage(
+        state,
+        `${name}이 성공적으로 등록되었습니다.\n현재 등록된 계정:\n${names.join('\n')}`
+      );
     }
   } catch (error) {
     if (error.code === 'ER_DUP_ENTRY') {

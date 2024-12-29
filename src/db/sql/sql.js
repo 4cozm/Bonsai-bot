@@ -16,3 +16,5 @@ export const saveUserData =
 export const getRefreshToken = 'SELECT refreshToken FROM users WHERE name = ? AND discord = ?';
 
 export const accessDeniedRequestRefreshToken = 'SELECT refreshToken FROM users WHERE name = ?';
+
+export const searchCharacters = 'SELECT name FROM users WHERE discord = ?';
