@@ -2,6 +2,7 @@ import { SlashCommandBuilder } from 'discord.js';
 import { addReplyMessage, createState, getMessageChannelByState } from '../../esi/stateManager.js';
 import getCustomError from '../../errors/index.js';
 import { getMessageInstanceByState, deleteState } from '../../esi/stateManager.js';
+import { getClientInstance } from '../../utils/discordClientManger.js';
 
 const { dataNotFoundError } = await getCustomError();
 
@@ -27,6 +28,7 @@ export async function execute(interaction) {
 
 export const updateRegistrationMessage = async (state, message) => {
   try {
+    const client = getClientInstance();
     const messageId = getMessageInstanceByState(state);
 
     // 기존 메시지 삭제
