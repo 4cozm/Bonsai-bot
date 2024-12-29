@@ -28,6 +28,7 @@ export async function execute(interaction) {
 export const updateRegistrationMessage = async (state, message) => {
   try {
     const { messageId, channelId } = getMessageId(state);
+    console.log('메세지ID의 인스턴스', messageId);
     await messageId.edit({ content: message });
     deleteState(state);
   } catch (error) {
