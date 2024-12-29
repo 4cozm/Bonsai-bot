@@ -115,7 +115,7 @@ export async function execute(interaction) {
         const totalBlueLootTax = rows.reduce((a, b) => a + b.blueLootTax, 0);
         const totalSalvageTax = rows.reduce((a, b) => a + b.salvageTax, 0);
         if (!(totalBlueLootTax || totalSalvageTax)) {
-          throw new dataNotFoundError('데이터가 정보에 없습니다');
+          throw new dataNotFoundError('data', '데이터가 정보에 없습니다');
         }
         console.log(totalBlueLootTax, totalSalvageTax);
         await interaction.editReply({ content: `블루룻/샐비징 = ${totalBlueLootTax / totalSalvageTax}` });
