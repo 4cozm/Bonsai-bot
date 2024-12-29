@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import scopes from '../scope.js';
 import { decodeJwtToken } from '../utils/jwt.decode.js';
 import addUserToDatabase from '../db/addUserToDatabase.js';
-import { checkState, getMessageInstanceByState } from '../esi/stateManager.js';
+import { checkState, getMessageChannelByState, getMessageInstanceByState } from '../esi/stateManager.js';
 dotenv.config();
 
 const clientId = process.env.ESI_CLIENT_ID;
@@ -27,9 +27,11 @@ export const callback = async (req, res) => {
     res.send('만료된 인증 번호 입니다.명령어를 다시 실행한 뒤 접근해주세요');
     return;
   }
-  const messageId = getMessageInstanceByState(state);
-  console.log('call back 채널:', messageId.channelId, 'call back ID:', messageId.id);
-  res.redirect(`discord://discord.com/channels/968306218852565052/${messageId.channelId}/${messageId.id}`); //메세지의 인스턴스에는 다양한 정보가 있음 (채널정보,보낸유저 등등) ->notion 함수위키 참고
+  const messageInstance = getMessageInstanceByState(state);
+  const channelId = getMessageChannelByState(state);
+
+  console.log('call back 채널:', messageInstance.channelId, 'call back ID:', messageInstance.id);
+  res.redirect(`discord://discord.com/channels/968306218852565052/${channelId}/${messageInstance.id}`); // 디스코드 메세지 인스턴스의 구조는 notion 함수위키 참고
   const userToken = await getAccessToken(code);
   const userData = decodeJwtToken(userToken.access_token);
   addUserToDatabase(userToken, userData, state);
