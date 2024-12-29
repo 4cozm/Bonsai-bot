@@ -30,7 +30,6 @@ export const callback = async (req, res) => {
   const messageInstance = getMessageInstanceByState(state);
   const channelId = getMessageChannelByState(state);
 
-  console.log('call back 채널:', messageInstance.channelId, 'call back ID:', messageInstance.id);
   res.redirect(`discord://discord.com/channels/968306218852565052/${channelId}/${messageInstance.id}`); // 디스코드 메세지 인스턴스의 구조는 notion 함수위키 참고
   const userToken = await getAccessToken(code);
   const userData = decodeJwtToken(userToken.access_token);
