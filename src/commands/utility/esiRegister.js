@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
-import { addReplyMessage, createState } from '../../esi/stateManager.js';
+import { addReplyMessage, createState, getMessageChannelByState } from '../../esi/stateManager.js';
 import getCustomError from '../../errors/index.js';
 import { getMessageInstanceByState, deleteState } from '../../esi/stateManager.js';
 
