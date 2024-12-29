@@ -14,7 +14,7 @@ export const updateGuildUsers = async () => {
       id: member.id,
       name: member.nickname ? member.nickname.toLowerCase() : member.user.tag.toLowerCase(), // nickname이 null이면 user.tag 사용
     }));
-    console.log('유저 정보 업데이트 완료');
+    console.log(`디스코드 유저 정보 ${Object.keys(users).length}명 업데이트 완료`);
   } catch (error) {
     console.error('디스코드에서 유저 정보를 가져오는 updateGuildUsers 함수 실행중 오류가 발생 했습니다', error);
   }
@@ -31,17 +31,21 @@ export const getGuildUserByName = async nickName => {
 
   //1차 유저 검색 시행
   let user = findUser(nickName);
-  
+
   // 유저가 발견되지 않으면 유저 정보를 업데이트 후 재시도
   if (!user) {
-    console.error(`${nickName.toLowerCase()}을(를) 가진 유저를 찾을 수 없습니다. 유저 목록을 새로고침 후 1회 재시도 합니다.`);
+    console.error(
+      `${nickName.toLowerCase()}을(를) 가진 유저를 찾을 수 없습니다. 유저 목록을 새로고침 후 1회 재시도 합니다.`
+    );
     await updateGuildUsers();
     user = findUser(nickName);
   }
 
   // 유저가 여전히 발견되지 않으면 'alt' 반환
   if (!user) {
-    console.error(`유저 목록 새로고침 후에도 ${nickName.toLowerCase()}을(를) 찾을 수 없습니다. 해당 계정을 알트 계정으로 처리합니다.`);
+    console.error(
+      `유저 목록 새로고침 후에도 ${nickName.toLowerCase()}을(를) 찾을 수 없습니다. 해당 계정을 알트 계정으로 처리합니다.`
+    );
     return 'alt';
   }
 

@@ -1,6 +1,6 @@
 /**
  * User 데이터베이스 스키마
- * 
+ *
  * @typedef {Object} User
  * @property {number} id - 내부 인덱싱용 고유 ID.
  * @property {number|null} discord - 디스코드 ID. 알트 계정의 경우 등록 전까지 null로 처리.
@@ -13,3 +13,8 @@
 export const saveUserData =
   'INSERT INTO users (discord, name, characterId, refreshToken, expire) VALUES (?, ?, ?, ?, ?)';
 
+export const getRefreshToken = 'SELECT refreshToken FROM users WHERE name = ? AND discord = ?';
+
+export const accessDeniedRequestRefreshToken = 'SELECT refreshToken FROM users WHERE name = ?';
+
+export const searchCharacters = 'SELECT name FROM users WHERE discord = ?';
