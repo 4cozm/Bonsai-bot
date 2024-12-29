@@ -28,6 +28,7 @@ export const callback = async (req, res) => {
     return;
   }
   const messageId = getMessageInstanceByState(state);
+  console.log('call back 채널:', messageId.channelId, 'call back ID:', messageId.id);
   res.redirect(`discord://discord.com/channels/968306218852565052/${messageId.channelId}/${messageId.id}`); //메세지의 인스턴스에는 다양한 정보가 있음 (채널정보,보낸유저 등등) ->notion 함수위키 참고
   const userToken = await getAccessToken(code);
   const userData = decodeJwtToken(userToken.access_token);
