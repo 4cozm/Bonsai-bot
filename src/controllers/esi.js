@@ -34,16 +34,60 @@ export const callback = async (req, res) => {
     <html>
       <head>
         <meta http-equiv="refresh" content="0;url=discord://discord.com/channels/968306218852565052/${channelId}/${messageInstance.id}">
-        <script type="text/javascript">
-          // 페이지를 자동으로 닫기 (브라우저가 허용하는 경우)
-          window.close();
-        </script>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+          }
+          .message-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            font-size: 16px;
+          }
+          h2 {
+            color: #5f6368;
+            font-size: 24px;
+            margin-bottom: 15px;
+          }
+          p {
+            margin-bottom: 20px;
+            line-height: 1.5;
+          }
+          .loading {
+            font-weight: bold;
+            color: #007bff;
+          }
+          .redirecting {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
+          }
+          .redirecting a {
+            color: #007bff;
+            text-decoration: none;
+          }
+        </style>
       </head>
       <body>
-        <p>리디렉션 중입니다...취소를 누르셨다면 그냥 디스코드로 돌아가시면 됩니다 20000</p>
+        <div class="message-container">
+          <h2>리디렉션 중입니다...</h2>
+          <p class="loading">잠시만 기다려 주세요, 디스코드 채널로 이동합니다.</p>
+        </div>
       </body>
     </html>
   `);
+  
 
   const userToken = await getAccessToken(code);
   const userData = decodeJwtToken(userToken.access_token);
