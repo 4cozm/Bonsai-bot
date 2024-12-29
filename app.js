@@ -29,6 +29,8 @@ import guildCheck from './src/utils/guildCheck.js';
 import commandHandler from './src/utils/commandHandler.js';
 import { setClientInstance } from './src/utils/discordClientManger.js';
 import serverStartNotification from './src/utils/serverStartNotification.js';
+import handleModalSubmit from './src/utils/handleModalSubmit.js';
+import { handleC5Ratting } from './src/utils/handleC5Ratting.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,6 +47,7 @@ const client = new discord.Client({
     GatewayIntentBits.GuildMembers,
   ],
 });
+//커맨드를 담을 컬렉션
 client.commands = new Collection();
 
 //미들웨어
@@ -81,26 +84,36 @@ client.once('ready', async () => {
   await serverStartNotification(startTime);
 });
 
+// 이벤트 핸들러가 길어져서, 이벤트 핸들러를 따로 뺄 필요가 있어보임.
+
 client.on('interactionCreate', async interaction => {
-  if (!interaction.isChatInputCommand()) return;
+  if (interaction.isChatInputCommand()) {
+    const command = interaction.client.commands.get(interaction.commandName);
 
-  const command = interaction.client.commands.get(interaction.commandName);
-
-  if (!command) {
-    console.error(`No command matching ${interaction.commandName} was found.`);
-    return;
-  }
-  try {
-    // DM으로 명령어를 쓰게 될 경우 수정이 필요함.
-    await guildCheck(interaction.guild);
-    await command.execute(interaction);
-  } catch (error) {
-    console.error('명령어 실행 중 에러 발생:', error);
-    if (interaction.replied || interaction.deferred) {
-      await interaction.followUp({ content: '명령어 실행중 오류가 발생했습니다', ephemeral: true });
-    } else {
-      await interaction.reply({ content: '명령어 실행중 오류가 발생했습니다', ephemeral: true });
+    if (!command) {
+      console.error(`No command matching ${interaction.commandName} was found.`);
+      return;
     }
+    try {
+      // DM으로 명령어를 쓰게 될 경우 수정이 필요함.
+      await guildCheck(interaction.guild);
+      await command.execute(interaction);
+    } catch (error) {
+      console.error('명령어 실행 중 에러 발생:', error);
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp({ content: '명령어 실행중 오류가 발생했습니다', ephemeral: true });
+      } else {
+        await interaction.reply({ content: '명령어 실행중 오류가 발생했습니다', ephemeral: true });
+      }
+    }
+    // modal이 제출되었을때에 대한 이벤트 핸들러.
+  } else if (interaction.isModalSubmit()) {
+    console.log('모달 제출 발생', interaction.customId);
+    // 이벤트 처리 함수
+    await handleModalSubmit(interaction);
+    return;
+  } else if (interaction.isButton()) {
+    await handleC5Ratting(interaction);
   }
 });
 
