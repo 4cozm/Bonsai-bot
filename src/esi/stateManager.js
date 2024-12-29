@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import getCustomError from '../errors/index.js';
-import { updateRegistrationMessage } from '../commands/utility/esiRegister.js';
+import { updateRegistrationMessage } from '../commands/utility/esi.js';
 const { dataNotFoundError } = await getCustomError();
 //ESI 인증에 사용되는 개인 별 일련번호 state 를 관리해줌
 //state는 ESI 등록 링크에 포함되어 있으며,중복되지 않는 고유의 값임
