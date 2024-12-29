@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { addReplyMessage, createState } from '../../esi/stateManager.js';
 import getCustomError from '../../errors/index.js';
-import { getMessageIdByState, deleteState } from '../../esi/stateManager.js';
+import { getMessageInstanceByState, deleteState } from '../../esi/stateManager.js';
 
 const { dataNotFoundError } = await getCustomError();
 
@@ -27,7 +27,7 @@ export async function execute(interaction) {
 
 export const updateRegistrationMessage = async (state, message) => {
   try {
-    const messageId = getMessageIdByState(state);
+    const messageId = getMessageInstanceByState(state);
     await messageId.edit({ content: message });
     deleteState(state);
   } catch (error) {

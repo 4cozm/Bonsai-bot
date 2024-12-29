@@ -46,8 +46,12 @@ export const checkState = stateNumber => {
   }
   return true;
 };
-
-export const getMessageIdByState = stateNumber => {
+/**
+ * 디스코드 메세지 객체를 반환 받는 함수
+ * @param {*} stateNumber
+ * @returns
+ */
+export const getMessageInstanceByState = stateNumber => {
   if (!state[stateNumber]) {
     throw new dataNotFoundError('존재하지 않는 일련번호 값입니다:', stateNumber);
     //없는 일련번호가 조회 될 경우 에러
