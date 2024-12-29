@@ -4,7 +4,7 @@ USE ESI
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  discord INT,
+  discord VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
   characterId VARCHAR(255) NOT NULL,
   refreshToken TEXT NOT NULL,
