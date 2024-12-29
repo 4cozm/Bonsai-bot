@@ -17,7 +17,7 @@ export async function execute(interaction) {
   if (!interaction.id) {
     throw new dataNotFoundError('discord 메세지의 ID값을 추출하지 못했습니다. 전달 받은 값:', interaction.id);
   }
-  const state = createState(interaction.user.id,interaction.channelId);
+  const state = createState(interaction.user.id, interaction.channelId);
   const replyMessage = await interaction.reply({
     content: `고유 번호가 포함되어 있습니다. 다른 사람에게 링크를 공유하지 말아주세요!\n\n[>>ESI 등록 링크<<](http://cat4u.store:3000/esi/signUp?state=${state})\n`,
     ephemeral: true,
@@ -28,7 +28,7 @@ export async function execute(interaction) {
 export const updateRegistrationMessage = async (state, message) => {
   try {
     const messageId = getMessageInstanceByState(state);
-    await messageId.edit({ content: message });
+    await messageId.edit({ content: message, ephemeral: false });
     deleteState(state);
   } catch (error) {
     console.error('updateRegistrationMessage에서 오류 발생', error);
