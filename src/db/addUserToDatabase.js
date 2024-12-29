@@ -29,7 +29,7 @@ const addUserToDatabase = async (userToken, userData, state) => {
       const names = await getCharacterNameByDiscordId(discordId); //디스코드 아이디를 기반으로 DB조회해서 어떤 계정들이 가입되어 있는지 확인
       await updateRegistrationMessage(
         state,
-        `${name}이 성공적으로 등록되었습니다.\n현재 등록된 계정:\n${names.join('\n')}`
+        `${name}이 성공적으로 등록되었습니다.<a:heartcatscream:1073841131407814676>\n\n현재 등록된 계정:\n${names.join('\n')}`
       );
     }
   } catch (error) {
