@@ -17,9 +17,10 @@ export const getStructureFuel = async () => {
     });
 
     if (!response.ok) {
+      console.error(response);
       throw new esiRequestError(
         response.status,
-        `연료량을 가져오기가 실패했습니다 \n getStructureFuel 에러전문 ${response}`
+        `연료량을 가져오기가 실패했습니다 \n getStructureFuel 에러전문은 서버콘솔에서 확인해주세요`
       );
     }
 
