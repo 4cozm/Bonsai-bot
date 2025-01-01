@@ -2,7 +2,7 @@
 import { getGuildUserByName } from '../utils/getGuildUser.js';
 import { getConnection } from './connection.js';
 import { saveUserData } from './sql/sql.js';
-import { updateRegistrationMessage } from '../commands/utility/esiRegister.js';
+import { updateRegistrationMessage } from '../commands/utility/esi.js';
 import { getUserIdByState } from '../esi/stateManager.js';
 import { getCharacterNameByDiscordId } from './getCharacterNameByDiscordId.js';
 
@@ -36,7 +36,10 @@ const addUserToDatabase = async (userToken, userData, state) => {
     if (error.code === 'ER_DUP_ENTRY') {
       updateRegistrationMessage(state, `❌ 이미 등록된 캐릭터입니다<a:imgoingcrazy:996298083887497287>`);
     } else {
-      updateRegistrationMessage(state, '캐릭터 등록중 오류 발생<a:megacatscream:1008949257941815327>- 관리자에게 문의 해주세요');
+      updateRegistrationMessage(
+        state,
+        '캐릭터 등록중 오류 발생<a:megacatscream:1008949257941815327>- 관리자에게 문의 해주세요'
+      );
       console.error('addUserToDatabase 함수에서 캐릭터 등록 중 오류 발생:', error.message);
     }
   }
