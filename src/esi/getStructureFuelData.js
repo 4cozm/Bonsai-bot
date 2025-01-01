@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import getAccessToken from './getAccessToken.js';
 import getCustomError from '../errors/index.js';
-const { esiRequestError } = getCustomError();
+const { esiRequestError } = await getCustomError();
 dotenv.config();
 
 export const getStructureFuel = async () => {
@@ -18,7 +18,8 @@ export const getStructureFuel = async () => {
 
     if (!response.ok) {
       throw new esiRequestError(
-        `연료량을 가져오기가 실패했습니다 \n getStructureFuel status 에러코드: ${response.status} \n 에러전문 ${response}`
+        response.status,
+        `연료량을 가져오기가 실패했습니다 \n getStructureFuel 에러전문 ${response}`
       );
     }
 
