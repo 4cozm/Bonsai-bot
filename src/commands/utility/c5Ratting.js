@@ -16,8 +16,6 @@ import {
 
 import mysql from 'mysql2/promise';
 import connectC5ratting from '../../db/connectC5ratting.js';
-import getCustomError from '../../errors/index.js';
-const { dataNotFoundError } = await getCustomError();
 // 랫질 시작 시간 기록
 let rattingStartTime = 0;
 
@@ -114,9 +112,6 @@ export async function execute(interaction) {
       case '세금 비율':
         const totalBlueLootTax = rows.reduce((a, b) => a + b.blueLootTax, 0);
         const totalSalvageTax = rows.reduce((a, b) => a + b.salvageTax, 0);
-        if (!(totalBlueLootTax || totalSalvageTax)) {
-          throw new dataNotFoundError('data', '데이터가 정보에 없습니다');
-        }
         console.log(totalBlueLootTax, totalSalvageTax);
         await interaction.editReply({ content: `블루룻/샐비징 = ${totalBlueLootTax / totalSalvageTax}` });
         break;
