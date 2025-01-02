@@ -43,14 +43,13 @@ async function handleModalSubmit(interaction) {
           { name: '총 샐비징', value: `${rattingData.salvageValue}m` },
           { name: '시간당 블루룻', value: `${rattingData.hourLootPerPerson}m` },
           { name: '블루룻 세금', value: `${rattingData.blueLootTax}m` },
-          { name: '샐비징 세금', value: `${rattingData.salvageTax}m}` },
+          { name: '샐비징 세금', value: `${rattingData.salvageTax}m` },
           { name: '총 세금', value: `${rattingData.totalTax}m` },
           { name: '조업 시간', value: `${rattingData.duration}분` },
           { name: '컴포', value: `${rattingData.compositionValue}` }
         );
       await interaction.followUp({
-        embeds: c5Embed,
-        components: [],
+        embeds: [c5Embed],
         ephemeral: false,
       });
     } catch (error) {
