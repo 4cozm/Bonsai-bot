@@ -66,6 +66,8 @@ export async function handleC5Ratting(interaction) {
           await buttonInteraction.editReply({ content: '5클조업 종료창을 띄울게요!', ephemeral: true, components: [] });
           await interaction.showModal(modal);
           buttonMarker = null;
+          // 5클조업 결과가 계산되는 시간동안 대기
+          setTimeout(() => {}, 1000);
           await interaction.followUp({
             content: '이 결과를 통계에 저장할까요?',
             components: [confirmRow],
