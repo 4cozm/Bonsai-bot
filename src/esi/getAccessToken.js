@@ -25,12 +25,11 @@ const getAccessToken = async (discordId, name) => {
       return data.accessToken;
     } else {
       //엑세스 토큰이 존재하지 않기에 재발급 진행
-      console.log('재발급 진행');
       const accessToken = await reissueAccessToken(discordId, name);
       return accessToken;
     }
   } catch (error) {
-    console.error(error);
+    console.error('getAccessToken에서 에러 발생', error);
   }
 };
 
