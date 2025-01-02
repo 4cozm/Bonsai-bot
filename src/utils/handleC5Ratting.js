@@ -4,6 +4,8 @@ import { rattingStartTime } from '../commands/utility/c5Ratting.js';
 import dotenv from 'dotenv';
 import { rattingData } from './handleModalSubmit.js';
 import connectC5ratting from '../db/connectC5ratting.js';
+import getCustomError from '../errors/index.js';
+const { databaseError } = await getCustomError();
 // 취소,확인 버튼 누르기 이전에 어떤 버튼을 눌렀는지 체크.
 let buttonMarker;
 // 버튼에 관한 interaction 임시저장하는 변수
@@ -35,7 +37,6 @@ export async function handleC5Ratting(interaction) {
       isCommandRunning = true;
       buttonMarker = 'c5종료';
       buttonInteraction = interaction;
-      console.log(`c5종료 버튼 클릭. 현재시각 : ${Date.now()}`);
       await interaction.deferUpdate();
       await interaction.followUp({
         content: `정말로 5클조업을 마무리하실건가요?`,
@@ -59,44 +60,13 @@ export async function handleC5Ratting(interaction) {
           isCommandRunning = false;
           break;
         case 'c5종료':
-          console.log(`c5종료 확정. 현재 시각 : ${Date.now()}`);
           const startTime = rattingStartTime;
           const endTime = Date.now();
           rattingDuration = (endTime - startTime) / 1000 / 60;
           await buttonInteraction.editReply({ content: '5클조업 종료창을 띄울게요!', ephemeral: true, components: [] });
           await interaction.showModal(modal);
           buttonMarker = null;
-          // 5클조업 결과가 계산되는 시간동안 대기
-          setTimeout(() => {}, 1000);
-          await interaction.followUp({
-            content: '이 결과를 통계에 저장할까요?',
-            components: [confirmRow],
-            ephemeral: true,
-          });
-          buttonMarker = '통계저장';
           isCommandRunning = false;
-          break;
-        case '통계저장':
-          buttonMarker = null;
-          let database = await connectC5ratting();
-          try {
-            await database.execute(
-              'INSERT INTO stats (totalBlueLoot, blueLootPerHour, totalSalvage, blueLootTax, salvageTax, duration, composition) VALUES (?, ?, ?, ?, ?, ?, ?)',
-              [
-                rattingData.blueLootValue,
-                rattingData.hourLootPerPerson,
-                rattingData.salvageValue,
-                rattingData.blueLootTax,
-                rattingData.salvageTax,
-                rattingData.duration,
-                rattingData.compositionValue,
-              ]
-            );
-            await database.end();
-            await interaction.update({ content: '통계에 저장했어요!', ephemeral: true, components: [] });
-          } catch (e) {
-            console.log(e);
-          }
           break;
       }
   }

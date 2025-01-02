@@ -5,6 +5,11 @@ import { rattingDuration } from './handleC5Ratting.js';
 // handleC5Rating으로 데이터를 가져오려고 이렇게 설정함.
 // 근데, 이렇게 되면 handleC5Ratting <-> handleModalSubmit 양방향으로 데이터가 순환하게 되는데, 문제가 없을지 모르겠음.
 import { Embed, EmbedBuilder } from 'discord.js';
+import getCustomError from '../errors/index.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const { c5RattingStatsError } = getCustomError();
 const rattingData = {};
 
 async function handleModalSubmit(interaction) {
@@ -38,9 +43,10 @@ async function handleModalSubmit(interaction) {
           {
             name: '분배',
             value: `클라당 ${(rattingData.blueLootValue * 0.9).toFixed(2) / rattingData.peopleValue}m ISK`,
+            inline: true,
           },
-          { name: '총 블루룻', value: `${rattingData.blueLootValue}m` },
-          { name: '총 샐비징', value: `${rattingData.salvageValue}m` },
+          { name: '총 블루룻', value: `${rattingData.blueLootValue}m`, inline: true },
+          { name: '총 샐비징', value: `${rattingData.salvageValue}m`, inline: true },
           { name: '시간당 블루룻', value: `${rattingData.hourLootPerPerson}m` },
           { name: '블루룻 세금', value: `${rattingData.blueLootTax}m` },
           { name: '샐비징 세금', value: `${rattingData.salvageTax}m` },
@@ -58,6 +64,40 @@ async function handleModalSubmit(interaction) {
         content: '모달 데이터를 처리하는 중 오류가 발생했습니다.',
         ephemeral: true,
       });
+    }
+    try {
+      // 통계 예외처리 코드
+      if (rattingDuration < 20) {
+        await interaction.followUp({ content: '값에 오류가 있어 통계에 저장되지 않았어요.', ephemeral: true });
+        throw new c5RattingStatsError(`20분보다 짧은 5클조업 사용자: ${interaction.user.username}`);
+      }
+      if (rattingData.hourLoot < 1 || rattingData.hourSalvage < 1) {
+        await interaction.followUp({
+          content: '값에 오류가 있어 통계에 저장되지 않았어요.',
+          ephemeral: true,
+        });
+        throw new c5RattingStatsError(`시간당 블루룻 또는 샐비징 1 이하 5클조업 사용자: ${interaction.user.username}`);
+      }
+      let database = await connectC5ratting();
+      if (!database) {
+        throw new databaseError(null, '데이터베이스 연결 실패');
+      }
+      await database.execute(
+        'INSERT INTO stats (totalBlueLoot, blueLootPerHour, totalSalvage, blueLootTax, salvageTax, duration, composition) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [
+          rattingData.blueLootValue,
+          rattingData.hourLootPerPerson,
+          rattingData.salvageValue,
+          rattingData.blueLootTax,
+          rattingData.salvageTax,
+          rattingData.duration,
+          rattingData.compositionValue,
+        ]
+      );
+      await database.end();
+      await interaction.followUp({ content: '통계에 저장했어요!', ephemeral: true, components: [] });
+    } catch (e) {
+      console.error('오류 발생', e);
     }
   }
 }
