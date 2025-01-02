@@ -69,14 +69,17 @@ async function handleModalSubmit(interaction) {
       // 통계 예외처리 코드
       if (rattingDuration < 20) {
         await interaction.followUp({ content: '값에 오류가 있어 통계에 저장되지 않았어요.', ephemeral: true });
-        throw new c5RattingStatsError(`20분보다 짧은 5클조업 사용자: ${interaction.user.username}`);
+        throw new c5RattingStatsError(null, `20분보다 짧은 5클조업 사용자: ${interaction.user.username}`);
       }
       if (rattingData.hourLoot < 1 || rattingData.hourSalvage < 1) {
         await interaction.followUp({
           content: '값에 오류가 있어 통계에 저장되지 않았어요.',
           ephemeral: true,
         });
-        throw new c5RattingStatsError(`시간당 블루룻 또는 샐비징 1 이하 5클조업 사용자: ${interaction.user.username}`);
+        throw new c5RattingStatsError(
+          null,
+          `시간당 블루룻 또는 샐비징 1 이하 5클조업 사용자: ${interaction.user.username}`
+        );
       }
       let database = await connectC5ratting();
       if (!database) {
