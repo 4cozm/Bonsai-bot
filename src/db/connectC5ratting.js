@@ -1,7 +1,9 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 dotenv.config();
-
+/**
+ * @returns {Promise/mysql.connection}
+ */
 async function connectC5ratting() {
   try {
     let database = await mysql.createConnection({
