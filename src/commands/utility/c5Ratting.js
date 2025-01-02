@@ -23,7 +23,7 @@ let database;
 let rows;
 let fields;
 let compositionData;
-const { dataNotFoundError } = getCustomError();
+const { dataNotFoundError } = await getCustomError();
 // 랫질 시작 시간 기록
 let rattingStartTime = 0;
 // modal에 text input 창 추가
