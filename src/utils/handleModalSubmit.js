@@ -4,6 +4,7 @@
 import { rattingDuration } from './handleC5Ratting.js';
 // handleC5Rating으로 데이터를 가져오려고 이렇게 설정함.
 // 근데, 이렇게 되면 handleC5Ratting <-> handleModalSubmit 양방향으로 데이터가 순환하게 되는데, 문제가 없을지 모르겠음.
+import { Embed, EmbedBuilder } from 'discord.js';
 const rattingData = {};
 
 async function handleModalSubmit(interaction) {
@@ -30,8 +31,25 @@ async function handleModalSubmit(interaction) {
       // 기존 버튼 지우기
       await interaction.update({ content: '5클조업 완료', components: [] });
       // 조업 결과 남들도 보이게 응답.
+      const c5Embed = new EmbedBuilder()
+        .setColor(0x0099ff)
+        .setTitle('5클조업 결과')
+        .addFields(
+          {
+            name: '분배',
+            value: `클라당 ${(rattingData.blueLootValue * 0.9).toFixed(2) / rattingData.peopleValue}m ISK`,
+          },
+          { name: '총 블루룻', value: `${rattingData.blueLootValue}m` },
+          { name: '총 샐비징', value: `${rattingData.salvageValue}m` },
+          { name: '시간당 블루룻', value: `${rattingData.hourLootPerPerson}m` },
+          { name: '블루룻 세금', value: `${rattingData.blueLootTax}m` },
+          { name: '샐비징 세금', value: `${rattingData.salvageTax}m}` },
+          { name: '총 세금', value: `${rattingData.totalTax}m` },
+          { name: '조업 시간', value: `${rattingData.duration}분` },
+          { name: '컴포', value: `${rattingData.compositionValue}` }
+        );
       await interaction.followUp({
-        content: `분배: 클라당 ${(rattingData.blueLootValue * 0.9).toFixed(2) / rattingData.peopleValue}m ISK \n 총 블루룻 : ${rattingData.blueLootValue}m, 총 샐비징 : ${rattingData.salvageValue}m \n 시간당 블루룻 : ${rattingData.hourLootPerPerson}m, 시간당 샐비징 ${rattingData.hourSalvage}m \n 블루룻 세금: ${rattingData.blueLootTax}m, 샐비징 세금: ${rattingData.salvageTax}m \n 총 세금 : ${rattingData.totalTax}m \n 조업 시간: ${rattingData.duration}분 \n 컴포: ${rattingData.compositionValue}`,
+        embeds: c5Embed,
         components: [],
         ephemeral: false,
       });
