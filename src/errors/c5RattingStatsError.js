@@ -5,3 +5,5 @@ class c5RattingStatsError extends customError {
     super(message);
   }
 }
+
+export default c5RattingStatsError;

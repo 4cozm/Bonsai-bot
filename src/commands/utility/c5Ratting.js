@@ -122,7 +122,6 @@ export async function execute(interaction) {
     } catch (e) {
       console.error(`5클조업 데이터베이스를 불러오는 도중 오류가 발생했습니다. ${e}`);
     }
-    console.log(rows);
 
     const statMarker = interaction.options.getString('옵션');
     switch (statMarker) {
@@ -130,7 +129,6 @@ export async function execute(interaction) {
         try {
           const totalBlueLootTax = rows.reduce((a, b) => a + b.blueLootTax, 0);
           const totalSalvageTax = rows.reduce((a, b) => a + b.salvageTax, 0);
-          console.log(totalBlueLootTax, totalSalvageTax);
           if (!totalBlueLootTax && !totalSalvageTax) {
             throw new dataNotFoundError();
           }
