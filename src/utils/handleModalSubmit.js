@@ -9,7 +9,7 @@ import getCustomError from '../errors/index.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const { c5RattingStatsError } = getCustomError();
+const { c5RattingStatsError } = await getCustomError();
 const rattingData = {};
 
 async function handleModalSubmit(interaction) {
