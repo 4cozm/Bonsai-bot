@@ -167,7 +167,7 @@ export async function execute(interaction) {
         }
         break;
       case '4분위값':
-        interaction.reply({ content: '아직 개발중인 명령어에요.', ephemeral: true });
+        interaction.editreply({ content: '아직 개발중인 명령어에요.', ephemeral: true });
         break;
     }
     /**
