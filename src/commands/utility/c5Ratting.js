@@ -12,6 +12,7 @@ import {
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
+  EmbedBuilder,
 } from 'discord.js';
 
 import mysql from 'mysql2/promise';
@@ -123,10 +124,9 @@ export async function execute(interaction) {
           const [rows] = await database.execute(
             `SELECT SUM(blueLootTax) AS totalBlueLootTax, SUM(salvageTax) AS totalSalvageTax FROM stats `
           );
-          const rowsAdjusted = rows.map(x => x);
           await database.end();
-          const totalBlueLootTax = rowsAdjusted.totalBlueLootTax;
-          const totalSalvageTax = rowsAdjusted.totalSalvageTax;
+          const totalBlueLootTax = rows.map(x => x.totalBlueLootTax);
+          const totalSalvageTax = rows.map(x => x.totalSalvageTax);
           if (!totalBlueLootTax && !totalSalvageTax) {
             throw new dataNotFoundError();
           }
@@ -141,6 +141,7 @@ export async function execute(interaction) {
           console.error(e);
         }
         break;
+
       case '평균 시간당 수익':
         // 머라, 샥네스터 컴포 구분 필요. 유저가 입력하는게 아니라, db에서 알아서 골라서 구분하면 되지.
         //DB 연결
@@ -149,12 +150,14 @@ export async function execute(interaction) {
           if (!database) {
             throw new databaseError(null, '5클조업 데이터베이스와 연결 도중 오류 발생');
           }
+          // 데이터 불러오기
           const [rows] = await database.execute(
-            `SELECT composition, AVG(hourBlueLoot) AS averageHourBlueLoot FROM stats`
+            `SELECT composition, AVG(blueLootPerHour) AS averageHourBlueLoot FROM stats GROUP BY composition`
           );
-          const rowsAdjusted = rows.map(x => x);
-          const message = rowsAdjusted;
-          await interaction.editReply({ content: message });
+          await database.end();
+          const message = rows.map(x => ({ name: x.composition, value: x.averageBlueLootPerHour }));
+          const embed = new EmbedBuilder().setColor(0x0099ff).setTitle('컴포별 시간당 평균 수익').addFields(message);
+          await interaction.editReply({ embeds: [embed] });
         } catch (e) {
           await interaction.editReply({
             content: `명령어를 시행하는 도중 오류가 발생했습니다. 세부 내용은 콘솔을 확인해주세요.`,
@@ -164,7 +167,7 @@ export async function execute(interaction) {
         }
         break;
       case '4분위값':
-        // 머라, 샥네스터 컴포 구분 필요.
+        interaction.reply({ content: '아직 개발중인 명령어에요.', ephemeral: true });
         break;
     }
     /**
