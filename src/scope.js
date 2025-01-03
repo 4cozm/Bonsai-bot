@@ -1,7 +1,7 @@
 //스코프 권한 관련 옵션 수정
 
 const scopes = encodeURIComponent(
-  'publicData esi-calendar.read_calendar_events.v1 esi-search.search_structures.v1 esi-planets.manage_planets.v1 esi-corporations.read_structures.v1 esi-characters.read_chat_channels.v1 esi-characters.read_agents_research.v1 esi-industry.read_character_jobs.v1 esi-characters.read_blueprints.v1 esi-location.read_online.v1 esi-contracts.read_character_contracts.v1 esi-corporations.read_starbases.v1'
+  'publicData esi-calendar.read_calendar_events.v1 esi-search.search_structures.v1 esi-clones.read_clones.v1 esi-corporations.read_corporation_membership.v1 esi-planets.manage_planets.v1 esi-fleets.read_fleet.v1 esi-corporations.read_structures.v1 esi-characters.read_chat_channels.v1 esi-characters.read_agents_research.v1 esi-industry.read_character_jobs.v1 esi-characters.read_blueprints.v1 esi-location.read_online.v1 esi-contracts.read_character_contracts.v1 esi-clones.read_implants.v1 esi-corporations.track_members.v1 esi-characters.read_notifications.v1 esi-contracts.read_corporation_contracts.v1 esi-corporations.read_starbases.v1 esi-alliances.read_contacts.v1'
 );
 
 export default scopes;
@@ -29,6 +29,7 @@ export default scopes;
 기업의 건물 정보를 읽을 수 있음
 10.esi-search.search_structures.v1
 캐릭터가 스트럭쳐 브라우저에서 볼 수 있는 모든 스트럭쳐를 검색할 수 있음
-
+11.esi-characters.read_notifications.v1
+캐릭터에게 온 알림을 볼 수 있음
 -I NEED MORE EXOTIC CODING SLAVE
  */
