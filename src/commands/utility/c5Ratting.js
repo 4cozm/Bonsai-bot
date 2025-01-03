@@ -155,7 +155,7 @@ export async function execute(interaction) {
             `SELECT composition, AVG(blueLootPerHour) AS averageHourBlueLoot FROM stats GROUP BY composition`
           );
           await database.end();
-          const message = rows.map(x => ({ name: x.composition, value: x.averageBlueLootPerHour }));
+          const message = rows.map(x => ({ name: x.composition, value: x.HourBlueLoot }));
           const embed = new EmbedBuilder().setColor(0x0099ff).setTitle('컴포별 시간당 평균 수익').addFields(message);
           await interaction.editReply({ embeds: [embed] });
         } catch (e) {
