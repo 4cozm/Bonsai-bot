@@ -118,7 +118,6 @@ export async function execute(interaction) {
           const [rows] = await database.execute(
             `SELECT SUM(blueLootTax) AS totalBlueLootTax, SUM(salvageTax) AS totalSalvageTax FROM stats `
           );
-          await database.end();
           const totalBlueLootTax = rows.map(x => x.totalBlueLootTax);
           const totalSalvageTax = rows.map(x => x.totalSalvageTax);
           if (!totalBlueLootTax && !totalSalvageTax) {
@@ -148,7 +147,6 @@ export async function execute(interaction) {
           const [rows] = await database.execute(
             `SELECT composition, AVG(blueLootPerHour) AS averageHourBlueLoot FROM stats GROUP BY composition`
           );
-          await database.end();
           const message = rows.map(x => ({ name: x.composition, value: x.averageHourBlueLoot.toString() }));
           const embed = new EmbedBuilder().setColor(0x0099ff).setTitle('컴포별 시간당 평균 수익').addFields(message);
           await interaction.editReply({ embeds: [embed] });
@@ -161,7 +159,7 @@ export async function execute(interaction) {
         }
         break;
       case '4분위값':
-        interaction.editreply({ content: '아직 개발중인 명령어에요.', ephemeral: true });
+        interaction.editReply({ content: '아직 개발중인 명령어에요.', ephemeral: true });
         break;
     }
     /**
