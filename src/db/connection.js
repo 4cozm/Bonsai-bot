@@ -35,12 +35,5 @@ export const getConnection = async () => {
     return await connectToDatabase();
   }
 
-  try {
-    await pool.ping(); // 연결 상태 확인
-  } catch (error) {
-    // 연결 상태가 좋지 않으면 재연결
-    pool = await connectToDatabase();
-  }
-
   return pool;
 };
