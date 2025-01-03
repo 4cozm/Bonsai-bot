@@ -9,6 +9,8 @@ dotenv.config();
 
 export const reinforceAlert = () => {
   console.log('POS 리인포스 알림 등록 완료');
+  let maxNotificationId = 0;
+  let processedCount = 0;
   cron.schedule('* * * * *', async () => {
     const accessToken = await getAccessToken(process.env.STRUCTURE_OWNER_DISCORD_ID, 'fe in');
     const alertAccountId = process.env.CATALIST_TOWER_CEO_ID;
@@ -35,22 +37,31 @@ export const reinforceAlert = () => {
       }
       const data = await response.json();
       console.log(data);
-      let processedNotifications = new Set();
-      data.forEach(data => {
-        // 이미 처리된 알림은 건너뛰기
-        if (processedNotifications.has(data.notification_id)) {
-          return;
+
+      data.forEach(notification => {
+        const notificationId = notification.notification_id;
+
+        //최대 ID보다 작은 경우 이미 처리된 ID들임
+        if (notificationId <= maxNotificationId) {
+          if (processedCount >= 2) {
+            return;
+          } else {
+            processedCount++;
+          }
         }
 
-        if (data.type === 'TowerAlertMsg' || data.type === 'StructureUnderAttack') {
+        if (notification.type === 'TowerAlertMsg' || notification.type === 'StructureUnderAttack') {
           discordAlert(968306219234238529n, 'POS리인포스');
         }
 
-        // 알림 처리 후 ID 저장
-        processedNotifications.add(data.notification_id);
+        // 최대 ID 업데이트
+        if (notificationId > maxNotificationId) {
+          maxNotificationId = notificationId;
+        }
       });
     } catch (error) {
       console.error('reinforceAlert에서 에러 밣생:', error);
     }
+    processedCount = 0;
   });
 };
