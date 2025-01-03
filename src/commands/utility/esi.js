@@ -18,7 +18,6 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction) {
   switch (interaction.options.getSubcommand) {
     case '등록':
-      interaction.reply({ content: '등록 commannd 입력됨.' });
       if (!interaction.user.id) {
         throw new dataNotFoundError(
           '메세지에서 discord id값을 추출하지 못했습니다. 전달 받은 값:',
