@@ -31,13 +31,6 @@ export async function connectC5Ratting() {
   if (!pool) {
     return await createC5RattingPool();
   }
-  try {
-    await pool.ping(); // 연결 상태 확인
-  } catch (error) {
-    // 연결 상태가 좋지 않으면 재연결
-    pool = await createC5RattingPool();
-  }
-
   return pool;
 }
 
