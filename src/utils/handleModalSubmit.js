@@ -4,7 +4,7 @@
 import { rattingDuration } from './handleC5Ratting.js';
 // handleC5Rating으로 데이터를 가져오려고 이렇게 설정함.
 // 근데, 이렇게 되면 handleC5Ratting <-> handleModalSubmit 양방향으로 데이터가 순환하게 되는데, 문제가 없을지 모르겠음.
-import { Embed, EmbedBuilder } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import getCustomError from '../errors/index.js';
 import dotenv from 'dotenv';
 dotenv.config();

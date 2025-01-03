@@ -2,8 +2,6 @@ import confirmRow from '../buttons/confirmRow.js';
 import { modal } from '../commands/utility/c5Ratting.js';
 import { rattingStartTime } from '../commands/utility/c5Ratting.js';
 import dotenv from 'dotenv';
-import { rattingData } from './handleModalSubmit.js';
-import connectC5ratting from '../db/connectC5ratting.js';
 import getCustomError from '../errors/index.js';
 const { databaseError } = await getCustomError();
 // 취소,확인 버튼 누르기 이전에 어떤 버튼을 눌렀는지 체크.

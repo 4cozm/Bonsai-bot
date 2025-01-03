@@ -14,16 +14,9 @@ import {
   TextInputStyle,
   EmbedBuilder,
 } from 'discord.js';
-
-import mysql from 'mysql2/promise';
 import connectC5ratting from '../../db/connectC5ratting.js';
 
 import getCustomError from '../../errors/index.js';
-//5클조업 데이터베이스 관련 변수 선언
-let database;
-let rows;
-let fields;
-let compositionData;
 const { dataNotFoundError, databaseError } = await getCustomError();
 // 랫질 시작 시간 기록
 let rattingStartTime = 0;
