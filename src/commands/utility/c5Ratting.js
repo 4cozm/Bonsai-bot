@@ -15,15 +15,9 @@ import {
   EmbedBuilder,
 } from 'discord.js';
 
-import mysql from 'mysql2/promise';
 import connectC5ratting from '../../db/connectC5ratting.js';
 
 import getCustomError from '../../errors/index.js';
-//5클조업 데이터베이스 관련 변수 선언
-let database;
-let rows;
-let fields;
-let compositionData;
 const { dataNotFoundError, databaseError } = await getCustomError();
 // 랫질 시작 시간 기록
 let rattingStartTime = 0;
@@ -167,7 +161,7 @@ export async function execute(interaction) {
         }
         break;
       case '4분위값':
-        interaction.reply({ content: '아직 개발중인 명령어에요.', ephemeral: true });
+        interaction.editreply({ content: '아직 개발중인 명령어에요.', ephemeral: true });
         break;
     }
     /**
