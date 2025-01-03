@@ -23,7 +23,7 @@ let database;
 let rows;
 let fields;
 let compositionData;
-const { dataNotFoundError } = await getCustomError();
+const { dataNotFoundError, databaseError } = await getCustomError();
 // 랫질 시작 시간 기록
 let rattingStartTime = 0;
 // modal에 text input 창 추가
@@ -111,35 +111,57 @@ export async function execute(interaction) {
     }
   } else if (interaction.options.getSubcommand() === '통계') {
     await interaction.deferReply();
-    //c5조업 데이터베이스에 연결
-    try {
-      database = await connectC5ratting();
-      // 데이터베이스에서 데이터 가져오기
-      [rows, fields] = await database.execute('SELECT * FROM stats');
-      // 컴포 관련 정보만 가져오는 전처리
-      [compositionData] = await database.execute('SELECT DISTINCT composition FROM stats');
-      await database.end();
-    } catch (e) {
-      console.error(`5클조업 데이터베이스를 불러오는 도중 오류가 발생했습니다. ${e}`);
-    }
-
     const statMarker = interaction.options.getString('옵션');
     switch (statMarker) {
       case '세금 비율':
+        //DB 연결
         try {
-          const totalBlueLootTax = rows.reduce((a, b) => a + b.blueLootTax, 0);
-          const totalSalvageTax = rows.reduce((a, b) => a + b.salvageTax, 0);
+          const database = await connectC5ratting();
+          if (!database) {
+            throw new databaseError(null, '5클조업 데이터베이스와 연결 도중 오류 발생');
+          }
+          const [rows] = await database.execute(
+            `SELECT SUM(blueLootTax) AS totalBlueLootTax, SUM(salvageTax) AS totalSalvageTax FROM stats `
+          );
+          const rowsAdjusted = rows.map(x => x);
+          await database.end();
+          const totalBlueLootTax = rowsAdjusted.totalBlueLootTax;
+          const totalSalvageTax = rowsAdjusted.totalSalvageTax;
           if (!totalBlueLootTax && !totalSalvageTax) {
             throw new dataNotFoundError();
           }
-          await interaction.editReply({ content: `블루룻/샐비징 = ${totalBlueLootTax / totalSalvageTax}` });
+          await interaction.editReply({
+            content: `블루룻/샐비징 비율  = ${(totalBlueLootTax * 100) / totalSalvageTax}%`,
+          });
         } catch (e) {
-          await interaction.editReply({ content: `명령어를 시행하는 도중 오류가 발생했습니다.`, ephemeral: true });
+          await interaction.editReply({
+            content: `명령어를 시행하는 도중 오류가 발생했습니다. 세부 내용은 콘솔을 확인해주세요.`,
+            ephemeral: true,
+          });
+          console.error(e);
         }
         break;
       case '평균 시간당 수익':
         // 머라, 샥네스터 컴포 구분 필요. 유저가 입력하는게 아니라, db에서 알아서 골라서 구분하면 되지.
-
+        //DB 연결
+        try {
+          const database = await connectC5ratting();
+          if (!database) {
+            throw new databaseError(null, '5클조업 데이터베이스와 연결 도중 오류 발생');
+          }
+          const [rows] = await database.execute(
+            `SELECT composition, AVG(hourBlueLoot) AS averageHourBlueLoot FROM stats`
+          );
+          const rowsAdjusted = rows.map(x => x);
+          const message = rowsAdjusted;
+          await interaction.editReply({ content: message });
+        } catch (e) {
+          await interaction.editReply({
+            content: `명령어를 시행하는 도중 오류가 발생했습니다. 세부 내용은 콘솔을 확인해주세요.`,
+            ephemeral: true,
+          });
+          console.error(e);
+        }
         break;
       case '4분위값':
         // 머라, 샥네스터 컴포 구분 필요.
