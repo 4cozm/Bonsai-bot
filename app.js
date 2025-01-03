@@ -31,6 +31,7 @@ import { setClientInstance } from './src/utils/discordClientManger.js';
 import serverStartNotification from './src/utils/serverStartNotification.js';
 import handleModalSubmit from './src/utils/handleModalSubmit.js';
 import { handleC5Ratting } from './src/utils/handleC5Ratting.js';
+import { createC5RattingPool } from './src/db/connectC5ratting.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -78,6 +79,7 @@ client.once('ready', async () => {
   version = serverStatus.server_version;
   console.log(`version을 ${version}으로 설정했습니다.`);
   await connectToDatabase();
+  await createC5RattingPool();
   setClientInstance(client); //클라이언트 객체를 다른 곳에서 쓸 수 있도록 별도로 저장해둠
   await updateGuildUsers();
   downTimeTracker(version);
