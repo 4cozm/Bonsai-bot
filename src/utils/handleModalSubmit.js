@@ -107,7 +107,6 @@ async function handleModalSubmit(interaction) {
           rattingData.compositionValue,
         ]
       );
-      await database.end();
       await interaction.followUp({ content: '통계에 저장했어요!', ephemeral: true, components: [] });
     } catch (e) {
       console.error('오류 발생', e);
