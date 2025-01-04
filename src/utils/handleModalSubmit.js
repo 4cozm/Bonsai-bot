@@ -88,7 +88,8 @@ async function handleModalSubmit(interaction) {
         });
         throw new rattingStatsError(
           null,
-          `시간당 블루룻 또는 샐비징 2.5b 이상 5클조업 사용자: ${interaction.user.username}`
+          `시간당 블루룻 또는 샐비징 2.5b 이상 5클조업 사용자: ${interaction.user.username}, 
+          시간당 블루룻: ${hourLootPerPerson}, 시간당 샐비징: ${hourSalvage}`
         );
       }
       let database = await connectC5ratting();
