@@ -7,6 +7,14 @@ import { discordAlert } from '../utils/discordAlert.js';
 const { esiRequestError, validationError } = await getCustomError();
 dotenv.config();
 
+const notificationMessages = {
+  TowerAlertMsg: '포스가 공격받고 있습니다.',
+  StructureUnderAttack: '건물이 공격받고 있습니다.',
+  StructureLostShields: '건물 실드가 파괴되었습니다.',
+  StructureLostArmor: '건물 아머가 파괴되었습니다.',
+  StructureDestroyed: '건물이 파괴되었습니다....',
+};
+
 export const reinforceAlert = () => {
   console.log('POS 리인포스 알림 등록 완료');
   let maxNotificationId = 0;
@@ -36,7 +44,6 @@ export const reinforceAlert = () => {
         );
       }
       const data = await response.json();
-      console.log(data);
 
       data.forEach(notification => {
         const notificationId = notification.notification_id;
@@ -50,8 +57,10 @@ export const reinforceAlert = () => {
           }
         }
 
-        if (notification.type === 'TowerAlertMsg' || notification.type === 'StructureUnderAttack') {
-          discordAlert(968306219234238529n, 'POS리인포스');
+        //notification 타입에 따라 다른 메세지를 반환
+        const message = notificationMessages[notification.type];
+        if (message) {
+          discordAlert(968306219234238529n, message);
         }
 
         // 최대 ID 업데이트
