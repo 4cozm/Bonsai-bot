@@ -30,6 +30,7 @@ export default scopes;
 기업의 건물 정보를 읽을 수 있음
 10.esi-search.search_structures.v1
 캐릭터가 스트럭쳐 브라우저에서 볼 수 있는 모든 스트럭쳐를 검색할 수 있음
-
+11.esi-characters.read_notifications.v1
+캐릭터에게 온 알림을 볼 수 있음
 -I NEED MORE EXOTIC CODING SLAVE
  */

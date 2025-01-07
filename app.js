@@ -32,6 +32,7 @@ import serverStartNotification from './src/utils/serverStartNotification.js';
 import handleModalSubmit from './src/utils/handleModalSubmit.js';
 import { handleC5Ratting } from './src/utils/handleC5Ratting.js';
 import { createC5RattingPool } from './src/db/connectC5ratting.js';
+import { reinforceAlert } from './src/esi/reinforceAlert.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -84,6 +85,7 @@ client.once('ready', async () => {
   await updateGuildUsers();
   downTimeTracker(version);
   await serverStartNotification(startTime);
+  reinforceAlert();
 });
 
 // 이벤트 핸들러가 길어져서, 이벤트 핸들러를 따로 뺄 필요가 있어보임.
