@@ -10,7 +10,11 @@ const typeMappings = {
   404: 1296498014860480652n,
   알림: 1293473442011676703n,
 };
-
+/**
+ * 채팅,운송,장터,404,알림 선택가능
+ * @param {String} channelName
+ * @param {String} message
+ */
 export const discordAlert = async (channelName, message) => {
   const client = getClientInstance();
   const channel = await client.channels.fetch(typeMappings[channelName]);
