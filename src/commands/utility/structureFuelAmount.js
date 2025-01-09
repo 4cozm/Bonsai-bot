@@ -35,7 +35,7 @@ export async function execute(interaction) {
     const buildingType = typeMapping[type_id] || { name: '알 수 없음', emoji: ':question:' };
     const displayType = `${buildingType.emoji} ${buildingType.name}`;
 
-    return { name: buildingName, type: displayType, days: `⏳ ${remainingDays}일 남음` };
+    return { name: buildingName, type: displayType, days: `${remainingDays}일 남음` };
   });
 
   // Embed 생성
