@@ -11,19 +11,19 @@ export const checkStructureFuelPerDay = () => {
   cron.schedule('0 12 * * *', async () => {
     const structures = await getStructureFuel();
     const now = new Date();
-    structures.forEach(structure => {
+    structures.forEach(async structure => {
       const { name, fuel_expires, type_id } = structure;
       const expiresDate = new Date(fuel_expires);
       const remainingDays = Math.ceil((expiresDate - now) / (1000 * 60 * 60 * 24));
       if (remainingDays <= alertRemainDate) {
         const buildingType = structureTypeMapping[type_id] || { name: '알 수 없음', emoji: ':question:' };
         const displayType = `${buildingType.emoji} ${buildingType.name}`;
-        discordAlert('알림', `연료가 ${remainingDays}일 남은 ${name}(${displayType})가 있습니다.`);
+        await discordAlert('알림', `연료가 ${remainingDays}일 남았습니다 ${name}(${displayType})`);
         isAlerting = true;
       }
     });
     if (!isAlerting) {
-      discordAlert('모든 건물의 연료가 안전합니다.');
+      await discordAlert('채팅', '연료 검사 완료! 현재 모든 건물의 연료가 안전 범위 입니다.');
       isAlerting = false;
     }
   });
