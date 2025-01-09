@@ -2,8 +2,7 @@ import { SlashCommandBuilder } from 'discord.js';
 import { getStructureFuel } from '../../esi/getStructureFuelData.js';
 import discord from 'discord.js';
 const { EmbedBuilder } = discord;
-
-const typeMapping = {
+export const structureTypeMapping = {
   35832: { name: '허스', emoji: '<:Citadel_Astrahus:1324015125497118754>' },
   35833: { name: '포티자', emoji: '<:Citadel_Fortizar:1324015147232264243>' },
   35834: { name: '킵스타', emoji: '<:Citadel_Keepstar:1324015163094994994>' },
@@ -32,7 +31,7 @@ export async function execute(interaction) {
     const expiresDate = new Date(fuel_expires);
     const remainingDays = Math.ceil((expiresDate - now) / (1000 * 60 * 60 * 24));
 
-    const buildingType = typeMapping[type_id] || { name: '알 수 없음', emoji: ':question:' };
+    const buildingType = structureTypeMapping[type_id] || { name: '알 수 없음', emoji: ':question:' };
     const displayType = `${buildingType.emoji} ${buildingType.name}`;
 
     return { name: buildingName, type: displayType, days: `${remainingDays}일 남음` };
