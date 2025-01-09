@@ -124,7 +124,7 @@ export async function execute(interaction) {
             throw new dataNotFoundError();
           }
           await interaction.editReply({
-            content: `블루룻/샐비징 비율  = ${(totalBlueLootTax * 100) / totalSalvageTax}%`,
+            content: `블루룻/샐비징 비율  = ${((totalBlueLootTax * 100) / totalSalvageTax).toFixed(2)}%`,
           });
         } catch (e) {
           await interaction.editReply({
@@ -147,7 +147,7 @@ export async function execute(interaction) {
           const [rows] = await database.execute(
             `SELECT composition, AVG(blueLootPerHour) AS averageHourBlueLoot FROM stats GROUP BY composition`
           );
-          const message = rows.map(x => ({ name: x.composition, value: x.averageHourBlueLoot.toString() }));
+          const message = rows.map(x => ({ name: x.composition, value: x.averageHourBlueLoot.toFixed(2) + 'm' }));
           const embed = new EmbedBuilder().setColor(0x0099ff).setTitle('컴포별 시간당 평균 수익').addFields(message);
           await interaction.editReply({ embeds: [embed] });
         } catch (e) {

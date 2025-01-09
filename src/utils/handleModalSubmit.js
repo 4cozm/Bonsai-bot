@@ -81,14 +81,15 @@ async function handleModalSubmit(interaction) {
           `시간당 블루룻 또는 샐비징 1 이하 5클조업 사용자: ${interaction.user.username}`
         );
       }
-      if (rattingData.hourLoot > 2500 || rattingData.hourSalvage > 2500) {
+      if (rattingData.hourLootPerPerson > 2500 || rattingData.hourSalvage > 2500) {
         await interaction.followUp({
           content: '값에 오류가 있어 통계에 저장되지 않았어요.',
           ephemeral: true,
         });
         throw new rattingStatsError(
           null,
-          `시간당 블루룻 또는 샐비징 2.5b 이상 5클조업 사용자: ${interaction.user.username}`
+          `시간당 블루룻 또는 샐비징 2.5b 이상 5클조업 사용자: ${interaction.user.username}, 
+          시간당 블루룻: ${hourLootPerPerson}, 시간당 샐비징: ${hourSalvage}`
         );
       }
       let database = await connectC5ratting();

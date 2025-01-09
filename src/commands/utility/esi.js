@@ -16,7 +16,7 @@ export const data = new SlashCommandBuilder()
   .addSubcommand(subcommand => subcommand.setName('등록').setDescription('캣포유 ESI와 연동합니다.'))
   .addSubcommand(subcommand => subcommand.setName('조회').setDescription('자신의 캐릭터를 조회합니다.'));
 export async function execute(interaction) {
-  switch (interaction.options.getSubcommand) {
+  switch (interaction.options.getSubcommand()) {
     case '등록':
       if (!interaction.user.id) {
         throw new dataNotFoundError(
