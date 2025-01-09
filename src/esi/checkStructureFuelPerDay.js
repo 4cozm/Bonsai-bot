@@ -10,6 +10,13 @@ export const checkStructureFuelPerDay = () => {
   console.log('연료 부족 알림 등록 완료');
   cron.schedule('0 12 * * *', async () => {
     const structures = await getStructureFuel();
+    if (!structures || structures.length === 0) {
+      await discordAlert(
+        '404',
+        '스트럭쳐 연료량 자동 검사중 스트럭쳐 정보를 가져오지 못했어요.ESI가 아플지두?..<a:Bongocat_Wave:996295763908907058>'
+      );
+      return;
+    }
     const now = new Date();
     structures.forEach(async structure => {
       const { name, fuel_expires, type_id } = structure;
