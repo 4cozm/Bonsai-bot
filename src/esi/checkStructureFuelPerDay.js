@@ -8,23 +8,34 @@ let isAlerting = false;
 // DT한시간 뒤 시작하는 cron job
 export const checkStructureFuelPerDay = () => {
   console.log('연료 부족 알림 등록 완료');
-  cron.schedule('0 12 * * *', async () => {
-    const structures = await getStructureFuel();
-    const now = new Date();
-    structures.forEach(async structure => {
-      const { name, fuel_expires, type_id } = structure;
-      const expiresDate = new Date(fuel_expires);
-      const remainingDays = Math.ceil((expiresDate - now) / (1000 * 60 * 60 * 24));
-      if (remainingDays <= alertRemainDate) {
-        const buildingType = structureTypeMapping[type_id] || { name: '알 수 없음', emoji: ':question:' };
-        const displayType = `${buildingType.emoji} ${buildingType.name}`;
-        await discordAlert('알림', `연료가 ${remainingDays}일 남았습니다 ${name}(${displayType})`);
-        isAlerting = true;
+  try {
+    cron.schedule('0 12 * * *', async () => {
+      const structures = await getStructureFuel();
+      if (!structures || structures.length === 0) {
+        await discordAlert(
+          '404',
+          '스트럭쳐 연료량 자동 검사중 스트럭쳐 정보를 가져오지 못했어요.ESI가 아플지두?..<a:Bongocat_Wave:996295763908907058>'
+        );
+        return;
+      }
+      const now = new Date();
+      structures.forEach(async structure => {
+        const { name, fuel_expires, type_id } = structure;
+        const expiresDate = new Date(fuel_expires);
+        const remainingDays = Math.ceil((expiresDate - now) / (1000 * 60 * 60 * 24));
+        if (remainingDays <= alertRemainDate) {
+          const buildingType = structureTypeMapping[type_id] || { name: '알 수 없음', emoji: ':question:' };
+          const displayType = `${buildingType.emoji} ${buildingType.name}`;
+          await discordAlert('알림', `연료가 ${remainingDays}일 남았습니다 ${name}(${displayType})`);
+          isAlerting = true;
+        }
+      });
+      if (!isAlerting) {
+        await discordAlert('채팅', '연료 검사 완료! 현재 모든 건물의 연료가 안전 범위 입니다.');
+        isAlerting = false;
       }
     });
-    if (!isAlerting) {
-      await discordAlert('채팅', '연료 검사 완료! 현재 모든 건물의 연료가 안전 범위 입니다.');
-      isAlerting = false;
-    }
-  });
+  } catch (error) {
+    discordAlert('404', '연료 부족 알림 중 오류 발생');
+  }
 };
