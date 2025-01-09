@@ -56,7 +56,7 @@ export async function execute(interaction) {
         inline: true,
       },
       {
-        name: '남은 일수',
+        name: '⏳ 남은 일수',
         value:
           tableRows
             .map(row => {
