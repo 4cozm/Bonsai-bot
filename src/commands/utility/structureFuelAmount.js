@@ -47,6 +47,16 @@ export async function execute(interaction) {
     .addFields(
       {
         name: '건물 이름',
+        value: tableRows.map(row => row.name).join('\n') || '정보 없음',
+        inline: true,
+      },
+      {
+        name: '건물 유형',
+        value: tableRows.map(row => row.type).join('\n') || '정보 없음',
+        inline: true,
+      },
+      {
+        name: '남은 일수',
         value:
           tableRows
             .map(row => {
@@ -64,19 +74,9 @@ export async function execute(interaction) {
                 statusEmoji = '🟢'; // 안전
               }
 
-              return `${statusEmoji} ${row.name}`; // 건물 이름에 이모지 추가
+              return `${statusEmoji} ${row.days}`;
             })
             .join('\n') || '정보 없음',
-        inline: true,
-      },
-      {
-        name: '건물 유형',
-        value: tableRows.map(row => row.type).join('\n') || '정보 없음',
-        inline: true,
-      },
-      {
-        name: '남은 일수',
-        value: tableRows.map(row => row.days).join('\n') || '정보 없음',
         inline: true,
       }
     );
