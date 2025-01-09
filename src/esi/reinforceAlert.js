@@ -28,7 +28,7 @@ export const reinforceAlert = () => {
       if (!accessToken || !alertAccountId) {
         throw new validationError(
           null,
-          `리인포스 정보 요청시 필요한 필드가 누락 되었습니다 \n 처리에 필요한 앵커콥 ID ${alertAccountId.slice(0, 4)} \n 엑세스 토큰${accessToken.slice(0, 20)}` //보안을 위해 토큰은 20자리만 출력
+          `리인포스 정보 요청시 필요한 필드가 누락되었습니다.\n처리에 필요한 앵커콥 ID: ${alertAccountId ? '있음' : 'undefined'}\n엑세스 토큰: ${accessToken ? '있음' : 'undefined'}` //보안을 위해 토큰은 출력하지 않음
         );
       }
       const response = await fetch(`https://esi.evetech.net/latest/characters/${alertAccountId}/notifications/`, {
