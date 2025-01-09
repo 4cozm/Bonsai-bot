@@ -61,7 +61,7 @@ export const reinforceAlert = () => {
         const notificationType = notification.type;
         switch (notificationType) {
           case 'TowerAlertMsg':
-            await discordAlert('알림림', '포스가 공격받고 있습니다.');
+            await discordAlert('알림', '포스가 공격받고 있습니다.');
             break;
           case 'StructureUnderAttack':
             const corpName = notification.text.match(/corpName: (.+)/);
