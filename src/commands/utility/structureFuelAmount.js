@@ -40,32 +40,44 @@ export async function execute(interaction) {
 
   // Embed 생성
   const embed = new EmbedBuilder()
-    .setColor('#800080') // 임베드의 색상 - 보라색임
+    .setColor('#800080') // 임베드 전체의 색상 - 보라색
     .setTitle('현재 스트럭쳐 연료 상태') // 제목
     .setDescription('다음은 각 스트럭쳐의 연료 상태입니다.') // 설명
     .addFields(
-      { name: '건물 이름', value: tableRows.map(row => row.name).join('\n'), inline: true },
-      { name: '건물 유형', value: tableRows.map(row => row.type).join('\n'), inline: true },
+      {
+        name: '건물 이름',
+        value: tableRows.map(row => row.name).join('\n') || '정보 없음',
+        inline: true,
+      },
+      {
+        name: '건물 유형',
+        value: tableRows.map(row => row.type).join('\n') || '정보 없음',
+        inline: true,
+      },
       {
         name: '남은 일수',
-        value: tableRows
-          .map(row => {
-            let color;
-            if (row.days.includes('0일')) {
-              color = 'black';
-            } else if (parseInt(row.days.match(/\d+/)[0]) <= 10) {
-              color = 'red';
-            } else if (parseInt(row.days.match(/\d+/)[0]) <= 30) {
-              color = 'yellow';
-            } else {
-              color = 'green';
-            }
-            return `\`${row.days}\``.fontcolor(color);
-          })
-          .join('\n'),
+        value:
+          tableRows
+            .map(row => {
+              const remainingDays = parseInt(row.days.match(/\d+/)[0]); // 숫자 추출
+              let statusEmoji;
+
+              // 남은 일수에 따라 상태 이모지 설정
+              if (remainingDays === 0) {
+                statusEmoji = '⚫'; // 연료 없음
+              } else if (remainingDays <= 10) {
+                statusEmoji = '🔴'; // 위험
+              } else if (remainingDays <= 30) {
+                statusEmoji = '🟡'; // 주의
+              } else {
+                statusEmoji = '🟢'; // 안전
+              }
+
+              return `${statusEmoji} ${row.days}`;
+            })
+            .join('\n') || '정보 없음',
         inline: true,
       }
     );
-
   await interaction.reply({ embeds: [embed] });
 }
