@@ -21,7 +21,7 @@ const ignoreList = [
 export const reinforceAlert = () => {
   console.log('POS 리인포스 알림 등록 완료');
   let maxNotificationId = 0;
-  cron.schedule('5 * * * *', async () => {
+  cron.schedule('*/2 * * * *', async () => {
     const accessToken = await getAccessToken(process.env.STRUCTURE_OWNER_DISCORD_ID, 'fe in');
     const alertAccountId = process.env.CATALIST_TOWER_CEO_ID;
     try {
@@ -46,22 +46,19 @@ export const reinforceAlert = () => {
         );
       }
       const data = await response.json();
-      console.log(data[0]);
       if (firstRun) {
         maxNotificationId = data[0].notification_id;
         firstRun = false;
         return;
       }
-      console.log('건물 리인 검사중');
       for (const notification of data) {
         if (notification.notification_id <= maxNotificationId) {
-          console.log('검사 완료');
           return;
         }
         const notificationType = notification.type;
         switch (notificationType) {
           case 'TowerAlertMsg':
-            await discordAlert('알림', '포스가 공격받고 있습니다.');
+            await discordAlert('알림', '@everyone 포스가 공격받고 있습니다.');
             break;
           case 'StructureUnderAttack':
             const corpName = notification.text.match(/corpName: (.+)/);
@@ -73,14 +70,14 @@ export const reinforceAlert = () => {
             }
             await discordAlert(
               '알림',
-              `건물이 공격받고 있습니다!\n공격자 코퍼레이션: ${corpName ? corpName[1] : '알 수 없음'}\n남은 실드: ${shield ? shield[1] : 'N/A'}%\n남은 아머: ${armor ? armor[1] : 'N/A'}%`
+              `@everyone 건물이 공격받고 있습니다!\n공격자 코퍼레이션: ${corpName ? corpName[1] : '알 수 없음'}\n남은 실드: ${shield ? parseInt(shield[1]) : 'N/A'}%\n남은 아머: ${armor ? parseInt(shield[1]) : 'N/A'}%`
             );
             break;
           case 'StructureLostShields':
-            await discordAlert('알림', '건물 실드가 파괴되었습니다.');
+            await discordAlert('알림', '@everyone 건물 실드가 파괴되었습니다.');
             break;
           case 'StructureLostArmor':
-            await discordAlert('알림', '건물 아머가 파괴되었습니다.');
+            await discordAlert('알림', '@everyone 건물 아머가 파괴되었습니다.');
             break;
         }
 
