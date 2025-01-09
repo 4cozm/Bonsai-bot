@@ -46,7 +46,25 @@ export async function execute(interaction) {
     .addFields(
       { name: '건물 이름', value: tableRows.map(row => row.name).join('\n'), inline: true },
       { name: '건물 유형', value: tableRows.map(row => row.type).join('\n'), inline: true },
-      { name: '남은 일수', value: tableRows.map(row => row.days).join('\n'), inline: true }
+      {
+        name: '남은 일수',
+        value: tableRows
+          .map(row => {
+            let color;
+            if (row.days.includes('0일')) {
+              color = 'black';
+            } else if (parseInt(row.days.match(/\d+/)[0]) <= 10) {
+              color = 'red';
+            } else if (parseInt(row.days.match(/\d+/)[0]) <= 30) {
+              color = 'yellow';
+            } else {
+              color = 'green';
+            }
+            return `\`${row.days}\``.fontcolor(color);
+          })
+          .join('\n'),
+        inline: true,
+      }
     );
 
   await interaction.reply({ embeds: [embed] });
