@@ -21,7 +21,7 @@ const ignoreList = [
 export const reinforceAlert = () => {
   console.log('POS 리인포스 알림 등록 완료');
   let maxNotificationId = 0;
-  cron.schedule('*/10 * * * *', async () => {
+  cron.schedule('*/6 * * * *', async () => {
     const accessToken = await getAccessToken(process.env.STRUCTURE_OWNER_DISCORD_ID, 'fe in');
     const alertAccountId = process.env.CATALIST_TOWER_CEO_ID;
     try {
@@ -39,11 +39,7 @@ export const reinforceAlert = () => {
       });
 
       if (!response.ok) {
-        console.error(response);
-        throw new esiRequestError(
-          response.status,
-          `앵커꼽의 notification을 가져오는데 실패했습니다 \n reinforceAlert 에러: ${response.statusText}`
-        );
+        console.error(`앵커꼽의 notification을 가져오는데 실패했습니다 \n reinforceAlert 에러: ${response.statusText}`);
       }
       const data = await response.json();
       if (firstRun) {
