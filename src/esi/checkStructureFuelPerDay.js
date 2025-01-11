@@ -7,7 +7,7 @@ const alertRemainDate = 15; // 15일 이하로 떨어지면 알림
 let isAlerting = false;
 // DT한시간 뒤 시작하는 cron job
 export const checkStructureFuelPerDay = () => {
-  console.log('연료 부족 알림 등록 완료');
+  console.log('연료 잔여량 경고 체커 등록 완료');
   try {
     cron.schedule('0 12 * * *', async () => {
       const structures = await getStructureFuel();

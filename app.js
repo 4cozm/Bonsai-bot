@@ -33,6 +33,7 @@ import handleModalSubmit from './src/utils/handleModalSubmit.js';
 import { handleC5Ratting } from './src/utils/handleC5Ratting.js';
 import { createC5RattingPool } from './src/db/connectC5ratting.js';
 import { reinforceAlert } from './src/esi/reinforceAlert.js';
+import {checkStructureFuelPerDay} from './src/esi/checkStructureFuelPerDay.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -86,6 +87,7 @@ client.once('ready', async () => {
   downTimeTracker(version);
   await serverStartNotification(startTime);
   reinforceAlert();
+  checkStructureFuelPerDay();
 });
 
 // 이벤트 핸들러가 길어져서, 이벤트 핸들러를 따로 뺄 필요가 있어보임.
