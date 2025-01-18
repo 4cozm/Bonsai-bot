@@ -47,9 +47,9 @@ export async function execute(interaction) {
       .setDescription('운송비 계산 결과')
       .addFields(
         { name: '부피', value: `${volume}㎥` },
-        { name: 'est', value: `${est / 1000000}m` },
-        { name: '운송비', value: `${price}` }
+        { name: 'est', value: `${est / 1000000}m ISK` },
+        { name: '운송비', value: `${price} ISK` }
       );
-    await interaction.reply({ embeds: [priceEmbed] });
+    await interaction.reply({ embeds: [priceEmbed], ephemeral: true });
   }
 }
