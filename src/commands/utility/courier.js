@@ -48,7 +48,12 @@ export async function execute(interaction) {
       .addFields(
         { name: '부피', value: `${volume}㎥` },
         { name: 'est', value: `${est / 1000000}m ISK` },
-        { name: '운송비', value: `${price} ISK` }
+        { name: '운송비', value: `${price} ISK\n (${price / 1000000}m ISK)` }
+      )
+      .addFields(
+        { name: '운송꼽', value: 'Churu for you' },
+        { name: '도착지1', value: 'J213429 - SAVE CAT' },
+        { name: '도착지2', value: `Jita IV - Moon 4 - Caldari Navy Assembly Plant` }
       );
     await interaction.reply({ embeds: [priceEmbed], ephemeral: true });
   }
