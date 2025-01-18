@@ -17,7 +17,7 @@ export const data = new SlashCommandBuilder()
   );
 
 export async function execute(interaction) {
-  if (interaction.options.getSubcommand === '정보') {
+  if (interaction.options.getSubcommand() === '정보') {
     await interaction.reply({
       content: `-보상 기준: 부피당 450isk + 물건가치의 3%
                 -최대 부피 : 6만
@@ -30,8 +30,8 @@ export async function execute(interaction) {
       ephemeral: true,
     });
   }
-  if (interaction.options.getSubcommand === '계산') {
-    let volume = interaction.options.getNumber('volume');
+  if (interaction.options.getSubcommand() === '계산') {
+    let volume = interaction.options.getNumber('부피');
     let est = interaction.options.getNumber('est');
     let price = volume * 450 + est * 0.03;
     if (volume > 60000) {
@@ -46,7 +46,7 @@ export async function execute(interaction) {
       .setTitle('운송비')
       .setDescription('운송비 계산 결과')
       .addFields(
-        { name: '부피', value: `${volume}` },
+        { name: '부피', value: `${volume}㎥` },
         { name: 'est', value: `${est / 1000000}m` },
         { name: '운송비', value: `${price}` }
       );
