@@ -18,3 +18,7 @@ export const getRefreshToken = 'SELECT refreshToken FROM users WHERE name = ? AN
 export const accessDeniedRequestRefreshToken = 'SELECT refreshToken FROM users WHERE name = ?';
 
 export const searchCharacters = 'SELECT name FROM users WHERE discord = ?';
+
+export const getDiscordIdByCharacterId = 'SELECT discord FROM users WHERE characterId = ?';
+
+export const getAltCharacterNameByDiscordId = 'SELECT characterId FROM users WHERE discord =?';

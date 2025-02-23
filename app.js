@@ -18,6 +18,7 @@ import { connectToDatabase } from './src/db/connection.js';
 // 라우터
 import esiRouter from './src/routers/esi.router.js';
 import gitRouter from './src/routers/git.router.js';
+import dbRouter from './src/routers/db.router.js';
 
 // 미들웨어
 import { sessionConfig } from './src/middlewares/session.js';
@@ -33,7 +34,7 @@ import handleModalSubmit from './src/utils/handleModalSubmit.js';
 import { handleC5Ratting } from './src/utils/handleC5Ratting.js';
 import { createC5RattingPool } from './src/db/connectC5ratting.js';
 import { reinforceAlert } from './src/esi/reinforceAlert.js';
-import {checkStructureFuelPerDay} from './src/esi/checkStructureFuelPerDay.js';
+import { checkStructureFuelPerDay } from './src/esi/checkStructureFuelPerDay.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -67,6 +68,7 @@ app.get('/', (req, res) => {
 //라우터 관련
 app.use('/esi', esiRouter);
 app.use('/git', gitRouter);
+app.use('/db', dbRouter);
 //--------
 
 app.listen(process.env.WEB_PORT, () => {
