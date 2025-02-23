@@ -21,4 +21,4 @@ export const searchCharacters = 'SELECT name FROM users WHERE discord = ?';
 
 export const getDiscordIdByCharacterId = 'SELECT discord FROM users WHERE characterId = ?';
 
-export const getAltCharacterNameByDiscordId = 'SELECT characterId FROM users WHERE discordId =?';
+export const getAltCharacterNameByDiscordId = 'SELECT characterId FROM users WHERE discord =?';
