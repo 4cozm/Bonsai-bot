@@ -3,7 +3,7 @@ import { getStructureFuel } from './getStructureFuelData.js';
 import { structureTypeMapping } from '../commands/utility/structureFuelAmount.js';
 import { discordAlert } from '../utils/discordAlert.js';
 
-const alertRemainDate = 15; // 15일 이하로 떨어지면 알림
+const alertRemainDate = 30; // 30일 이하로 떨어지면 알림
 let isAlerting = false;
 // DT한시간 뒤 시작하는 cron job
 export const checkStructureFuelPerDay = () => {
