@@ -1,6 +1,7 @@
 //DM서빙을 등록하는 기능
 import { SlashCommandBuilder } from 'discord.js';
 import { upsertDmSub } from '../../db/dmServing/upsertDmSub.js';
+import { hasPrivilegedRole } from '../../utils/hasPrivilegedRole.js';
 
 export const data = new SlashCommandBuilder()
   .setName('알림서빙')
@@ -8,7 +9,7 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
   //정책에 따라 롤이 있는 사람들만 메세지 서빙을 받을 수 있음.
-  const privilegedRole = hasPrivilegedRole(interaction);
+  const privilegedRole = hasPrivilegedRole(interaction.user.id);
   if (!privilegedRole) {
     await interaction.reply({
       content: '권한이 부족합니다 관리자에게 문의해 주세요',
@@ -29,16 +30,3 @@ export async function execute(interaction) {
   }
 }
 
-/**
- * 유저가 특정 역할들 중 하나라도 가지고 있는지 검사합니다.
- * @param {import('discord.js').ChatInputCommandInteraction} interaction - 슬래시 명령어 인터랙션
- * @returns {boolean} 하나라도 있으면 true, 없으면 false
- */
-function hasPrivilegedRole(interaction) {
-  if (!interaction.inGuild()) return false;
-
-  const member = interaction.member;
-  const allowedRoles = ['CEO', 'COO', '고양이', '새끼냥이'];
-
-  return member.roles.cache.some(role => allowedRoles.includes(role.name));
-}
