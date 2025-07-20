@@ -25,6 +25,12 @@ addDate 는 해당 튠이 캣포유 ESI에 등록된 시간
 INDEX는 내부 인덱싱용
 */
 
+CREATE TABLE dmSubscribe (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  discord_id VARCHAR(255) NOT NULL UNIQUE,
+  sub BOOLEAN NOT NULL
+);
+
 CREATE DATABASE c5Ratting
 
 USE c5Ratting
@@ -53,5 +59,4 @@ totalTax 총 세금
 duration 걸린 시간
 composition 컴포
 */
-
 
