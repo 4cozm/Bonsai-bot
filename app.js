@@ -23,10 +23,12 @@ import gitRouter from './src/routers/git.router.js';
 import { sessionConfig } from './src/middlewares/session.js';
 
 // 유틸리티 함수들
+import { startDailyCleanupJob } from './jobs/cleanupInvaildDmSubscribers.js';
 import { createC5RattingPool } from './src/db/connectC5ratting.js';
 import downTimeTracker from './src/downTimeTimer.js';
 import { checkStructureFuelPerDay } from './src/esi/checkStructureFuelPerDay.js';
 import { reinforceAlert } from './src/esi/reinforceAlert.js';
+import { preloadDmSubscribers } from './src/service/preloadDmSubscribers.js';
 import { sendDmToSubscriber } from './src/service/sendDmServing.js';
 import commandHandler from './src/utils/commandHandler.js';
 import { setClientInstance } from './src/utils/discordClientManger.js';
@@ -91,6 +93,8 @@ client.once('ready', async () => {
   await serverStartNotification(startTime);
   reinforceAlert();
   checkStructureFuelPerDay();
+  await preloadDmSubscribers(); // 서버 시작시 DM 서빙 유저 캐싱
+  startDailyCleanupJob(); // DT에 서버에 없는 유저 DM 서빙 제거
 });
 
 // 이벤트 핸들러가 길어져서, 이벤트 핸들러를 따로 뺄 필요가 있어보임.
