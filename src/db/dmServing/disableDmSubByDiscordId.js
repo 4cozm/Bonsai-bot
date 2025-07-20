@@ -1,6 +1,6 @@
 import { discordAlert } from '../../utils/discordAlert.js';
+import { getConnection } from '../connection.js';
 import { SqlDisableDmSubByDiscordId } from '../sql/sql.js';
-import { getConnection } from './connection.js';
 /**
  * 디스코드 ID로 DM 구독을 비활성화합니다.
  * @param {string} discord_id - 디스코드 사용자 ID

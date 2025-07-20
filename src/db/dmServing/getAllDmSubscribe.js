@@ -1,7 +1,7 @@
 // db/queries/getAllDmSubscribe.js
 import { discordAlert } from '../../utils/discordAlert.js';
 import { SqlGetAllDmSubscribe } from '../sql/sql.js';
-import { getConnection } from './connection.js';
+import { getConnection } from '../connection.js';
 
 /**
  * 구독 상태가 true인 모든 유저의 discord_id를 조회합니다.
