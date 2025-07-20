@@ -110,9 +110,15 @@ client.on('interactionCreate', async interaction => {
     } catch (error) {
       console.error('명령어 실행 중 에러 발생:', error);
       if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({ content: '명령어 실행중 오류가 발생했습니다', ephemeral: true });
+        await interaction.followUp({
+          content: '명령어 실행중 오류가 발생했습니다',
+          flags: 64,
+        });
       } else {
-        await interaction.reply({ content: '명령어 실행중 오류가 발생했습니다', ephemeral: true });
+        await interaction.reply({
+          content: '명령어 실행중 오류가 발생했습니다',
+          flags: 64,
+        });
       }
     }
     // modal이 제출되었을때에 대한 이벤트 핸들러.
