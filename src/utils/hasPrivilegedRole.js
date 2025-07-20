@@ -18,5 +18,11 @@ export const hasPrivilegedRole = async userId => {
     '974311434508992612', // 새끼냥이
   ];
 
-  return member.roles.cache.some(role => allowedRoleIds.includes(role.id));
+  const hasAllowedRole = member.roles.cache.some(role => allowedRoleIds.includes(role.id));
+
+  if (!hasAllowedRole) {
+    console.log(`❌ 권한 없음: ${member.user.tag} (${userId})`);
+  }
+
+  return hasAllowedRole;
 };
