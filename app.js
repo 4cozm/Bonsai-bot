@@ -135,6 +135,7 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageCreate', async message => {
+  if (message.channel.type === 1 /* DM */ || message.channel.isDMBased()) return;
   if (message.author.bot) return;
 
   const hasEveryone = message.mentions.everyone;
