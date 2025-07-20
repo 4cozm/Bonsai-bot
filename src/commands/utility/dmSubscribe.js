@@ -15,16 +15,16 @@ export async function execute(interaction) {
     if (!guild) {
       await interaction.reply({
         content: '❌ 서버에서만 사용할 수 있는 명령어입니다.',
-        ephemeral: true,
+        flags: 64,
       });
       return;
     }
 
-    const privilegedRole = await hasPrivilegedRole(userId, guild); // guild 필요하면 인자로 전달
+    const privilegedRole = await hasPrivilegedRole(userId); // guild 필요하면 인자로 전달
     if (!privilegedRole) {
       await interaction.reply({
         content: '🚫 권한이 부족합니다. 관리자에게 문의해 주세요.',
-        ephemeral: true,
+        flags: 64,
       });
       return;
     }
@@ -35,7 +35,7 @@ export async function execute(interaction) {
       console.error('❗ 멤버 fetch 실패:', err);
       await interaction.reply({
         content: '⚠️ 유저 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.',
-        ephemeral: true,
+        flags: 64,
       });
       return;
     }
@@ -47,7 +47,7 @@ export async function execute(interaction) {
       console.error('❗ upsertDmSub 실패:', err);
       await interaction.reply({
         content: '⚠️ 등록 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
-        ephemeral: true,
+        flags: 64,
       });
       return;
     }
@@ -55,12 +55,12 @@ export async function execute(interaction) {
     if (!result) {
       await interaction.reply({
         content: '❌ 등록에 실패했습니다. 이유는 모르겠네요.',
-        ephemeral: true,
+        flags: 64,
       });
     } else {
       await interaction.reply({
         content: '✅ 이제부터 알림을 DM으로 보내드릴게요!',
-        ephemeral: true,
+        flags: 64,
       });
     }
   } catch (err) {
@@ -68,7 +68,7 @@ export async function execute(interaction) {
     if (!interaction.replied && !interaction.deferred) {
       await interaction.reply({
         content: '😵 명령 처리 중 알 수 없는 오류가 발생했습니다.',
-        ephemeral: true,
+        flags: 64,
       });
     }
   }

@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { getClientInstance } from './discordClientManger.js';
 dotenv.config();
 
 /**
@@ -8,6 +9,7 @@ dotenv.config();
  * @returns {Promise<boolean>} 하나라도 있으면 true, 없으면 false
  */
 export const hasPrivilegedRole = async userId => {
+  const client = getClientInstance();
   const guild = await client.guilds.fetch(process.env.GUILDS_NUMBER);
   const member = await guild.members.fetch(userId);
 
