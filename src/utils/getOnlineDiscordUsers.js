@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import { discordAlert } from './discordAlert.js';
+import { getClientInstance } from './discordClientManger.js';
 dotenv.config();
 
 /**
@@ -10,6 +11,7 @@ dotenv.config();
  * @returns {Promise<string[]>} 온라인 상태인 유저 ID 배열
  */
 export const getOnlineDiscordUsers = async userList => {
+  const discordClientInstance = getClientInstance();
   const guild = discordClientInstance.guilds.cache.get(process.env.GUILDS_NUMBER);
   if (!guild) {
     await discordAlert('404', '온라인 유저 수집중 오류 - Guild를 찾을 수 없습니다.');
