@@ -31,7 +31,7 @@ export const sendDmToSubscriber = async (kind, message) => {
     try {
       const user = await discordClientInstance.users.fetch(userId);
       const displayName = message.member?.nickname || message.author.username;
-      await user.send(`[${displayName}]:${message.content}`);
+      await user.send(`(알림서빙)${displayName}님의 메세지 :${message.content}`);
       console.log(`DM 전송 성공: ${user.tag}`);
     } catch (error) {
       await discordAlert('404', '알림 DM으로 서빙 - sendDmToSubscriber함수에서 에러 발생', error.message);
