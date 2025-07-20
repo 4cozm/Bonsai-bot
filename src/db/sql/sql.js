@@ -31,4 +31,4 @@ export const SqlUpsertDmSub = `INSERT INTO dmSubscribe (discord_id, sub)
   VALUES (?, ?)
   ON DUPLICATE KEY UPDATE sub = VALUES(sub);
 `;
-export const SqlGetAllDmSubscribe = 'SELECT discord_id FROM dmSubscribe WHERE sub = true;';
+export const SqlGetAllDmSubscribe = 'SELECT discord_id FROM dmSubscribe WHERE sub = 1;';
