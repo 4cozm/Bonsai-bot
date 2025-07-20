@@ -15,7 +15,7 @@ export async function execute(interaction) {
     });
     return;
   }
-
+  await guild.members.fetch(interaction.user.id); //즉시 유저를 캐싱
   const result = await upsertDmSub(interaction.user.id);
   if (!result) {
     await interaction.reply({
