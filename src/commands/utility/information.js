@@ -3,7 +3,7 @@
  * 버튼으로 필요한 정보 제공
  */
 
-import { SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from 'discord.js';
 // 커맨드 기본 데이터, 옵션 설정
 export const data = new SlashCommandBuilder().setName('정보').setDescription('요청하는 정보에 대한 링크 제공');
 
@@ -128,7 +128,7 @@ export async function execute(interaction) {
 
   const response = await interaction.reply({
     content: '무엇을 알려드릴까요?',
-    ephemeral: true, // 남에게 안보이게 할 지 여부
+    flags: InteractionResponseFlags.Ephemeral, // 남에게 안보이게 할 지 여부
     components: [row1, row2],
   });
 

@@ -5,8 +5,8 @@ import { rattingDuration } from './handleC5Ratting.js';
 // handleC5Rating으로 데이터를 가져오려고 이렇게 설정함.
 // 근데, 이렇게 되면 handleC5Ratting <-> handleModalSubmit 양방향으로 데이터가 순환하게 되는데, 문제가 없을지 모르겠음.
 import { EmbedBuilder } from 'discord.js';
-import getCustomError from '../errors/index.js';
 import dotenv from 'dotenv';
+import getCustomError from '../errors/index.js';
 dotenv.config();
 
 const { rattingStatsError } = await getCustomError();
@@ -23,7 +23,10 @@ async function handleModalSubmit(interaction) {
       rattingData.duration = rattingDuration.toFixed(2);
 
       if (!rattingData.duration) {
-        await interaction.reply({ content: '먼저 c5Ratting을 실행해주세요.', ephemeral: true });
+        await interaction.reply({
+          content: '먼저 c5Ratting을 실행해주세요.',
+          flags: InteractionResponseFlags.Ephemeral,
+        });
         return;
       }
       rattingData.hourLoot = parseFloat((rattingData.blueLootValue / (rattingData.duration / 60)).toFixed(2));
@@ -56,25 +59,27 @@ async function handleModalSubmit(interaction) {
         );
       await interaction.followUp({
         embeds: [c5Embed],
-        ephemeral: false,
       });
     } catch (error) {
       console.error('모달 처리 중 오류 발생:', error);
       await interaction.reply({
         content: '모달 데이터를 처리하는 중 오류가 발생했습니다.',
-        ephemeral: true,
+        flags: InteractionResponseFlags.Ephemeral,
       });
     }
     try {
       // 통계 예외처리 코드
       if (rattingDuration < 20) {
-        await interaction.followUp({ content: '값에 오류가 있어 통계에 저장되지 않았어요.', ephemeral: true });
+        await interaction.followUp({
+          content: '값에 오류가 있어 통계에 저장되지 않았어요.',
+          flags: InteractionResponseFlags.Ephemeral,
+        });
         throw new rattingStatsError(null, `20분보다 짧은 5클조업 사용자: ${interaction.user.username}`);
       }
       if (rattingData.hourLoot < 1 || rattingData.hourSalvage < 1) {
         await interaction.followUp({
           content: '값에 오류가 있어 통계에 저장되지 않았어요.',
-          ephemeral: true,
+          flags: InteractionResponseFlags.Ephemeral,
         });
         throw new rattingStatsError(
           null,
@@ -84,7 +89,7 @@ async function handleModalSubmit(interaction) {
       if (rattingData.hourLootPerPerson > 2500 || rattingData.hourSalvage > 2500) {
         await interaction.followUp({
           content: '값에 오류가 있어 통계에 저장되지 않았어요.',
-          ephemeral: true,
+          flags: InteractionResponseFlags.Ephemeral,
         });
         throw new rattingStatsError(
           null,
@@ -108,7 +113,11 @@ async function handleModalSubmit(interaction) {
           rattingData.compositionValue,
         ]
       );
-      await interaction.followUp({ content: '통계에 저장했어요!', ephemeral: true, components: [] });
+      await interaction.followUp({
+        content: '통계에 저장했어요!',
+        flags: InteractionResponseFlags.Ephemeral,
+        components: [],
+      });
     } catch (e) {
       console.error('오류 발생', e);
     }

@@ -13,14 +13,14 @@ export async function execute(interaction) {
     if (!result) {
       await interaction.reply({
         content: '❌ 구독 해지에 문제가 발생했습니다. 이미 비활성화된 상태일 수도 있어요.',
-        ephemeral: true,
+        flags: InteractionResponseFlags.Ephemeral,
       });
       return;
     }
 
     await interaction.reply({
       content: '✅ 이제부터 DM은 보내지 않을게요!',
-      ephemeral: true,
+      flags: InteractionResponseFlags.Ephemeral,
     });
   } catch (error) {
     console.error('알림 구독 해제 명령 실행 중 오류:', error);
@@ -29,12 +29,12 @@ export async function execute(interaction) {
       if (!interaction.replied && !interaction.deferred) {
         await interaction.reply({
           content: '⚠️ 구독 해지 중 알 수 없는 오류가 발생했습니다. 관리자에게 문의해주세요.',
-          ephemeral: true,
+          flags: InteractionResponseFlags.Ephemeral,
         });
       } else {
         await interaction.followUp({
           content: '⚠️ 추가 오류가 발생했습니다. 관리자에게 문의해주세요.',
-          ephemeral: true,
+          flags: InteractionResponseFlags.Ephemeral,
         });
       }
     } catch (nestedError) {

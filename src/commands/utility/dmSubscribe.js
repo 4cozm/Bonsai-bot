@@ -12,7 +12,6 @@ export async function execute(interaction) {
   if (!privilegedRole) {
     await interaction.reply({
       content: '권한이 부족합니다 관리자에게 문의해 주세요',
-      ephemeral: false,
     });
     return;
   }
@@ -21,12 +20,11 @@ export async function execute(interaction) {
   if (!result) {
     await interaction.reply({
       content: '❌ 등록에 실패했습니다. 이유는 모르겠네요',
-      ephemeral: false,
     });
   } else {
     await interaction.reply({
       content: '✅ 이제부터 알림을 DM으로 보내드릴게요!',
-      ephemeral: true, // 사용자에게만 보이도록
+      flags: InteractionResponseFlags.Ephemeral, // 사용자에게만 보이도록
     });
   }
 }

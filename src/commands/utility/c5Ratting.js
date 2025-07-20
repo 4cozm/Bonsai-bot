@@ -5,14 +5,14 @@
 
 // 필요한 모듈 로드
 import {
-  SlashCommandBuilder,
+  ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  ActionRowBuilder,
+  EmbedBuilder,
   ModalBuilder,
+  SlashCommandBuilder,
   TextInputBuilder,
   TextInputStyle,
-  EmbedBuilder,
 } from 'discord.js';
 
 import connectC5ratting from '../../db/connectC5ratting.js';
@@ -94,7 +94,11 @@ export async function execute(interaction) {
     const button1 = new ButtonBuilder().setCustomId('c5취소').setLabel('취소').setStyle(ButtonStyle.Danger);
     const button2 = new ButtonBuilder().setCustomId('c5종료').setLabel('종료').setStyle(ButtonStyle.Secondary);
     const row = new ActionRowBuilder().addComponents(button1, button2);
-    const response = await interaction.reply({ content: '5클조업 인터페이스', components: [row], ephemeral: true });
+    const response = await interaction.reply({
+      content: '5클조업 인터페이스',
+      components: [row],
+      flags: InteractionResponseFlags.Ephemeral,
+    });
     const buttonAction = await response.awaitMessageComponent({});
     switch (buttonAction.customId) {
       case 'c5취소':
@@ -129,7 +133,7 @@ export async function execute(interaction) {
         } catch (e) {
           await interaction.editReply({
             content: `명령어를 시행하는 도중 오류가 발생했습니다. 세부 내용은 콘솔을 확인해주세요.`,
-            ephemeral: true,
+            flags: InteractionResponseFlags.Ephemeral,
           });
           console.error(e);
         }
@@ -153,13 +157,13 @@ export async function execute(interaction) {
         } catch (e) {
           await interaction.editReply({
             content: `명령어를 시행하는 도중 오류가 발생했습니다. 세부 내용은 콘솔을 확인해주세요.`,
-            ephemeral: true,
+            flags: InteractionResponseFlags.Ephemeral,
           });
           console.error(e);
         }
         break;
       case '4분위값':
-        interaction.editReply({ content: '아직 개발중인 명령어에요.', ephemeral: true });
+        interaction.editReply({ content: '아직 개발중인 명령어에요.', flags: InteractionResponseFlags.Ephemeral });
         break;
     }
     /**
@@ -172,5 +176,4 @@ export async function execute(interaction) {
      */
   }
 }
-export { rattingStartTime };
-export { modal };
+export { modal, rattingStartTime };
