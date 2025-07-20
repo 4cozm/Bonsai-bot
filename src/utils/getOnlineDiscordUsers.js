@@ -21,7 +21,7 @@ export const getOnlineDiscordUsers = async userList => {
 
   for (const userId of userList) {
     try {
-      const member = guild.members.cache.get(userId);
+      const member = await guild.members.fetch(userId);
       if (!member) continue;
 
       const status = member.presence?.status;

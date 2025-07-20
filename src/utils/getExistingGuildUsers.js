@@ -21,5 +21,16 @@ export const getExistingGuildUsers = async (userList, client, guildId = process.
     return [];
   }
 
-  return userList.filter(userId => guild.members.cache.has(userId));
+  const validUserList = [];
+
+  for (const userId of userList) {
+    try {
+      await guild.members.fetch(userId); // 캐시에 없으면 가져오고, 실패하면 예외
+      validUserList.push(userId);
+    } catch {
+      // 존재하지 않음, 무시
+    }
+  }
+
+  return validUserList;
 };
