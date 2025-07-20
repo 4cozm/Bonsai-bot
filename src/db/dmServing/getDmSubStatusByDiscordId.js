@@ -1,7 +1,7 @@
 // db/queries/getDmSubStatusByDiscordId.js
 import { discordAlert } from '../../utils/discordAlert.js';
 import { SqlGetDmSubStatusByDiscordId } from '../sql/sql.js';
-import { getConnection } from './connection.js';
+import { getConnection } from '../connection.js';
 
 /**
  * 특정 디스코드 ID의 DM 구독 상태를 조회합니다.

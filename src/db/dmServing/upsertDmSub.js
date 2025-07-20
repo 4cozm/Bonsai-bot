@@ -1,7 +1,7 @@
 // db/queries/upsertDmSub.js
 import { discordAlert } from '../../utils/discordAlert.js';
+import { getConnection } from '../connection.js';
 import { SqlUpsertDmSub } from '../sql/sql.js';
-import { getConnection } from './connection.js';
 
 /**
  * 구독 상태를 삽입하거나, 이미 존재하면 해당 구독 상태로 갱신합니다.
