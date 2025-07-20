@@ -2,8 +2,7 @@
 import dotenv from 'dotenv';
 
 // 디스코드 관련
-import discord from 'discord.js';
-import { GatewayIntentBits, Collection } from 'discord.js';
+import discord, { Collection, GatewayIntentBits } from 'discord.js';
 import { updateGuildUsers } from './src/utils/getGuildUser.js';
 
 // 서버 관련
@@ -16,25 +15,26 @@ import { fileURLToPath } from 'url';
 import { connectToDatabase } from './src/db/connection.js';
 
 // 라우터
+import dbRouter from './src/routers/db.router.js';
 import esiRouter from './src/routers/esi.router.js';
 import gitRouter from './src/routers/git.router.js';
-import dbRouter from './src/routers/db.router.js';
 
 // 미들웨어
 import { sessionConfig } from './src/middlewares/session.js';
 
 // 유틸리티 함수들
+import { createC5RattingPool } from './src/db/connectC5ratting.js';
 import downTimeTracker from './src/downTimeTimer.js';
-import getServerStatus from './src/utils/getServerStatus.js';
-import guildCheck from './src/utils/guildCheck.js';
+import { checkStructureFuelPerDay } from './src/esi/checkStructureFuelPerDay.js';
+import { reinforceAlert } from './src/esi/reinforceAlert.js';
+import { sendDmToSubscriber } from './src/service/sendDmServing.js';
 import commandHandler from './src/utils/commandHandler.js';
 import { setClientInstance } from './src/utils/discordClientManger.js';
-import serverStartNotification from './src/utils/serverStartNotification.js';
-import handleModalSubmit from './src/utils/handleModalSubmit.js';
+import getServerStatus from './src/utils/getServerStatus.js';
+import guildCheck from './src/utils/guildCheck.js';
 import { handleC5Ratting } from './src/utils/handleC5Ratting.js';
-import { createC5RattingPool } from './src/db/connectC5ratting.js';
-import { reinforceAlert } from './src/esi/reinforceAlert.js';
-import { checkStructureFuelPerDay } from './src/esi/checkStructureFuelPerDay.js';
+import handleModalSubmit from './src/utils/handleModalSubmit.js';
+import serverStartNotification from './src/utils/serverStartNotification.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -49,6 +49,7 @@ const client = new discord.Client({
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildPresences,
   ],
 });
 //커맨드를 담을 컬렉션
@@ -122,6 +123,18 @@ client.on('interactionCreate', async interaction => {
     return;
   } else if (interaction.isButton()) {
     await handleC5Ratting(interaction);
+  }
+});
+
+client.on('messageCreate', async message => {
+  if (!message.mentions.everyone) return;
+
+  if (message.content.includes('@everyone')) {
+    console.log(`[${message.author.tag}] @everyone 핑 사용:`, message.content);
+    await sendDmToSubscriber('everyone', message);
+  } else if (message.content.includes('@here')) {
+    console.log(`[${message.author.tag}] @here 핑 사용:`, message.content);
+    await sendDmToSubscriber('here', message);
   }
 });
 

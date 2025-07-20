@@ -32,7 +32,16 @@ export const connectToDatabase = async () => {
  */
 export const getConnection = async () => {
   if (!pool) {
-    return await connectToDatabase();
+    await connectToDatabase();
+  }
+
+  try {
+    const conn = await pool.getConnection();
+    await conn.ping(); // 실제 연결 확인
+    conn.release();
+  } catch (err) {
+    console.warn('연결 유효성 검사 실패, 풀 재생성 시도:', err.message);
+    await connectToDatabase(); // 재연결 시도
   }
 
   return pool;

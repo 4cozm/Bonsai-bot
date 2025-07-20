@@ -22,3 +22,13 @@ export const searchCharacters = 'SELECT name FROM users WHERE discord = ?';
 export const getDiscordIdByCharacterId = 'SELECT discord FROM users WHERE characterId = ?';
 
 export const getAltCharacterNameByDiscordId = 'SELECT characterId FROM users WHERE discord =?';
+
+
+//discord DM 서빙 기능에 대한 SQL
+export const SqlGetDmSubStatusByDiscordId = 'SELECT sub FROM dmSubscribe WHERE discord_id = ?';
+export const SqlDisableDmSubByDiscordId = 'UPDATE dmSubscribe SET sub = false WHERE discord_id = ?';
+export const SqlUpsertDmSub = `INSERT INTO dmSubscribe (discord_id, sub)
+  VALUES (?, ?)
+  ON DUPLICATE KEY UPDATE sub = VALUES(sub);
+`;
+export const SqlGetAllDmSubscribe = 'SELECT discord_id FROM dmSubscribe WHERE sub = true;';
