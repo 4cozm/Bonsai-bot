@@ -24,7 +24,7 @@ export async function execute(interaction) {
   } else {
     await interaction.reply({
       content: '✅ 이제부터 알림을 DM으로 보내드릴게요!',
-      flags: InteractionResponseFlags.Ephemeral, // 사용자에게만 보이도록
+      flags: 64, // 사용자에게만 보이도록
     });
   }
 }

@@ -27,7 +27,7 @@ export async function execute(interaction) {
                 -도착지 : J213429 - SAVE CAT 
                                 ↕
                 Jita IV - Moon 4 - Caldari Navy Assembly Plant`,
-      flags: InteractionResponseFlags.Ephemeral,
+      flags: 64,
     });
   }
   if (interaction.options.getSubcommand() === '계산') {
@@ -37,7 +37,7 @@ export async function execute(interaction) {
     if (volume > 60000) {
       await interaction.reply({
         content: '부피가 6만이 넘었어요. 아이템을 적절히 나눠보면 어떨까요?',
-        flags: InteractionResponseFlags.Ephemeral,
+        flags: 64,
       });
       return;
     }
@@ -55,6 +55,6 @@ export async function execute(interaction) {
         { name: '도착지1', value: 'J213429 - SAVE CAT' },
         { name: '도착지2', value: `Jita IV - Moon 4 - Caldari Navy Assembly Plant` }
       );
-    await interaction.reply({ embeds: [priceEmbed], flags: InteractionResponseFlags.Ephemeral });
+    await interaction.reply({ embeds: [priceEmbed], flags: 64 });
   }
 }

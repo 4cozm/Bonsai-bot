@@ -17,7 +17,7 @@ export async function handleC5Ratting(interaction) {
       if (isCommandRunning) {
         await interaction.reply({
           content: '다른 동작이 이미 실행중이에요.',
-          flags: InteractionResponseFlags.Ephemeral,
+          flags: 64,
           components: [],
         });
         break;
@@ -29,14 +29,14 @@ export async function handleC5Ratting(interaction) {
       await interaction.followUp({
         content: `5클조업을 취소하시겠어요?`,
         components: [confirmRow],
-        flags: InteractionResponseFlags.Ephemeral,
+        flags: 64,
       });
       break;
     case 'c5종료':
       if (isCommandRunning) {
         await interaction.reply({
           content: '다른 동작이 이미 실행중이에요.',
-          flags: InteractionResponseFlags.Ephemeral,
+          flags: 64,
           components: [],
         });
         break;
@@ -48,13 +48,13 @@ export async function handleC5Ratting(interaction) {
       await interaction.followUp({
         content: `정말로 5클조업을 마무리하실건가요?`,
         components: [confirmRow],
-        flags: InteractionResponseFlags.Ephemeral,
+        flags: 64,
       });
       break;
     case 'N':
       await interaction.update({
         content: '명령을 취소했어요! 다음 작업을 계속 진행할 수 있어요.',
-        flags: InteractionResponseFlags.Ephemeral,
+        flags: 64,
         components: [],
       });
       isCommandRunning = false;
@@ -64,12 +64,12 @@ export async function handleC5Ratting(interaction) {
         case 'c5취소':
           await interaction.update({
             content: '5클조업을 취소할게요!',
-            flags: InteractionResponseFlags.Ephemeral,
+            flags: 64,
             components: [],
           });
           await buttonInteraction.editReply({
             content: '5클조업을 취소합니다.',
-            flags: InteractionResponseFlags.Ephemeral,
+            flags: 64,
             components: [],
           });
           isCommandRunning = false;
@@ -80,7 +80,7 @@ export async function handleC5Ratting(interaction) {
           rattingDuration = (endTime - startTime) / 1000 / 60;
           await buttonInteraction.editReply({
             content: '5클조업 종료창을 띄울게요!',
-            flags: InteractionResponseFlags.Ephemeral,
+            flags: 64,
             components: [],
           });
           await interaction.showModal(modal);

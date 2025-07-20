@@ -97,7 +97,7 @@ export async function execute(interaction) {
     const response = await interaction.reply({
       content: '5클조업 인터페이스',
       components: [row],
-      flags: InteractionResponseFlags.Ephemeral,
+      flags: 64,
     });
     const buttonAction = await response.awaitMessageComponent({});
     switch (buttonAction.customId) {
@@ -133,7 +133,7 @@ export async function execute(interaction) {
         } catch (e) {
           await interaction.editReply({
             content: `명령어를 시행하는 도중 오류가 발생했습니다. 세부 내용은 콘솔을 확인해주세요.`,
-            flags: InteractionResponseFlags.Ephemeral,
+            flags: 64,
           });
           console.error(e);
         }
@@ -157,13 +157,13 @@ export async function execute(interaction) {
         } catch (e) {
           await interaction.editReply({
             content: `명령어를 시행하는 도중 오류가 발생했습니다. 세부 내용은 콘솔을 확인해주세요.`,
-            flags: InteractionResponseFlags.Ephemeral,
+            flags: 64,
           });
           console.error(e);
         }
         break;
       case '4분위값':
-        interaction.editReply({ content: '아직 개발중인 명령어에요.', flags: InteractionResponseFlags.Ephemeral });
+        interaction.editReply({ content: '아직 개발중인 명령어에요.', flags: 64 });
         break;
     }
     /**

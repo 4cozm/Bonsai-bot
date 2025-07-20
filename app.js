@@ -112,12 +112,12 @@ client.on('interactionCreate', async interaction => {
       if (interaction.replied || interaction.deferred) {
         await interaction.followUp({
           content: '명령어 실행중 오류가 발생했습니다',
-          flags: InteractionResponseFlags.Ephemeral,
+          flags: 64,
         });
       } else {
         await interaction.reply({
           content: '명령어 실행중 오류가 발생했습니다',
-          flags: InteractionResponseFlags.Ephemeral,
+          flags: 64,
         });
       }
     }

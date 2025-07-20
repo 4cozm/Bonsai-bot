@@ -25,7 +25,7 @@ async function handleModalSubmit(interaction) {
       if (!rattingData.duration) {
         await interaction.reply({
           content: '먼저 c5Ratting을 실행해주세요.',
-          flags: InteractionResponseFlags.Ephemeral,
+          flags: 64,
         });
         return;
       }
@@ -64,7 +64,7 @@ async function handleModalSubmit(interaction) {
       console.error('모달 처리 중 오류 발생:', error);
       await interaction.reply({
         content: '모달 데이터를 처리하는 중 오류가 발생했습니다.',
-        flags: InteractionResponseFlags.Ephemeral,
+        flags: 64,
       });
     }
     try {
@@ -72,14 +72,14 @@ async function handleModalSubmit(interaction) {
       if (rattingDuration < 20) {
         await interaction.followUp({
           content: '값에 오류가 있어 통계에 저장되지 않았어요.',
-          flags: InteractionResponseFlags.Ephemeral,
+          flags: 64,
         });
         throw new rattingStatsError(null, `20분보다 짧은 5클조업 사용자: ${interaction.user.username}`);
       }
       if (rattingData.hourLoot < 1 || rattingData.hourSalvage < 1) {
         await interaction.followUp({
           content: '값에 오류가 있어 통계에 저장되지 않았어요.',
-          flags: InteractionResponseFlags.Ephemeral,
+          flags: 64,
         });
         throw new rattingStatsError(
           null,
@@ -89,7 +89,7 @@ async function handleModalSubmit(interaction) {
       if (rattingData.hourLootPerPerson > 2500 || rattingData.hourSalvage > 2500) {
         await interaction.followUp({
           content: '값에 오류가 있어 통계에 저장되지 않았어요.',
-          flags: InteractionResponseFlags.Ephemeral,
+          flags: 64,
         });
         throw new rattingStatsError(
           null,
@@ -115,7 +115,7 @@ async function handleModalSubmit(interaction) {
       );
       await interaction.followUp({
         content: '통계에 저장했어요!',
-        flags: InteractionResponseFlags.Ephemeral,
+        flags: 64,
         components: [],
       });
     } catch (e) {

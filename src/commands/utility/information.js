@@ -128,7 +128,7 @@ export async function execute(interaction) {
 
   const response = await interaction.reply({
     content: '무엇을 알려드릴까요?',
-    flags: InteractionResponseFlags.Ephemeral, // 남에게 안보이게 할 지 여부
+    flags: 64, // 남에게 안보이게 할 지 여부
     components: [row1, row2],
   });
 
