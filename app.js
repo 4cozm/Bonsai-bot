@@ -133,12 +133,15 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageCreate', async message => {
-  if (!message.mentions.everyone) return;
+  const hasEveryone = message.mentions.everyone;
+  const hasHere = message.content.includes('@here');
 
-  if (message.content.includes('@everyone')) {
+  if (!hasEveryone && !hasHere) return;
+
+  if (hasEveryone) {
     console.log(`[${message.author.tag}] @everyone 핑 사용:`, message.content);
     await sendDmToSubscriber('everyone', message);
-  } else if (message.content.includes('@here')) {
+  } else if (hasHere) {
     console.log(`[${message.author.tag}] @here 핑 사용:`, message.content);
     await sendDmToSubscriber('here', message);
   }
