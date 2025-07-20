@@ -133,6 +133,8 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageCreate', async message => {
+  if (message.author.bot) return;
+
   const hasEveryone = message.mentions.everyone;
   const hasHere = message.content.includes('@here');
 
