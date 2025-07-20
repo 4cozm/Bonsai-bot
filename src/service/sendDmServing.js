@@ -6,13 +6,12 @@ import { getClientInstance } from '../utils/discordClientManger.js';
 import { getExistingGuildUsers } from '../utils/getExistingGuildUsers.js';
 import { getOnlineDiscordUsers } from '../utils/getOnlineDiscordUsers.js';
 
-const discordClientInstance = getClientInstance();
-
 /**
  * @param {'here' | 'everyone'} kind - 알림의 종류 ('here' 또는 'everyone')
  * @param {message} message - 메세지 객체
  */
 export const sendDmToSubscriber = async (kind, message) => {
+  const discordClientInstance = getClientInstance();
   console.log('DM 서빙기능 동작');
   const userList = await getAllDmSubscribe(); //구독한 모든 유저 가져오기
   let targetList = [];
