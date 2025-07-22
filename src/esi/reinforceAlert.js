@@ -66,7 +66,7 @@ export const reinforceAlert = () => {
             }
             await discordAlert(
               '알림',
-              `@everyone 건물이 공격받고 있습니다!\n공격자 코퍼레이션: ${corpName ? corpName[1] : '알 수 없음'}\n남은 실드: ${shield ? parseInt(shield[1]) : 'N/A'}%\n남은 아머: ${armor ? parseInt(shield[1]) : 'N/A'}%`
+              `@everyone 건물이 공격받고 있습니다!\n공격자 코퍼레이션: ${corpName ? corpName[1] : '알 수 없음'}\n남은 실드: ${shield ? parseInt(shield[1]) : 'N/A'}%\n남은 아머: ${armor ? parseInt(armor[1]) : 'N/A'}%`
             );
             break;
           case 'StructureLostShields':
