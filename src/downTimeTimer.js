@@ -51,16 +51,16 @@ const downTimeTracker = version => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(message),
-          }).then(response => {
+          }).then(async response => {
             if (!response.ok) {
               throw new Error('Webhook로 메세지를 보내지 못했습니다', response.status);
             }
+            await alertSkillPoint(); // 스킬포인트 알림 체크
             console.log('서버 오픈 메세지 전송 완료');
           });
           clearInterval(interval); //30초마다 재실행 되는 타이머를 정지
         }
       }, 30000); //30초 마다 재실행
-      await alertSkillPoint(); // 스킬포인트 알림 체크
     } catch (error) {
       console.error(error);
     }
