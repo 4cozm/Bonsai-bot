@@ -36,6 +36,7 @@ import guildCheck from './src/utils/guildCheck.js';
 import { handleC5Ratting } from './src/utils/handleC5Ratting.js';
 import handleModalSubmit from './src/utils/handleModalSubmit.js';
 import serverStartNotification from './src/utils/serverStartNotification.js';
+import { alertSkillPoint } from './src/utils/alertSkillPoint.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -93,6 +94,7 @@ client.once('ready', async () => {
   reinforceAlert();
   checkStructureFuelPerDay();
   startDailyCleanupJob(); // DT에 서버에 없는 유저 DM 서빙 제거
+  await alertSkillPoint();
 });
 
 // 이벤트 핸들러가 길어져서, 이벤트 핸들러를 따로 뺄 필요가 있어보임.

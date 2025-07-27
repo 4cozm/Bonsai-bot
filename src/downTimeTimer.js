@@ -3,6 +3,7 @@
 import cron from 'node-cron';
 import dotenv from 'dotenv';
 import getServerStatus from './utils/getServerStatus.js';
+import { alertSkillPoint } from './utils/alertSkillPoint.js';
 
 dotenv.config();
 
@@ -59,6 +60,7 @@ const downTimeTracker = version => {
           clearInterval(interval); //30초마다 재실행 되는 타이머를 정지
         }
       }, 30000); //30초 마다 재실행
+      await alertSkillPoint(); // 스킬포인트 알림 체크
     } catch (error) {
       console.error(error);
     }
