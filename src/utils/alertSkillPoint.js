@@ -8,7 +8,7 @@ export const alertSkillPoint = async () => {
         const day = now.getDay();
         const stickerId = '1323643503997354014'; //스킬포인트 스티커 ID
         if (day == 2) {
-            await discordAlert('채팅', {
+            await discordAlert('알림', {
                 stickers: [stickerId],
             });
             console.log('스킬포인트 알림 전송 완료');
