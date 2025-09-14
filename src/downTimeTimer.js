@@ -4,10 +4,12 @@ import dotenv from 'dotenv';
 import cron from 'node-cron';
 import { alertSkillPoint } from './utils/alertSkillPoint.js';
 import getServerStatus from './utils/getServerStatus.js';
+import { setTimeout } from 'timers/promises';
 
 dotenv.config();
 
 let message;
+let vip = false;
 
 const downTimeTracker = version => {
     console.log('DT 타이머 등록완료');
@@ -22,7 +24,7 @@ const downTimeTracker = version => {
                 const currentDate = currentTime.getDate(); // 날짜 추출
                 const startTimeDate = startTime.getDate(); // 날짜 추출
 
-                if (currentDate === startTimeDate && serverStatus.players > 30) {
+                if (currentDate === startTimeDate) {
                     //서버 열린상태 확인됬을때 코드
 
                     //업데이트 확인
@@ -45,6 +47,55 @@ const downTimeTracker = version => {
                             content: '서버 ON',
                         };
                     }
+                    // VIP 상태 check
+
+                    vip = serverStatus.vip;
+
+                    // VIP 상태일때
+
+                    const vipCheck = async count => {
+                        // count는 무한반복을 막기 위한 도구
+                        while (vip && count < 120) {
+                            // 서버 상태 불러오기
+                            serverStatus = await getServerStatus();
+                            // vip 상태 저장
+                            vip = serverStatus.vip;
+                            // count + 1
+                            count += 1;
+                            // 30초 대기
+                            await setTimeout(30_000);
+                        }
+                    };
+                    if (vip) {
+                        // 서버 오픈 메시지에 VIP 상태 메시지 추가
+                        message.content += ' - 서버가 VIP 상태입니다.';
+
+                        // 메시지 전송 함수 시작
+
+                        fetch(process.env.DISCORD_WEBHOOK_URL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(message),
+                        }).then(async response => {
+                            if (!response.ok) {
+                                throw new Error('Webhook로 메세지를 보내지 못했습니다', response.status);
+                            }
+                            console.log('서버 VIP 오픈 메세지 전송 완료');
+                        });
+
+                        // 메시지 전송 함수 끝
+
+                        // 1시간 카운트
+                        let count = 0;
+                        // 최장 1시간 반복, 동기적 실행을 위해 await 사용 (찐 서버 up 알림이 먼저 보내지지 않도록)
+                        await vipCheck(count);
+                        // vipCheck 완료 후, 메시지 변경
+
+                        message.content = ' 서버 ON ';
+                    }
+
                     fetch(process.env.DISCORD_WEBHOOK_URL, {
                         method: 'POST',
                         headers: {
