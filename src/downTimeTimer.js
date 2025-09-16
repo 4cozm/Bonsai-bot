@@ -34,7 +34,7 @@ const downTimeTracker = (version) => {
         const currentDate = currentTime.getDate();
         const startTimeDate = startTime.getDate();
 
-        const vipStatus = serverStatus.vip;
+        const vipStatus = serverStatus.vip ?? false;
 
         if (currentDate === startTimeDate) {
           if (vipStatus === true && vipMessageSent === false) {
