@@ -38,9 +38,9 @@ const downTimeTracker = (version) => {
 
         if (currentDate === startTimeDate) {
           if (vipStatus === true && vipMessageSent === false) {
-            let content = '서버가 오픈되었지만, 현재는 개발자만 접근 가능합니다';
+            let content = '서버 반쯤 오픈, 현재는 CCP 개발자만 접근 가능';
             if (version && version < serverStatus.server_version) {
-              content += ` (버전이 ${serverStatus.server_version}으로 업데이트됨)`;
+              content += ` (버전이 업데이트됨 VPN 유저는 주의해주세요)`;
               version = serverStatus.server_version;
             }
             await sendDiscordMessage(content);
@@ -55,7 +55,7 @@ const downTimeTracker = (version) => {
               version = serverStatus.server_version;
             } else if (version < serverStatus.server_version) {
               await sendDiscordMessage(
-                '서버 접속가능, 버전이 업데이트되었습니다. 미꾸라지 유저는 주의해주세요'
+                '서버 접속가능, 버전이 업데이트되었습니다. VPN 유저는 주의해주세요'
               );
               version = serverStatus.server_version;
             } else {
