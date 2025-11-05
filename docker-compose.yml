@@ -1,10 +1,18 @@
 services:
   mysql:
     image: mysql:8.0
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: MANAISCUTE
       MYSQL_DATABASE: ESI
       MYSQL_USER: admin
       MYSQL_PASSWORD: MANAISCUTE
     ports:
-      - "3306:3306"   # ← 추가
+      - "3306:3306"
+    volumes:
+      - ./db/sql:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
+    restart: always
+
+volumes:
+  mysql_data:
