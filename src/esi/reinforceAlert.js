@@ -23,9 +23,10 @@ export const reinforceAlert = () => {
     console.log('POS 리인포스 알림 등록 완료');
     let maxNotificationId = 0;
     cron.schedule('*/6 * * * *', async () => {
-        const accessToken = await getAccessToken(process.env.STRUCTURE_OWNER_DISCORD_ID, 'fe in');
-        const alertAccountId = process.env.CATALIST_TOWER_CEO_ID;
         try {
+            const accessToken = await getAccessToken(process.env.STRUCTURE_OWNER_DISCORD_ID, 'fe in');
+            const alertAccountId = process.env.CATALIST_TOWER_CEO_ID;
+            
             if (!accessToken || !alertAccountId) {
                 throw new validationError(
                     null,
